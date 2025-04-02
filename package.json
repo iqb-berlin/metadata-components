@@ -1,30 +1,36 @@
 {
-  "name": "metadata-components",
-  "version": "0.0.0",
+  "name": "coding-components",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
-    "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "start": "ng serve --project=metadata-components",
+    "build_xx": "ng run metadata-components:build",
+    "build_mc": "rm -rf dist/ngx-metadata-components && ng build ngx-metadata-components",
+    "build": "npm run build_mc && npm run start",
+    "npm_publish": "cd dist/ngx-metadata-components && npm publish --access public"
   },
-  "private": true,
   "dependencies": {
-    "@angular/animations": "^18.2.0",
-    "@angular/common": "^18.2.0",
-    "@angular/compiler": "^18.2.0",
-    "@angular/core": "^18.2.0",
-    "@angular/forms": "^18.2.0",
-    "@angular/platform-browser": "^18.2.0",
-    "@angular/platform-browser-dynamic": "^18.2.0",
-    "@angular/router": "^18.2.0",
+    "@angular/animations": "^19.1.8",
+    "@angular/common": "^19.1.8",
+    "@angular/compiler": "^19.1.8",
+    "@angular/core": "^19.1.8",
+    "@angular/elements": "^19.1.8",
+    "@angular/material": "^19.1.5",
+    "@angular/forms": "^19.1.8",
+    "@angular/platform-browser": "^19.1.8",
+    "@angular/platform-browser-dynamic": "^19.1.8",
+    "@ngx-formly/core": "^6.2.1",
+    "@ngx-formly/material": "^6.2.1",
+    "@ngx-translate/core":"^15.0.0",
+    "ngx-build-plus": "^19.0.0",
+    "@angular/router": "^19.1.8",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
-    "zone.js": "~0.14.10"
+    "zone.js": "~0.15.0"
   },
   "devDependencies": {
-    "@angular/cli": "^18.2.3",
-    "@angular/compiler-cli": "^18.2.0",
+    "@angular-devkit/build-angular": "^19.1.8",
+    "@angular/cli": "^19.1.8",
+    "@angular/compiler-cli": "^19.1.8",
     "@types/jasmine": "~5.1.0",
     "jasmine-core": "~5.2.0",
     "karma": "~6.4.0",
@@ -32,6 +38,23 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
-    "typescript": "~5.5.2"
+    "ng-packagr": "^19.2.0",
+    "typescript": "5.7.3"
+  },
+  "eslintConfig": {
+    "overrides": [
+      {
+        "files": [
+          "*.ts"
+        ],
+        "extends": "@iqb/eslint-config"
+      },
+      {
+        "files": [
+          "*.js"
+        ],
+        "extends": "@iqb/eslint-config/javascript"
+      }
+    ]
   }
 }

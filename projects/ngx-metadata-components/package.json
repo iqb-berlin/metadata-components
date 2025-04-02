@@ -1,0 +1,33 @@
+{
+  "name": "@jurei733/ngx-metadata-components",
+  "type": "module",
+  "exports": {
+    "./lib/ngx-metadata-components.module": "./lib/ngx-coding-components.module.d.ts"
+  },
+  "version": "1.0.1",
+  "author": "IQB - Institut zur Qualitätsentwicklung im Bildungswesen",
+  "license": "MIT",
+  "description": "Angular components for metadata of IQB.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iqb-berlin/metdadata-components.git"
+  },
+  "bugs": {
+    "url": "https://github.com/iqb-berlin/metdadata-components/issues"
+  },
+  "homepage": "https://github.com/iqb-berlin/metdadata-components#readme",
+  "peerDependencies": {
+    "@angular/common": "^19.1.8",
+    "@angular/core": "^19.1.8",
+    "@angular/material": "^19.1.5",
+    "@ngx-formly/core": "^6.2.1",
+    "@ngx-formly/material": "^6.2.1",
+    "@angular/cdk": "^19.1.5",
+    "@ngx-translate/core": "^15.0.0",
+    "@iqb/metadata": "^0.4.2"
+  },
+  "dependencies": {
+    "tslib": "^2.3.0"
+  },
+  "sideEffects": false
+}
