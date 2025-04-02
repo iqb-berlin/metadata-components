@@ -54,6 +54,7 @@ export class NestedTreeComponent implements OnInit {
   private ngUnsubscribe = new Subject<void>();
   pipeTransformTrigger: boolean = false;
   selectedNodesList: VocabFlatNode[] = [];
+  vocabulary: Vocabulary[] = [];
 
   constructor(private _database: VocabNodeChangeService, @Inject(MAT_DIALOG_DATA) public dialogData: DialogData) {
     this.treeFlattener = new MatTreeFlattener(this.transformer, this.getLevel, this.isExpandable, this.getChildren);
@@ -66,66 +67,92 @@ export class NestedTreeComponent implements OnInit {
       });
   }
 
-  ngOnInit() {
-    const vocabulary = this.dialogData.vocabularies
-      ?.find((vocab: { url: string, data: Vocabulary }) => vocab.url === this.dialogData.props.url);
-    if (vocabulary && vocabulary.data) {
-      this.vocabularyTitle = vocabulary.data.title.de;
+  ngOnInit(): void {
+    this.setVocabularyTitle();
+    this.selectNodesBasedOnDialogData();
+  }
+
+  private setVocabularyTitle(): void {
+    const vocabulary = this.dialogData.vocabularies?.find(
+      (vocab: { url: string; data: Vocabulary }) => vocab.url === this.dialogData.props?.url
+    );
+    this.vocabularyTitle = vocabulary?.data?.title?.de ?? '';
+  }
+
+  private selectNodesBasedOnDialogData(): void {
+    if (!this.dialogData?.value) {
+      return;
     }
-    if (this.dialogData && this.dialogData.value) {
-      this.dialogData.value.forEach(v => {
-        this.treeControl.dataNodes.forEach(node => {
-          if (node.id === v.id) {
-            this.vocabNodeSelectionToggle(node);
-          }
-        });
-      });
+    const nodeMap = new Map(this.treeControl.dataNodes.map(node => [node.id, node]));
+    for (const dialogNode of this.dialogData.value) {
+      const matchingNode = nodeMap.get(dialogNode.id);
+      if (matchingNode) {
+        this.vocabNodeSelectionToggle(matchingNode);
+      }
     }
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  private getLevel = (node: VocabFlatNode) => node.level;
+  private getLevel(node: VocabFlatNode): number {
+    return node.level;
+  }
 
-  // eslint-disable-next-line class-methods-use-this
-  private isExpandable = (node: VocabFlatNode) => node.expandable;
+  private isExpandable(node: VocabFlatNode): boolean {
+    return node.expandable;
+  }
 
-  // eslint-disable-next-line class-methods-use-this
-  private getChildren = (node: VocabNode): VocabNode[] => node.children;
+  private getChildren(node: VocabNode): VocabNode[] {
+    return node.children;
+  }
 
-  // eslint-disable-next-line class-methods-use-this
-  hasChild = (_: number, _nodeData: VocabFlatNode) => _nodeData.expandable;
+  hasChild(_: number, nodeData: VocabFlatNode): boolean {
+    return nodeData.expandable;
+  }
 
   /**
    * Transformer to convert nested node to flat node. Record the nodes in maps for later use.
    */
-  private transformer = (node: VocabNode, level: number) => {
-    const existingNode = this.nestedNodeMap.get(node);
-    const flatNode = existingNode && existingNode.label === node.label ?
-      existingNode :
-      new VocabFlatNode();
-    flatNode.label = node.label || '';
-    flatNode.notation = node.notation;
-    flatNode.level = level;
-    flatNode.id = node.id;
-    flatNode.description = node.description;
-    flatNode.expandable = !!node.children?.length;
-    this.flatNodeMap.set(flatNode, node);
-    this.nestedNodeMap.set(node, flatNode);
-    return flatNode;
-  };
+  private transformer = (node: VocabNode, level: number): VocabFlatNode => {
+      let flatNode = this.nestedNodeMap.get(node);
+      if (!flatNode || flatNode.label !== node.label) {
+        flatNode = new VocabFlatNode();
+      }
+      Object.assign(flatNode, {
+        label: node.label || '',
+        notation: node.notation,
+        level,
+        id: node.id,
+        description: node.description,
+        expandable: !!node.children?.length,
+      });
+      this.flatNodeMap.set(flatNode, node);
+      this.nestedNodeMap.set(node, flatNode);
 
+      return flatNode;
+    };
+
+  /**
+   * Generates a list of selected nodes, ensuring that the most relevant parent nodes
+   * or the selected nodes themselves are included based on their selection status
+   * in a hierarchical structure.
+   *
+   * @return {VocabFlatNode[]} An array of selected nodes, which may include either
+   * the direct node or the highest parent node selected in the hierarchy.
+   */
   getSelectedNodesList(): VocabFlatNode[] {
-    const nodesList:Set<VocabFlatNode> = new Set();
-    this.checklistSelection.selected.forEach(selected => {
+    const nodesList = new Set<VocabFlatNode>();
+    for (const selected of this.checklistSelection.selected) {
       const parent = this.getParentNode(selected);
+
       if (parent && this.checklistSelection.isSelected(parent)) {
-        const lastSelectedParentNode = this.getLastParentSelected(selected);
-        if (lastSelectedParentNode) { nodesList.add(lastSelectedParentNode); }
+        const lastSelectedParent = this.getLastParentSelected(selected);
+        if (lastSelectedParent) {
+          nodesList.add(lastSelectedParent);
+        }
       } else {
         nodesList.add(selected);
       }
-    });
-    return [...nodesList];
+    }
+    return Array.from(nodesList);
   }
 
   /** Toggle the vocab entry selection. Select/deselect all the descendants node */
