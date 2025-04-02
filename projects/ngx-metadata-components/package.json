@@ -1,10 +1,10 @@
 {
-  "name": "@jurei733/ngx-metadata-components",
+  "name": "@iqb/ngx-metadata-components",
   "type": "module",
   "exports": {
     "./lib/ngx-metadata-components.module": "./lib/ngx-coding-components.module.d.ts"
   },
-  "version": "1.0.1",
+  "version": "1.0.0",
   "author": "IQB - Institut zur Qualitätsentwicklung im Bildungswesen",
   "license": "MIT",
   "description": "Angular components for metadata of IQB.",
