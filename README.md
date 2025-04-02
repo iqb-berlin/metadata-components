@@ -1,27 +1,22 @@
-# MetadataComponents
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](LICENSE.md)
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.3.
+This repo provides components for metadata [https://iqb-vocabs.github.io](https://iqb-vocabs.github.io/).
 
-## Development server
+# ngx-metadata-components
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+[![npm](https://img.shields.io/npm/v/%40iqb%2Fngx-metadata-components)](https://www.npmjs.com/package/@iqb/ngx-coding-components)
 
-## Code scaffolding
+Library with angular components for metadata.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Testing
 
-## Build
+During development, use the application in the folder `/src`. The script `start` in `package.json` might help to start. 
+If you did changes in the component library, first start the script `build_mc` in `package.json` to build into the `dist` folder first.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## Publishing
 
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+The steps to publish a new release of the library:
+* Update the version in `projects/ngx-metadata-components/package.json`
+* Update README.md in `projects/ngx-metadata-components` to let people know about the changes
+* Build: Use the script `build_mc` in `package.json`
+* Publish: Use the script `npm_publish` in `package.json`
