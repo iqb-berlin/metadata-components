@@ -1,5 +1,5 @@
 import {
-  Component, EventEmitter, importProvidersFrom, Input, OnChanges, OnDestroy, Output, SimpleChanges
+  Component, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges
 } from '@angular/core';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
@@ -74,8 +74,8 @@ type ModelValue = string | number | boolean | Record<string, string> | Vocabular
   templateUrl: './profile-form.component.html',
   styleUrls: ['./profile-form.component.scss'],
   imports: [FormsModule, ReactiveFormsModule, FormlyModule],
+  providers:[MetadataService],
   standalone: true,
-  providers: [],
 })
 export class ProfileFormComponent implements OnDestroy, OnChanges {
 
@@ -103,6 +103,10 @@ export class ProfileFormComponent implements OnDestroy, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['vocabularies'] && changes['vocabularies'].currentValue) {
       this.metadataService.storeVocabularies(this.vocabularies)
+    }
+
+    if (changes['vocabulariesIdDictionary'] && changes['vocabulariesIdDictionary'].currentValue) {
+      this.metadataService.storeVocabulariesIdDictionary(this.vocabulariesIdDictionary)
     }
 
     const metadata = 'metadata';

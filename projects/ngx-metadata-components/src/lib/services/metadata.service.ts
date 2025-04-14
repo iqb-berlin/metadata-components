@@ -17,11 +17,11 @@ export class MetadataService {
     return this.vocabularies;
   }
 
-  storevocabulariesIdDictionary(vocabularies: Record<string, VocabIdDictionaryValue>): void {
+  storeVocabulariesIdDictionary(vocabularies: Record<string, VocabIdDictionaryValue>): void {
     this.vocabulariesIdDictionary = vocabularies;
   }
 
-  getvocabulariesIdDictionary(): Record<string, VocabIdDictionaryValue> {
+  getVocabulariesIdDictionary(): Record<string, VocabIdDictionaryValue> {
     return this.vocabulariesIdDictionary;
   }
 }

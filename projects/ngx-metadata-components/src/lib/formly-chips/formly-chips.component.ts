@@ -72,7 +72,7 @@ export class FormlyChipsComponent extends FieldType<FieldTypeConfig> implements 
           const selectedVocabularyEntries = results.nodes
             .map((result: NotationNode) => ({
               name: `${results.hideNumbering ? '' :
-                result.notation}  ${this.metadataService.getvocabulariesIdDictionary()[result.id].labels.de}`.trim(),
+                result.notation}  ${this.metadataService.getVocabulariesIdDictionary()[result.id].labels.de}`.trim(),
               id: result.id,
               notation: result.notation,
               text: [{ lang: 'de', value: `${results.hideNumbering ? '' : result.notation} ${result.label}`.trim() }]
