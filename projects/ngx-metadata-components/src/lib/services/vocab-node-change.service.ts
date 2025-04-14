@@ -4,7 +4,6 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import {
   DialogData, NotationNode, TopConcept, VocabData, VocabNode
 } from '../models/vocabulary.class';
-import {MetadataService} from "./metadata.service";
 
 @Injectable()
 export class VocabNodeChangeService {
@@ -17,8 +16,8 @@ export class VocabNodeChangeService {
 
   constructor(
     @Inject(MAT_DIALOG_DATA)
-    private dialogData: DialogData,
-    private metadataService: MetadataService)
+    private dialogData: DialogData
+  )
   {
     this.initialize();
   }
@@ -92,7 +91,7 @@ export class VocabNodeChangeService {
   }
 
   private initialize(): void {
-    const vocabulary = this.metadataService.getVocabularies()
+    const vocabulary = this.dialogData.vocabularies
       .find((vocab) => vocab.url === this.dialogData.props.url);
 
     if (!vocabulary?.data) {
