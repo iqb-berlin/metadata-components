@@ -40,13 +40,14 @@ export class FormlyChipsComponent extends FieldType<FieldTypeConfig> implements 
     return this.formControl.value.length === 0;
   }
 
-  remove(i: number): void {
-    const value = this.formControl.value;
-    this.formControl.setValue([
-      ...value.slice(0, i),
-      ...value.slice(i + 1, value.length)
-    ]);
-    this.formControl.markAsTouched();
+  remove(index: number): void {
+    const value = Array.isArray(this.formControl.value) ? [...this.formControl.value] : [];
+
+    if (value && index >= 0 && index < value.length) {
+      value.splice(index, 1); // Entfernt das Element direkt
+      this.formControl.setValue(value);
+      this.formControl.markAsTouched();
+    }
   }
 
   onBlur(): void {
@@ -67,29 +68,38 @@ export class FormlyChipsComponent extends FieldType<FieldTypeConfig> implements 
 
     dialogRef.afterClosed()
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((results:{ nodes:NotationNode[], hideNumbering:boolean }) => {
+      .subscribe((results: { nodes: NotationNode[], hideNumbering: boolean }) => {
         if (results) {
-          const selectedVocabularyEntries = results.nodes
-            .map((result: NotationNode) => ({
-              name: `${results.hideNumbering ? '' :
-                result.notation}  ${this.metadataService.getVocabulariesIdDictionary()[result.id].labels.de}`.trim(),
-              id: result.id,
-              notation: result.notation,
-              text: [{ lang: 'de', value: `${results.hideNumbering ? '' : result.notation} ${result.label}`.trim() }]
-            }))
-            .sort((a: NotationNode, b: NotationNode) => {
-              const nameA = a.name?.toUpperCase() || '';
-              const nameB = b.name?.toUpperCase() || '';
-              if (nameA < nameB) {
-                return -1;
-              }
-              if (nameA > nameB) {
-                return 1;
-              }
-              return 0;
-            });
+          const selectedVocabularyEntries = this.processVocabularyEntries(results);
           this.formControl.setValue(selectedVocabularyEntries);
         }
       });
+  }
+
+  private processVocabularyEntries(results: { nodes: NotationNode[], hideNumbering: boolean }): any[] {
+    const vocabulariesIdDictionary = this.metadataService.getVocabulariesIdDictionary();
+
+    return results.nodes
+      .map((node: NotationNode) => this.createVocabularyEntry(node, results.hideNumbering, vocabulariesIdDictionary))
+      .sort(this.sortVocabularyEntries);
+  }
+
+  private createVocabularyEntry(node: NotationNode, hideNumbering: boolean, vocabulariesIdDictionary: any): any {
+    const label = vocabulariesIdDictionary[node.id]?.labels?.de || '';
+    const notation = node.notation;
+    const name = `${hideNumbering ? '' : notation} ${label}`.trim();
+
+    return {
+      name,
+      id: node.id,
+      notation,
+      text: [{ lang: 'de', value: `${hideNumbering ? '' : notation} ${label}`.trim() }]
+    };
+  }
+
+  private sortVocabularyEntries(a: { name: string }, b: { name: string }): number {
+    const nameA = a.name.toUpperCase();
+    const nameB = b.name.toUpperCase();
+    return nameA.localeCompare(nameB);
   }
 }

@@ -40,21 +40,24 @@ export class FormlyDurationComponent
   }
 
   private setMinMaxValues(): void {
+    const calculateMinOrMax = (value: number): [number, number] => {
+      if (value < 60) {
+        return [value, 0];
+      } else {
+        return [0, Math.floor(value / 60)];
+      }
+    };
+
     const minValue = Number(this.props.minValue) || 0;
-    if (minValue < 60) {
-      this.minSeconds = minValue;
-      this.minMinutes = 0;
-    } else {
-      this.minSeconds = 0;
-      this.minMinutes = Math.floor(minValue / 60);
-    }
+    [this.minSeconds, this.minMinutes] = calculateMinOrMax(minValue);
+
     const maxValue = Number(this.props.maxValue) || 0;
-    if (maxValue && maxValue < 60) {
-      this.maxSeconds = maxValue;
-      this.maxMinutes = 0;
+    if (maxValue) {
+      [this.maxSeconds, this.maxMinutes] = calculateMinOrMax(maxValue);
+      if (this.maxMinutes > 0) this.maxSeconds = 60;
     } else {
-      this.maxSeconds = 60;
-      if (maxValue) this.maxMinutes = Math.floor(maxValue / 60);
+      this.maxSeconds = 0;
+      this.maxMinutes = 0;
     }
   }
 
