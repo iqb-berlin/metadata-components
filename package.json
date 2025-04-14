@@ -1,5 +1,5 @@
 {
-  "name": "coding-components",
+  "name": "metadata-components",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --project=metadata-components",
