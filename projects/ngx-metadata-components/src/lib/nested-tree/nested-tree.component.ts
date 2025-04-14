@@ -180,30 +180,35 @@ export class NestedTreeComponent implements OnInit {
   /** Toggle a leaf vocab entry selection. Check all the parents to see if they changed */
   vocabLeafSelectionToggle(node: VocabFlatNode): void {
     this.pipeTransformTrigger = !this.pipeTransformTrigger;
-    if (!this.checklistSelection.isSelected(node)) {
-      if (this.getSelectedNodesList() && this.dialogData.props.allowMultipleValues) {
-        this.checklistSelection.toggle(node);
-        if (this.checklistSelection.selected.length > 1) this.checkAllParentsSelection(node);
-      } else {
+    const allowMultipleValues = this.dialogData.props.allowMultipleValues;
+    const isNodeSelected = this.checklistSelection.isSelected(node);
+
+    if (isNodeSelected) {
+      if (!allowMultipleValues) {
         this.checklistSelection.clear();
-        this.checklistSelection.toggle(node);
-        if (this.checklistSelection.selected.length > 1) this.checkAllParentsSelection(node);
-      }
-    } else {
-      if (!this.dialogData.props.allowMultipleValues) this.checklistSelection.clear();
-      const parent = this.getParentNode(node);
-      if (parent) {
-        if (this.checklistSelection.isSelected(parent)) {
+      } else {
+        const parent = this.getParentNode(node);
+
+        if (parent && this.checklistSelection.isSelected(parent)) {
           this.checklistSelection.toggle(node);
           this.checkAllParentsSelection(node);
         } else {
           this.checklistSelection.toggle(node);
         }
-      } else {
+      }
+    } else {
+      if (allowMultipleValues && this.getSelectedNodesList()) {
         this.checklistSelection.toggle(node);
+      } else {
+        this.checklistSelection.clear();
+        this.checklistSelection.toggle(node);
+      }
+
+      if (this.checklistSelection.selected.length > 1) {
         this.checkAllParentsSelection(node);
       }
     }
+
     this.selectedNodesList = this.getSelectedNodesList();
   }
 
