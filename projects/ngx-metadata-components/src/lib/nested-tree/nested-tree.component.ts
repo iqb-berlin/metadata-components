@@ -27,6 +27,7 @@ import { AreSomeDescendantsSelectedPipe } from '../pipes/are-some-descendants-se
 import { IsTreeControlExpandedPipe } from '../pipes/is-tree-control-expanded.pipe';
 import { IsNodeSelectedPipe } from '../pipes/is-node-selected.pipe';
 import { VocabNodeChangeService } from '../services/vocab-node-change.service';
+import {MetadataService} from "../services/metadata.service";
 
 @Component({
   selector: 'iqb-nested-tree',
@@ -56,7 +57,7 @@ export class NestedTreeComponent implements OnInit {
   selectedNodesList: VocabFlatNode[] = [];
   vocabulary: Vocabulary[] = [];
 
-  constructor(private _database: VocabNodeChangeService, @Inject(MAT_DIALOG_DATA) public dialogData: DialogData) {
+  constructor(private _database: VocabNodeChangeService, @Inject(MAT_DIALOG_DATA) public dialogData: DialogData, public metadataService: MetadataService) {
     this.treeFlattener = new MatTreeFlattener(this.transformer, this.getLevel, this.isExpandable, this.getChildren);
     this.treeControl = new FlatTreeControl<VocabFlatNode>(this.getLevel, this.isExpandable);
     this.dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
@@ -65,6 +66,7 @@ export class NestedTreeComponent implements OnInit {
       .subscribe(data => {
         this.dataSource.data = data;
       });
+
   }
 
   ngOnInit(): void {
@@ -73,10 +75,10 @@ export class NestedTreeComponent implements OnInit {
   }
 
   private setVocabularyTitle(): void {
-    const vocabulary = this.dialogData.vocabularies?.find(
-      (vocab: { url: string; data: Vocabulary }) => vocab.url === this.dialogData.props?.url
+    const vocabulary = this.metadataService.getVocabularies()?.find(
+      (vocab) => vocab.url === this.dialogData.props?.url
     );
-    this.vocabularyTitle = vocabulary?.data?.title?.de ?? '';
+    this.vocabularyTitle = vocabulary?.data?.title?.['de'] ?? '';
   }
 
   private selectNodesBasedOnDialogData(): void {

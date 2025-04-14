@@ -2,8 +2,9 @@ import { Inject, Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import {
-  DialogData, NotationNode, VocabNode, Vocabulary
+  DialogData, NotationNode, TopConcept, VocabData, VocabNode
 } from '../models/vocabulary.class';
+import {MetadataService} from "./metadata.service";
 
 @Injectable()
 export class VocabNodeChangeService {
@@ -14,7 +15,11 @@ export class VocabNodeChangeService {
     return this.dataChange.value;
   }
 
-  constructor(@Inject(MAT_DIALOG_DATA) private dialogData: DialogData) {
+  constructor(
+    @Inject(MAT_DIALOG_DATA)
+    private dialogData: DialogData,
+    private metadataService: MetadataService)
+  {
     this.initialize();
   }
 
@@ -77,5 +82,17 @@ export class VocabNodeChangeService {
       const tree = this.makeTree(vocabulary.data);
       this.dataChange.next(tree);
     }
+    const vocabulary = this.metadataService.getVocabularies()
+      .find((vocab) => vocab.url === this.dialogData.props.url);
+
+    if (!vocabulary?.data) {
+      console.warn(`Vocabulary data not found for URL: ${this.dialogData.props.url}`);
+      this.dataChange.next([]);
+      return;
+    }
+
+    this.treeDepth = this.getTreeDepth(vocabulary.data.hasTopConcept ?? []);
+    const tree = this.makeTree(vocabulary.data);
+    this.dataChange.next(tree);
   }
 }

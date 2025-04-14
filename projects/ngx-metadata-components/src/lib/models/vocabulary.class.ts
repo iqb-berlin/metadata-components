@@ -45,7 +45,7 @@ export class Vocabulary {
 export type DialogData = {
   value: VocabularyEntry[],
   props: NestedTreeParameters,
-  vocabularies: Array<{ url: string, data: Vocabulary }>
+  vocabularies: Vocab[]
 };
 
 export class VocabNode {
