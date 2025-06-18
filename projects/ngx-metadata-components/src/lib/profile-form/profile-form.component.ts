@@ -1,7 +1,7 @@
 import {
   Component, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges
 } from '@angular/core';
-import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import {
   MDProfile,
   MDProfileEntry,
@@ -17,7 +17,14 @@ import { TextsWithLanguageAndId } from '@iqb/metadata/md-values';
 import { DurationService } from '../services/duration.service';
 import { Vocab, VocabIdDictionaryValue, VocabularyEntry } from '../models/vocabulary.class';
 import {MetadataService} from "../services/metadata.service";
-import {FormlyFieldConfig, FormlyModule} from "@ngx-formly/core";
+import {FormlyFieldConfig, FormlyForm, provideFormlyCore,} from "@ngx-formly/core";
+import {FormlyMatInputModule} from "@ngx-formly/material/input";
+import {FormlyMaterialModule, withFormlyMaterial} from "@ngx-formly/material";
+import {FormlyWrapperPanel} from "../formly-wrapper-panel/formly-wrapper-panel.component";
+import {FormlyChipsComponent} from "../formly-chips/formly-chips.component";
+import {FormlyToggleComponent} from "../formly-toggle/formly-toggle.component";
+import {FormlyDurationComponent} from "../formly-duration/formly-duration.component";
+import {MatFormFieldModule} from "@angular/material/form-field";
 
 export class MetadataValuesEntry {
   id!: string;
@@ -29,25 +36,12 @@ export class MetadataValuesEntry {
 export class MetadataValues {
   entries?: MetadataValuesEntry[];
   profileId?: string;
-  isCurrent?: boolean;
 }
 
 export class ProfileMetadataValues {
   profiles?: MetadataValues[];
 }
 
-export class ItemsMetadataValues extends ProfileMetadataValues {
-  id?: string;
-  description?: string;
-  variableId?: string;
-  variableReadOnlyId?: string;
-  weighting?: number;
-  [key: string]: string | number | MetadataValues[] | undefined;
-}
-
-export class UnitMetadataValues extends ProfileMetadataValues {
-  items?: ItemsMetadataValues[];
-}
 
 interface FormlyConfigProps {
   label: string;
@@ -73,18 +67,60 @@ type ModelValue = string | number | boolean | Record<string, string> | Vocabular
   selector: 'iqb-profile-form',
   templateUrl: './profile-form.component.html',
   styleUrls: ['./profile-form.component.scss'],
-  imports: [FormsModule, ReactiveFormsModule, FormlyModule],
-  providers:[MetadataService],
+  providers: [MetadataService,
+    provideFormlyCore([
+    ...withFormlyMaterial(),
+    {
+      wrappers: [
+        {
+          name: 'panel',
+          component: FormlyWrapperPanel
+        }
+      ],
+      types: [
+        {
+          name: 'chips',
+          wrappers: ['form-field'],
+          component: FormlyChipsComponent,
+          defaultOptions: {
+            defaultValue: []
+          }
+        },
+        {
+          name: 'duration',
+          component: FormlyDurationComponent
+        },
+        {
+          name: 'formlyToggle',
+          wrappers: ['form-field'],
+          component: FormlyToggleComponent,
+          defaultOptions: {
+            defaultValue: false
+          }
+        },
+
+      ],
+      validationMessages: [
+        { name: 'required', message: 'This field is required' },
+      ],
+    }]),],
   standalone: true,
+  imports: [
+    ReactiveFormsModule,
+    FormlyForm,
+    FormlyMaterialModule,
+    FormlyMatInputModule,
+    MatFormFieldModule
+  ]
 })
 export class ProfileFormComponent implements OnDestroy, OnChanges {
 
   constructor(
   public metadataService: MetadataService,
   ) {}
-  @Output() metadataChange: EventEmitter<Partial<UnitMetadataValues>> = new EventEmitter();
+  @Output() metadataChange: EventEmitter<Partial<any>> = new EventEmitter();
   @Input() language!: string;
-  @Input() metadata!: Partial<UnitMetadataValues>;
+  @Input() metadata!: any;
   @Input() formlyWrapper!: string;
   @Input() panelExpanded!: boolean;
   @Input() profile!: MDProfile;
@@ -120,9 +156,7 @@ export class ProfileFormComponent implements OnDestroy, OnChanges {
     }
 
     const profile = 'profile';
-    if (changes[profile] &&
-      !changes[profile].firstChange &&
-      changes[profile].previousValue !== changes[profile].currentValue) {
+    if (changes[profile]) {
       this.fields = this.mapProfileToFormlyFieldConfig(this.profile);
     }
   }
@@ -372,6 +406,7 @@ export class ProfileFormComponent implements OnDestroy, OnChanges {
   }
 
   private static createFormlyField(key: string, entry: MDProfileEntry, props: FormlyConfigProps): FormlyFieldConfig {
+    console.log('createFormlyField', key, entry, props, ProfileFormComponent.getFormlyType(entry),);
     return {
       key,
       type: ProfileFormComponent.getFormlyType(entry),

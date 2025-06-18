@@ -1,6 +1,6 @@
 // eslint-disable-next-line max-classes-per-file
-import { TextWithLanguage } from '@iqb/metadata/md-main';
-import { ProfileEntryParametersVocabulary } from '@iqb/metadata/md-profile-entry';
+import {ProfileEntryParametersVocabulary} from "@iqb/metadata/md-profile-entry";
+import {TextWithLanguage} from "@iqb/metadata/md-main";
 
 export class TopConcept {
   notation!: string[];

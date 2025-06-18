@@ -1,7 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-
-
-import { FieldTypeConfig, FormlyFieldProps } from '@ngx-formly/core/';
+import { FieldTypeConfig, FormlyFieldProps } from '@ngx-formly/core';
 import { FieldType } from '@ngx-formly/material';
 import { Subject, takeUntil } from 'rxjs';
 import { MatInput } from '@angular/material/input';

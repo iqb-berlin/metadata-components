@@ -6,7 +6,11 @@
     "build_xx": "ng run metadata-components:build",
     "build_mc": "rm -rf dist/ngx-metadata-components && ng build ngx-metadata-components",
     "build": "npm run build_mc && npm run start",
-    "npm_publish": "cd dist/ngx-metadata-components && npm publish --access public"
+    "npm_publish": "cd dist/ngx-metadata-components && npm publish --access public",
+    "lint": "eslint \"src/**/*.ts\" \"projects/**/*.ts\"",
+    "lint:fix": "eslint \"src/**/*.ts\" \"projects/**/*.ts\" --fix",
+    "lint:js": "eslint \"**/*.js\"",
+    "lint:js:fix": "eslint \"**/*.js\" --fix"
   },
   "dependencies": {
     "@angular/animations": "^19.1.8",
@@ -18,11 +22,12 @@
     "@angular/forms": "^19.1.8",
     "@angular/platform-browser": "^19.1.8",
     "@angular/platform-browser-dynamic": "^19.1.8",
-    "@ngx-formly/core": "^6.2.1",
-    "@ngx-formly/material": "^6.2.1",
+    "@ngx-formly/core": "^7.0.0",
+    "@ngx-formly/material": "^7.0.0",
     "@ngx-translate/core":"^15.0.0",
     "ngx-build-plus": "^19.0.0",
     "@angular/router": "^19.1.8",
+    "@iqb/metadata": "^0.4.2",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"
@@ -32,7 +37,13 @@
     "@angular/cli": "^19.1.8",
     "@angular/compiler-cli": "^19.1.8",
     "@types/jasmine": "~5.1.0",
+    "@typescript-eslint/eslint-plugin": "^7.2.0",
+    "@typescript-eslint/parser": "^7.2.0",
+    "eslint": "^8.57.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-airbnb-typescript": "^18.0.0",
     "jasmine-core": "~5.2.0",
+    "@iqb/eslint-config": "^2.0.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",
     "karma-coverage": "~2.2.0",
@@ -47,7 +58,10 @@
         "files": [
           "*.ts"
         ],
-        "extends": "@iqb/eslint-config"
+        "extends": "@iqb/eslint-config",
+        "parserOptions": {
+          "project": "./tsconfig.json"
+        }
       },
       {
         "files": [
