@@ -3,5 +3,6 @@
   "dest": "../../dist/ngx-metadata-components",
   "lib": {
     "entryFile": "src/public-api.ts"
-  }
+  },
+  "allowedNonPeerDependencies": ["@angular/cdk"]
 }

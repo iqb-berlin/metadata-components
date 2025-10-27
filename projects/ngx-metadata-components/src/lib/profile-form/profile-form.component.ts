@@ -1,5 +1,5 @@
 import {
-  Component, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges
+  Component, EventEmitter, Input, NO_ERRORS_SCHEMA, OnChanges, OnDestroy, Output, SimpleChanges
 } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import {
@@ -17,14 +17,9 @@ import { TextsWithLanguageAndId } from '@iqb/metadata/md-values';
 import { DurationService } from '../services/duration.service';
 import { Vocab, VocabIdDictionaryValue, VocabularyEntry } from '../models/vocabulary.class';
 import {MetadataService} from "../services/metadata.service";
-import {FormlyFieldConfig, FormlyForm, provideFormlyCore,} from "@ngx-formly/core";
+import {FormlyFieldConfig} from "@ngx-formly/core";
 import {FormlyMatInputModule} from "@ngx-formly/material/input";
-import {FormlyMaterialModule, withFormlyMaterial} from "@ngx-formly/material";
-import {FormlyWrapperPanel} from "../formly-wrapper-panel/formly-wrapper-panel.component";
-import {FormlyChipsComponent} from "../formly-chips/formly-chips.component";
-import {FormlyToggleComponent} from "../formly-toggle/formly-toggle.component";
-import {FormlyDurationComponent} from "../formly-duration/formly-duration.component";
-import {MatFormFieldModule} from "@angular/material/form-field";
+import {FormlyMaterialModule} from "@ngx-formly/material";
 
 export class MetadataValuesEntry {
   id!: string;
@@ -67,50 +62,13 @@ type ModelValue = string | number | boolean | Record<string, string> | Vocabular
   selector: 'iqb-profile-form',
   templateUrl: './profile-form.component.html',
   styleUrls: ['./profile-form.component.scss'],
-  providers: [MetadataService,
-    provideFormlyCore([
-    ...withFormlyMaterial(),
-    {
-      wrappers: [
-        {
-          name: 'panel',
-          component: FormlyWrapperPanel
-        }
-      ],
-      types: [
-        {
-          name: 'chips',
-          wrappers: ['form-field'],
-          component: FormlyChipsComponent,
-          defaultOptions: {
-            defaultValue: []
-          }
-        },
-        {
-          name: 'duration',
-          component: FormlyDurationComponent
-        },
-        {
-          name: 'formlyToggle',
-          wrappers: ['form-field'],
-          component: FormlyToggleComponent,
-          defaultOptions: {
-            defaultValue: false
-          }
-        },
-
-      ],
-      validationMessages: [
-        { name: 'required', message: 'This field is required' },
-      ],
-    }]),],
+  providers: [MetadataService],
   standalone: true,
+  schemas: [NO_ERRORS_SCHEMA],
   imports: [
     ReactiveFormsModule,
-    FormlyForm,
     FormlyMaterialModule,
-    FormlyMatInputModule,
-    MatFormFieldModule
+    FormlyMatInputModule
   ]
 })
 export class ProfileFormComponent implements OnDestroy, OnChanges {
