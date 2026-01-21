@@ -4,31 +4,36 @@
   "exports": {
     "./lib/ngx-metadata-components.module": "./lib/ngx-coding-components.module.d.ts"
   },
-  "version": "1.0.0",
+  "publishConfig": {
+    "access": "public"
+  },
+  "version": "0.1.0",
   "author": "IQB - Institut zur Qualitätsentwicklung im Bildungswesen",
   "license": "MIT",
   "description": "Angular components for metadata of IQB.",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/iqb-berlin/metdadata-components.git"
+    "url": "git+https://github.com/iqb-berlin/metadata-components.git"
   },
   "bugs": {
     "url": "https://github.com/iqb-berlin/metdadata-components/issues"
   },
   "homepage": "https://github.com/iqb-berlin/metdadata-components#readme",
   "peerDependencies": {
+    "@angular/cdk": "^20.0.0",
     "@angular/common": "^20.0.0",
     "@angular/core": "^20.0.0",
     "@angular/material": "^20.0.0",
+    "@iqb/metadata": "^1.4.1",
+    "@iqb/metadata-resolver": "^0.1.0",
     "@ngx-formly/core": "^7.0.0",
     "@ngx-formly/material": "^7.0.0",
-    "@angular/cdk": "^20.0.0",
     "@ngx-translate/core": "^15.0.0",
-    "@iqb/metadata": "^0.4.2"
+    "@angular/elements": "^20.3.12"
   },
   "dependencies": {
-    "tslib": "^2.3.0",
-    "@angular/cdk": "^20.0.0"
+    "@angular/cdk": "^20.0.0",
+    "tslib": "^2.3.0"
   },
   "sideEffects": false
 }

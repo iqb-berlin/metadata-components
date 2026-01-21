@@ -11,7 +11,7 @@ import {
 } from '@angular/material/chips';
 import { NotationNode } from '../models/vocabulary.class';
 import { NestedTreeComponent } from '../nested-tree/nested-tree.component';
-import {MetadataService} from "../services/metadata.service";
+import { MetadataService } from '../services/metadata.service';
 
 @Component({
   selector: 'iqb-formly-chips',
@@ -26,7 +26,7 @@ export class FormlyChipsComponent extends FieldType<FieldTypeConfig> implements 
 
   constructor(
     private vocabsDialog: MatDialog,
-    public metadataService: MetadataService,
+    public metadataService: MetadataService
   ) {
     super();
   }
@@ -85,7 +85,9 @@ export class FormlyChipsComponent extends FieldType<FieldTypeConfig> implements 
   }
 
   private createVocabularyEntry(node: NotationNode, hideNumbering: boolean, vocabulariesIdDictionary: any): any {
-    const label = vocabulariesIdDictionary[node.id]?.labels?.de || '';
+    const entry = vocabulariesIdDictionary[node.id];
+    // const label = vocabulariesIdDictionary[node.id]?.labels?.de || '';
+    const label = entry?.label || node.label || '';
     const notation = node.notation;
     const name = `${hideNumbering ? '' : notation} ${label}`.trim();
 

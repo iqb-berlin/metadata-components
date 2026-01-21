@@ -1,8 +1,9 @@
-<form [formGroup]="form">
+<form [formGroup]="form()">
   <formly-form
-    [model]="model"
-    [fields]="fields"
-    [form]="form"
+    [model]="model()"
+    [fields]="fields()"
+    [options]="formlyOptions"
+    [form]="form()"
     (modelChange)="onModelChange()">
   </formly-form>
 </form>

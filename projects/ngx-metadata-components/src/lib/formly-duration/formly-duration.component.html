@@ -7,6 +7,7 @@
       <input
         type="number"
         matInput
+        [disabled]="props.readonly ?? false"
         [min]="minMinutes"
         [max]="maxMinutes"
         [(ngModel)]="duration.minutes"
@@ -20,17 +21,18 @@
       <input
         type="number"
         matInput
+        [disabled]="props.readonly ?? false"
         [min]="minSeconds"
         [max]="maxSeconds"
         [(ngModel)]="duration.seconds"
         (ngModelChange)="durationChange()"/>
     </mat-form-field>
   </div>
-  @if (props.label) {
+  <!-- @if (props.label) {
     <div
       class="label">
       {{props.label}}
     </div>
-  }
+  } -->
 </div>
 

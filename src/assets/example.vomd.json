@@ -1,0 +1,331 @@
+{
+  "profiles": [
+    {
+      "entries": [
+        {
+          "id": "f0",
+          "label": [
+            {
+              "lang": "de",
+              "value": "Klassenstufe"
+            }
+          ],
+          "value": [
+            {
+              "id": "http://w3id.org/openeduhub/vocabs/educationalLevel/7",
+              "text": [
+                {
+                  "lang": "de",
+                  "value": "7"
+                }
+              ]
+            }
+          ],
+          "valueAsText": [
+            {
+              "lang": "de",
+              "value": "7"
+            }
+          ]
+        },
+        {
+          "id": "a1",
+          "label": [
+            {
+              "lang": "de",
+              "value": "Für SPF geeignet"
+            }
+          ],
+          "value": "true",
+          "valueAsText": {
+            "lang": "de",
+            "value": "ja"
+          }
+        },
+        {
+          "id": "iqb_phones",
+          "label": [
+            {
+              "lang": "de",
+              "value": "Kopfhörereinsatz"
+            }
+          ],
+          "value": [],
+          "valueAsText": []
+        },
+        {
+          "id": "w8",
+          "label": [
+            {
+              "lang": "de",
+              "value": "Leitidee"
+            }
+          ],
+          "value": [
+            {
+              "id": "https://w3id.org/iqb/v10/i1/f5b",
+              "text": [
+                {
+                  "lang": "de",
+                  "value": "4 Leitidee Raum und Form"
+                }
+              ]
+            }
+          ],
+          "valueAsText": [
+            {
+              "lang": "de",
+              "value": "4 Leitidee Raum und Form"
+            }
+          ]
+        },
+        {
+          "id": "iqb_author",
+          "label": [
+            {
+              "lang": "de",
+              "value": "Entwickler:in"
+            }
+          ],
+          "value": [
+            {
+              "lang": "de",
+              "value": "Huaning Yang"
+            }
+          ],
+          "valueAsText": [
+            {
+              "lang": "de",
+              "value": "Huaning Yang"
+            }
+          ]
+        }
+      ],
+      "id": 182952,
+      "profileId": "https://raw.githubusercontent.com/iqb-vocabs/p11/master/unit.json",
+      "isCurrent": true,
+      "createdAt": "2025-11-20T11:25:19.120Z",
+      "changedAt": "2025-11-20T11:25:19.120Z",
+      "unitId": 132511
+    }
+  ],
+  "items": [
+    {
+      "uuid": "dbf493b1-91df-4a9f-b6a7-9eeda8343cf8",
+      "id": "test",
+      "order": 0,
+      "locked": false,
+      "position": null,
+      "unitId": 132511,
+      "variableId": "likert-row_1",
+      "variableReadOnlyId": "likert-row_1762429477919_1",
+      "weighting": null,
+      "description": null,
+      "createdAt": "2025-11-20T11:25:19.123Z",
+      "changedAt": "2025-11-20T11:25:19.123Z",
+      "profiles": [
+        {
+          "entries": [
+            {
+              "id": "s3",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Itemformat"
+                }
+              ],
+              "value": [
+                {
+                  "id": "https://w3id.org/iqb/v27/mp/r9x",
+                  "text": [
+                    {
+                      "lang": "de",
+                      "value": "Zuordnen"
+                    }
+                  ]
+                }
+              ],
+              "valueAsText": [
+                {
+                  "lang": "de",
+                  "value": "Zuordnen"
+                }
+              ]
+            },
+            {
+              "id": "s4",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Anforderungsbereich"
+                }
+              ],
+              "value": [],
+              "valueAsText": []
+            },
+            {
+              "id": "s7",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Inhaltsbezogener Bildungsstandard primär"
+                }
+              ],
+              "value": [
+                {
+                  "id": "https://w3id.org/iqb/v10/i1/f5b",
+                  "text": [
+                    {
+                      "lang": "de",
+                      "value": "4 Leitidee Raum und Form"
+                    }
+                  ]
+                }
+              ],
+              "valueAsText": [
+                {
+                  "lang": "de",
+                  "value": "4 Leitidee Raum und Form"
+                }
+              ]
+            },
+            {
+              "id": "s8",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Inhaltsbezogener Bildungsstandard sekundär"
+                }
+              ],
+              "value": [
+                {
+                  "id": "https://w3id.org/iqb/v10/i1/s3g",
+                  "text": [
+                    {
+                      "lang": "de",
+                      "value": "3 Leitidee Muster, Strukturen und funktionaler Zusammenhang"
+                    }
+                  ]
+                }
+              ],
+              "valueAsText": [
+                {
+                  "lang": "de",
+                  "value": "3 Leitidee Muster, Strukturen und funktionaler Zusammenhang"
+                }
+              ]
+            },
+            {
+              "id": "s5",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Prozessbezogener Bildungsstandard primär"
+                }
+              ],
+              "value": [
+                {
+                  "id": "https://w3id.org/iqb/v10/p1/q7p",
+                  "text": [
+                    {
+                      "lang": "de",
+                      "value": "4 Mathematisch modellieren"
+                    }
+                  ]
+                }
+              ],
+              "valueAsText": [
+                {
+                  "lang": "de",
+                  "value": "4 Mathematisch modellieren"
+                }
+              ]
+            },
+            {
+              "id": "s6",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Prozessbezogener Bildungsstandard sekundär"
+                }
+              ],
+              "value": [
+                {
+                  "id": "https://w3id.org/iqb/v10/p1/v5v",
+                  "text": [
+                    {
+                      "lang": "de",
+                      "value": "5 Mathematisch darstellen"
+                    }
+                  ]
+                }
+              ],
+              "valueAsText": [
+                {
+                  "lang": "de",
+                  "value": "5 Mathematisch darstellen"
+                }
+              ]
+            },
+            {
+              "id": "e4",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Geschätzte Schwierigkeit"
+                }
+              ],
+              "value": [],
+              "valueAsText": []
+            },
+            {
+              "id": "iqb_itemtech",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Technische Besonderheiten der Antwortoptionen"
+                }
+              ],
+              "value": [
+                {
+                  "id": "https://w3id.org/iqb/v27/ti/a2u",
+                  "text": [
+                    {
+                      "lang": "de",
+                      "value": "GeoGebra"
+                    }
+                  ]
+                },
+                {
+                  "id": "https://w3id.org/iqb/v27/ti/q6p",
+                  "text": [
+                    {
+                      "lang": "de",
+                      "value": "Rechenkästchen"
+                    }
+                  ]
+                }
+              ],
+              "valueAsText": [
+                {
+                  "lang": "de",
+                  "value": "GeoGebra"
+                },
+                {
+                  "lang": "de",
+                  "value": "Rechenkästchen"
+                }
+              ]
+            }
+          ],
+          "id": 182953,
+          "profileId": "https://raw.githubusercontent.com/iqb-vocabs/p11/master/item.json",
+          "isCurrent": true,
+          "createdAt": "2025-11-20T11:25:19.127Z",
+          "changedAt": "2025-11-20T11:25:19.127Z",
+          "unitItemUuid": "dbf493b1-91df-4a9f-b6a7-9eeda8343cf8"
+        }
+      ]
+    }
+  ]
+}

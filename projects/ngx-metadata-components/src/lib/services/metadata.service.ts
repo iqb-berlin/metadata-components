@@ -1,27 +1,49 @@
-import { Injectable } from '@angular/core';
-import {Vocab, VocabIdDictionaryValue} from "../models/vocabulary.class";
+import { Injectable, signal } from '@angular/core';
+import { MDProfileGroup } from '@iqb/metadata';
+import { MetadataResolver } from '@iqb/metadata-resolver';
+import { Vocab, VocabularyEntry } from '../models/vocabulary.class';
 
 @Injectable({
   providedIn: 'root'
 })
-
 export class MetadataService {
-  private vocabularies: Vocab[] = [];
-  private vocabulariesIdDictionary: Record<string, VocabIdDictionaryValue> = {};
+  private resolver = signal<MetadataResolver | undefined>(undefined);
+  unitProfileColumns = signal<MDProfileGroup[]>([]);
+  itemProfileColumns = signal<MDProfileGroup>({} as MDProfileGroup);
 
-  storeVocabularies(vocabularies: Vocab[]): void {
-    this.vocabularies = vocabularies;
+  setResolver(resolver: MetadataResolver): void {
+    this.resolver.set(resolver);
+    console.log('Resolver set in MetadataService');
   }
 
+  /**
+   * Get vocabularies from resolver
+   */
   getVocabularies(): Vocab[] {
-    return this.vocabularies;
+    const resolver = this.resolver();
+    if (!resolver) {
+      console.warn('Resolver not set in MetadataService');
+      return [];
+    }
+    return resolver.getVocabularies() as Vocab[];
   }
 
-  storeVocabulariesIdDictionary(vocabularies: Record<string, VocabIdDictionaryValue>): void {
-    this.vocabulariesIdDictionary = vocabularies;
+  /**
+   * Get vocabulary dictionary from resolver
+   */
+  getVocabulariesIdDictionary(): Record<string, VocabularyEntry> {
+    const resolver = this.resolver();
+    if (!resolver) {
+      console.warn('Resolver not set in MetadataService');
+      return {};
+    }
+    return resolver.getVocabularyDictionary() as Record<string, VocabularyEntry>;
   }
 
-  getVocabulariesIdDictionary(): Record<string, VocabIdDictionaryValue> {
-    return this.vocabulariesIdDictionary;
+  /**
+   * For backward compatibility - check if vocabularies are loaded
+   */
+  vocabulariesIdDictionary() {
+    return this.getVocabulariesIdDictionary();
   }
 }
