@@ -23,7 +23,7 @@
     "@angular/platform-browser-dynamic": "^20.0.6",
     "@angular/router": "^20.0.6",
     "@iqb/metadata": "^1.4.1",
-    "@iqb/metadata-resolver": "file:../../Downloads/metadata-resolver",
+    "@iqb/metadata-resolver": "^0.1.0",
     "@ngx-formly/core": "^7.0.0",
     "@ngx-formly/material": "^7.0.0",
     "@ngx-translate/core": "^15.0.0",
