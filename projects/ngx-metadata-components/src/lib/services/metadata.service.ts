@@ -1,48 +1,36 @@
 import { Injectable, signal } from '@angular/core';
 import { MDProfileGroup } from '@iqb/metadata';
-import { MetadataResolver } from '@iqb/metadata-resolver';
+import { VocabularyProvider } from '../models/vocabulary-provider.interface';
 import { Vocab, VocabularyEntry } from '../models/vocabulary.class';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MetadataService {
-  private resolver = signal<MetadataResolver | undefined>(undefined);
+  private provider = signal<VocabularyProvider | undefined>(undefined);
   unitProfileColumns = signal<MDProfileGroup[]>([]);
   itemProfileColumns = signal<MDProfileGroup>({} as MDProfileGroup);
 
-  setResolver(resolver: MetadataResolver): void {
-    this.resolver.set(resolver);
-    console.log('Resolver set in MetadataService');
+  setVocabularyProvider(provider: VocabularyProvider): void {
+    this.provider.set(provider);
   }
 
-  /**
-   * Get vocabularies from resolver
-   */
   getVocabularies(): Vocab[] {
-    const resolver = this.resolver();
-    if (!resolver) {
-      console.warn('Resolver not set in MetadataService');
+    const provider = this.provider();
+    if (!provider) {
       return [];
     }
-    return resolver.getVocabularies() as Vocab[];
+    return provider.getVocabularies() as Vocab[];
   }
 
-  /**
-   * Get vocabulary dictionary from resolver
-   */
   getVocabulariesIdDictionary(): Record<string, VocabularyEntry> {
-    const resolver = this.resolver();
-    if (!resolver) {
-      console.warn('Resolver not set in MetadataService');
+    const provider = this.provider();
+    if (!provider) {
       return {};
     }
-    return resolver.getVocabularyDictionary() as Record<string, VocabularyEntry>;
+    return provider.getVocabularyDictionary() as Record<string, VocabularyEntry>;
   }
 
-  /**
-   * For backward compatibility - check if vocabularies are loaded
-   */
   vocabulariesIdDictionary() {
     return this.getVocabulariesIdDictionary();
   }

@@ -7,7 +7,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "IQB - Institut zur Qualitätsentwicklung im Bildungswesen",
   "license": "MIT",
   "description": "Angular components for metadata of IQB.",
@@ -25,11 +25,10 @@
     "@angular/core": "^20.0.0",
     "@angular/material": "^20.0.0",
     "@iqb/metadata": "^1.4.1",
-    "@iqb/metadata-resolver": "^0.1.0",
     "@ngx-formly/core": "^7.0.0",
     "@ngx-formly/material": "^7.0.0",
     "@ngx-translate/core": "^15.0.0",
-    "@angular/elements": "^20.3.12"
+    "@angular/elements": "^20.0.0"
   },
   "dependencies": {
     "@angular/cdk": "^20.0.0",

@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable import/no-extraneous-dependencies */
-import { MetadataResolver } from '@iqb/metadata-resolver';
+import { VocabularyProvider } from '../models/vocabulary-provider.interface';
 import {
   Component, Input, OnDestroy, OnInit,
   ViewEncapsulation, signal, effect,
@@ -66,14 +66,13 @@ export class ProfileFormComponent implements OnInit, OnDestroy {
   private languageSignal = signal<string>('de');
   private formlyWrapperSignal = signal<string>('');
   private panelExpandedSignal = signal<boolean>(false);
-  private resolverSignal = signal<MetadataResolver | undefined>(undefined);
+  private vocabularyProviderSignal = signal<VocabularyProvider | undefined>(undefined);
   private readonlySignal = signal<boolean>(false);
 
   @Input()
-  set resolver(value: MetadataResolver | undefined) {
+  set vocabularyProvider(value: VocabularyProvider | undefined) {
     if (value) {
-      this.resolverSignal.set(value);
-      console.log(' Resolver set in ProfileFormComponent');
+      this.vocabularyProviderSignal.set(value);
     }
   }
 
@@ -179,16 +178,16 @@ export class ProfileFormComponent implements OnInit, OnDestroy {
     });
 
     effect(() => {
-      const resolver = this.resolverSignal();
-      if (resolver) {
-        this.metadataService.setResolver(resolver);
+      const provider = this.vocabularyProviderSignal();
+      if (provider) {
+        this.metadataService.setVocabularyProvider(provider);
       }
     });
 
     effect(() => {
       const metadata = this.metadataSignal();
       const profile = this.profileSignal();
-      const resolver = this.resolverSignal();
+      const resolver = this.vocabularyProviderSignal();
 
       if (!resolver) return;
       if (!metadata || !profile) return;

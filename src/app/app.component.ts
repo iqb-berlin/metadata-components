@@ -271,7 +271,7 @@ export class AppComponent implements OnInit {
       form.profileData = JSON.stringify(this.profileData());
       form.metadataValues = JSON.stringify(this.metadataData());
       form.language = 'de';
-      form.resolver = this.resolver;
+      form.vocabularyProvider = this.resolver;
       form.readonly = this.readonly();
 
       form.addEventListener('metadataChange', (event: CustomEvent) => {
