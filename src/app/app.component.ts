@@ -9,7 +9,7 @@ import { CommonModule } from '@angular/common';
 import { firstValueFrom } from 'rxjs';
 import { bootstrapMetadataWebComponents } from 'ngx-metadata-components';
 import { MetadataResolver } from '@iqb/metadata-resolver';
-import { MDProfile } from '@iqb/metadata';
+import { MDProfile } from '@iqbspecs/metadata-profile';
 
 interface ProfileData {
   id: string;
@@ -203,7 +203,7 @@ export class AppComponent implements OnInit {
       console.log(`Loading metadata from: ${this.metadataUrl()}`);
 
       const profileData = await this.loadFromUrl<ProfileData>(this.profileUrl());
-      const profile = new MDProfile(profileData);
+      const profile = profileData as MDProfile;
       this.profileData.set(profile);
       console.log('Profile loaded:', profile.id);
 

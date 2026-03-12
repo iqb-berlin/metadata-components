@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable import/no-extraneous-dependencies */
 import { VocabularyProvider } from '../models/vocabulary-provider.interface';
+import { MetadataValue } from '@iqbspecs/metadata-values';
 import {
   Component, Input, OnDestroy, OnInit,
   ViewEncapsulation, signal, effect,
@@ -14,12 +15,12 @@ import {
   MDProfileEntry,
   MDProfileGroup,
   ProfileEntryParametersBoolean,
+  ProfileEntryParametersText,
+  ProfileEntryParametersVocabulary,
   ProfileEntryParametersNumber
-} from '@iqb/metadata';
+} from '@iqbspecs/metadata-profile';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyModule } from '@ngx-formly/core';
 import { Subject } from 'rxjs';
-import { ProfileEntryParametersText, ProfileEntryParametersVocabulary }
-  from '@iqb/metadata/md-profile-entry';
 import { TextWithLanguage } from '@iqb/metadata/md-main';
 import { TextsWithLanguageAndId } from '@iqb/metadata/md-values';
 import {
@@ -268,19 +269,19 @@ export class ProfileFormComponent implements OnInit, OnDestroy {
   }
 
   private static getFormlyType(entry: MDProfileEntry): string {
-    let type: string = entry.type;
-    if (entry.type === 'text' && (entry.parameters as any)?.format === 'multiline') {
-      type = 'textarea';
-    } else if (entry.type === 'number' && (entry.parameters as any)?.isPeriodSeconds) {
-      type = 'duration';
+    let type: string = entry.type.toUpperCase();
+    if (type === 'TEXT' && (entry.parameters as any)?.format?.toUpperCase() === 'MULTILINE') {
+      type = 'TEXTAREA';
+    } else if (type === 'NUMBER' && (entry.parameters as any)?.isPeriodSeconds) {
+      type = 'DURATION';
     }
     const typesMapping: Record<string, string> = {
-      text: 'input',
-      boolean: 'formlyToggle',
-      number: 'number',
-      duration: 'duration',
-      vocabulary: 'chips',
-      textarea: 'textarea'
+      TEXT: 'input',
+      BOOLEAN: 'formlyToggle',
+      NUMBER: 'number',
+      DURATION: 'duration',
+      VOCABULARY: 'chips',
+      TEXTAREA: 'textarea'
     };
     return typesMapping[type];
   }
@@ -334,12 +335,12 @@ export class ProfileFormComponent implements OnInit, OnDestroy {
     modelValueEntry: ModelValueEntry
   ): TextsWithLanguageAndId[] | TextWithLanguage[] | string {
     const type = this.profileItemKeys[modelValueEntry[0]]?.type;
-    if (type === 'text') {
+    if (type === 'TEXT') {
       const textWithLanguages = Object.entries(modelValueEntry[1]);
       return textWithLanguages
         .map(textWithLanguage => ({ lang: textWithLanguage[0], value: textWithLanguage[1] as string }));
     }
-    if (type === 'vocabulary') {
+    if (type === 'VOCABULARY') {
       return (modelValueEntry[1] as VocabularyEntry[])
         .map(vocabEntry => ({ id: vocabEntry?.id, text: vocabEntry?.text }));
     }
@@ -352,22 +353,22 @@ export class ProfileFormComponent implements OnInit, OnDestroy {
     const type = this.profileItemKeys[modelValueEntry[0]]?.type;
     const currentLanguage = this.getLanguage();
 
-    if (type === 'text') {
+    if (type === 'TEXT') {
       const textWithLanguages = Object.entries(modelValueEntry[1]);
       return textWithLanguages
         .map(textWithLanguage => ({ lang: textWithLanguage[0], value: textWithLanguage[1] as string }));
     }
-    if (type === 'vocabulary') {
+    if (type === 'VOCABULARY') {
       return (modelValueEntry[1] as VocabularyEntry[])
         .map(vocabEntry => vocabEntry?.text).flat();
     }
-    if (type === 'boolean') {
+    if (type === 'BOOLEAN') {
       return {
         lang: currentLanguage,
         value: this.getBooleanTypeLabel(modelValueEntry[0], modelValueEntry[1] as boolean)
       };
     }
-    if (type === 'number') {
+    if (type === 'NUMBER') {
       if ((this.profileItemKeys[modelValueEntry[0]].parameters as ProfileEntryParametersNumber).isPeriodSeconds) {
         const duration = DurationService.convertSecondsToMinutes(Number(modelValueEntry[1]));
         return {
@@ -383,10 +384,12 @@ export class ProfileFormComponent implements OnInit, OnDestroy {
   }
 
   private getBooleanTypeLabel(key: string, value: boolean): string {
-    if (value) {
-      return (this.profileItemKeys[key].parameters as ProfileEntryParametersBoolean).trueLabel || value.toString();
+    const params = this.profileItemKeys[key].parameters as ProfileEntryParametersBoolean;
+    const label = value ? params.trueLabel : params.falseLabel;
+    if (label) {
+      return ProfileFormComponent.extractLabelText(label);
     }
-    return (this.profileItemKeys[key].parameters as ProfileEntryParametersBoolean).falseLabel || value.toString();
+    return value.toString();
   }
 
   // //////////////////////////////////
@@ -419,11 +422,11 @@ export class ProfileFormComponent implements OnInit, OnDestroy {
     if (value !== undefined) {
       if (!type) return false;
 
-      if (type === 'text' && !(typeof value === 'string' || typeof value === 'object')) return false;
+      if (type === 'TEXT' && !(typeof value === 'string' || typeof value === 'object')) return false;
 
-      if (type === 'vocabulary' && !Array.isArray(value)) return false;
-      if (type === 'boolean' && !(typeof value === 'boolean')) return false;
-      if (type === 'number' && !(typeof value === 'number')) return false;
+      if (type === 'VOCABULARY' && !Array.isArray(value)) return false;
+      if (type === 'BOOLEAN' && !(typeof value === 'boolean')) return false;
+      if (type === 'NUMBER' && !(typeof value === 'number')) return false;
     }
 
     return true;
@@ -520,11 +523,11 @@ export class ProfileFormComponent implements OnInit, OnDestroy {
 
   private static getFormlyField(entry: MDProfileEntry): FormlyFieldConfig {
     const props: FormlyConfigProps = {
-      ...entry.parameters,
+      ...(entry.parameters as any),
       label: ProfileFormComponent.extractLabelText(entry.label)
     };
 
-    if (entry.type === 'boolean' && entry.parameters) {
+    if (entry.type.toUpperCase() === 'BOOLEAN' && entry.parameters) {
       const boolParams = entry.parameters as ProfileEntryParametersBoolean;
       if (boolParams.trueLabel) {
         props.trueLabel = ProfileFormComponent.extractLabelText(boolParams.trueLabel);
@@ -534,13 +537,13 @@ export class ProfileFormComponent implements OnInit, OnDestroy {
       }
     }
 
-    if (entry.type === 'number') {
+    if (entry.type.toUpperCase() === 'NUMBER') {
       const params = entry.parameters as any;
       if (ProfileFormComponent.getFormlyType(entry) !== 'duration') {
         props.min = params?.minValue === null ? undefined : params?.minValue;
         props.max = params?.maxValue === null ? undefined : params?.maxValue;
       }
-    } else if (entry.type === 'text') { //
+    } else if (entry.type.toUpperCase() === 'TEXT') { //
       const params = entry.parameters as any;
 
       if (ProfileFormComponent.getFormlyType(entry) === 'textarea') {
@@ -576,7 +579,7 @@ export class ProfileFormComponent implements OnInit, OnDestroy {
   private registerProfileItem(entry: MDProfileEntry): void {
     this.profileItemKeys[entry.id] = {
       label: ProfileFormComponent.extractLabelText(entry.label),
-      type: entry.type,
+      type: entry.type.toUpperCase(),
       parameters: entry.parameters
     };
   }

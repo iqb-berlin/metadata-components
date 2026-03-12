@@ -1,5 +1,5 @@
 import { Injectable, signal } from '@angular/core';
-import { MDProfileGroup } from '@iqb/metadata';
+import { MDProfileGroup } from '@iqbspecs/metadata-profile';
 import { VocabularyProvider } from '../models/vocabulary-provider.interface';
 import { Vocab, VocabularyEntry } from '../models/vocabulary.class';
 
