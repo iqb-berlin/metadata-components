@@ -2,7 +2,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable import/no-extraneous-dependencies */
 import { VocabularyProvider } from '../models/vocabulary-provider.interface';
-import { MetadataValue } from '@iqbspecs/metadata-values';
 import {
   Component, Input, OnDestroy, OnInit,
   ViewEncapsulation, signal, effect,
@@ -21,11 +20,11 @@ import {
 } from '@iqbspecs/metadata-profile';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyModule } from '@ngx-formly/core';
 import { Subject } from 'rxjs';
-import { TextWithLanguage } from '@iqb/metadata/md-main';
-import { TextsWithLanguageAndId } from '@iqb/metadata/md-values';
+import { LanguageCodedText } from '@iqbspecs/metadata-profile';
+import { MetadataValue, SimpleValue } from '@iqbspecs/metadata-values';
 import {
-  MetadataValues,
-  MetadataValuesEntry,
+  MetadataProfileValues,
+  StoredVocabularyEntry,
   UnitMetadataValues
 } from '../models/metadata-values.interface';
 import { MetadataService } from '../services/metadata.service';
@@ -47,7 +46,7 @@ interface ProfileItemKeyValue {
   label: string;
   type: string;
   parameters: ProfileEntryParametersNumber | ProfileEntryParametersBoolean | ProfileEntryParametersText |
-  ProfileEntryParametersVocabulary | null;
+    ProfileEntryParametersVocabulary | null;
 }
 
 type ModelValueEntry = [string, ModelValue];
@@ -262,10 +261,12 @@ export class ProfileFormComponent implements OnInit, OnDestroy {
     queueMicrotask(() => this.cdr.detectChanges());
   }
 
-  private findCurrentProfileMetadata(metadata: MetadataValues[] | undefined): MetadataValues | undefined {
-    if (!metadata || !metadata.length) return {};
+  private findCurrentProfileMetadata(metadata: MetadataProfileValues[] | undefined): MetadataProfileValues | undefined {
+    if (!metadata || !metadata.length) return undefined;
     const currentProfile = this.getProfile();
-    return metadata.find(data => data.profileId === currentProfile?.id);
+    const byId = metadata.find(data => data.profileId === currentProfile?.id);
+    if (byId) return byId;
+    return metadata.find(data => (data as any).isCurrent === true);
   }
 
   private static getFormlyType(entry: MDProfileEntry): string {
@@ -274,6 +275,9 @@ export class ProfileFormComponent implements OnInit, OnDestroy {
       type = 'TEXTAREA';
     } else if (type === 'NUMBER' && (entry.parameters as any)?.isPeriodSeconds) {
       type = 'DURATION';
+    } else if (type === 'VOCABULARY'
+      && (entry.parameters as any)?.selectionMode?.toUpperCase().replace('-', '_') === 'IN_FORM') {
+      type = 'VOCABULARY_INLINE';
     }
     const typesMapping: Record<string, string> = {
       TEXT: 'input',
@@ -281,6 +285,7 @@ export class ProfileFormComponent implements OnInit, OnDestroy {
       NUMBER: 'number',
       DURATION: 'duration',
       VOCABULARY: 'chips',
+      VOCABULARY_INLINE: 'vocabInline',
       TEXTAREA: 'textarea'
     };
     return typesMapping[type];
@@ -308,78 +313,75 @@ export class ProfileFormComponent implements OnInit, OnDestroy {
   // //////////////////////////////////
   // Formly Model To Metadata Values //
   // //////////////////////////////////
-  private mapFormlyModelToMetadataValues(model: Record<string, ModelValue>, profileId: string): MetadataValues {
+  private mapFormlyModelToMetadataValues(model: Record<string, ModelValue>, profileId: string): MetadataProfileValues {
     return this.mapFormlyModelToMetadataValueEntries(Object.entries(model), profileId);
   }
 
-  private mapFormlyModelToMetadataValueEntries(allEntries: ModelValueEntry[], profileId: string): MetadataValues {
+  private mapFormlyModelToMetadataValueEntries(allEntries: ModelValueEntry[], profileId: string): MetadataProfileValues {
     const currentLanguage = this.getLanguage();
     return {
-      entries: [
-        ...allEntries
-          .map(entry => ({
-            id: entry[0],
-            label: [{
-              lang: currentLanguage,
-              value: this.profileItemKeys[entry[0]]?.label
-            }],
-            value: this.mapFormlyModelValueToMetadataValue(entry),
-            valueAsText: this.mapFormlyModelValueToMetadataValueAsText(entry)
-          }))
-      ],
-      profileId: profileId
+      entries: allEntries.map(entry => ({
+        id: entry[0],
+        label: [{
+          lang: currentLanguage,
+          value: this.profileItemKeys[entry[0]]?.label ?? ''
+        }],
+        value: this.mapFormlyModelValueToMetadataValue(entry)
+      })),
+      profileId,
+      order: 0
     };
   }
 
   private mapFormlyModelValueToMetadataValue(
     modelValueEntry: ModelValueEntry
-  ): TextsWithLanguageAndId[] | TextWithLanguage[] | string {
-    const type = this.profileItemKeys[modelValueEntry[0]]?.type;
-    if (type === 'TEXT') {
-      const textWithLanguages = Object.entries(modelValueEntry[1]);
-      return textWithLanguages
-        .map(textWithLanguage => ({ lang: textWithLanguage[0], value: textWithLanguage[1] as string }));
-    }
-    if (type === 'VOCABULARY') {
-      return (modelValueEntry[1] as VocabularyEntry[])
-        .map(vocabEntry => ({ id: vocabEntry?.id, text: vocabEntry?.text }));
-    }
-    return modelValueEntry[1].toString();
-  }
-
-  private mapFormlyModelValueToMetadataValueAsText(
-    modelValueEntry: ModelValueEntry
-  ): TextWithLanguage | TextWithLanguage[] {
+  ): StoredVocabularyEntry[] | LanguageCodedText[] | SimpleValue {
     const type = this.profileItemKeys[modelValueEntry[0]]?.type;
     const currentLanguage = this.getLanguage();
 
     if (type === 'TEXT') {
       const textWithLanguages = Object.entries(modelValueEntry[1]);
       return textWithLanguages
-        .map(textWithLanguage => ({ lang: textWithLanguage[0], value: textWithLanguage[1] as string }));
+        .map(twl => ({ lang: twl[0], value: twl[1] as string }));
     }
     if (type === 'VOCABULARY') {
-      return (modelValueEntry[1] as VocabularyEntry[])
-        .map(vocabEntry => vocabEntry?.text).flat();
+      const result: StoredVocabularyEntry[] = (modelValueEntry[1] as VocabularyEntry[])
+        .map(vocabEntry => {
+          const entry: StoredVocabularyEntry = {
+            id: vocabEntry.id,
+            label: vocabEntry.text?.map(t => ({ lang: t.lang, value: t.value })) ?? [],
+            annotation: []
+          };
+          return entry;
+        });
+      return result;
     }
     if (type === 'BOOLEAN') {
       return {
-        lang: currentLanguage,
-        value: this.getBooleanTypeLabel(modelValueEntry[0], modelValueEntry[1] as boolean)
+        raw: modelValueEntry[1].toString(),
+        asText: [{
+          lang: currentLanguage,
+          value: this.getBooleanTypeLabel(modelValueEntry[0], modelValueEntry[1] as boolean)
+        }]
       };
     }
     if (type === 'NUMBER') {
-      if ((this.profileItemKeys[modelValueEntry[0]].parameters as ProfileEntryParametersNumber).isPeriodSeconds) {
+      const params = this.profileItemKeys[modelValueEntry[0]]?.parameters as ProfileEntryParametersNumber;
+      if (params?.isPeriodSeconds) {
         const duration = DurationService.convertSecondsToMinutes(Number(modelValueEntry[1]));
         return {
-          lang: currentLanguage,
-          value: `${duration.minutes}:${duration.seconds}`
+          raw: modelValueEntry[1].toString(),
+          asText: [{ lang: currentLanguage, value: `${duration.minutes}:${duration.seconds}` }]
         };
       }
+      return {
+        raw: modelValueEntry[1].toString(),
+        asText: [{ lang: currentLanguage, value: modelValueEntry[1].toString() }]
+      };
     }
     return {
-      lang: currentLanguage,
-      value: modelValueEntry[1].toString()
+      raw: modelValueEntry[1].toString(),
+      asText: [{ lang: currentLanguage, value: modelValueEntry[1].toString() }]
     };
   }
 
@@ -396,15 +398,15 @@ export class ProfileFormComponent implements OnInit, OnDestroy {
   // Metadata Values To Formly Model //
   // //////////////////////////////////
 
-  private mapMetadataValuesToFormlyModel(metadata: MetadataValues | undefined): Record<string, ModelValue> {
+  private mapMetadataValuesToFormlyModel(metadata: MetadataProfileValues | undefined): Record<string, ModelValue> {
     if (!metadata || !metadata.entries) return {};
     return this.mapMetaDataEntriesToFormlyModel(metadata.entries);
   }
 
-  private mapMetaDataEntriesToFormlyModel(entries: MetadataValuesEntry[]): Record<string, ModelValue> {
+  private mapMetaDataEntriesToFormlyModel(entries: MetadataValue[]): Record<string, ModelValue> {
     const model: Record<string, ModelValue> = {};
     let triggerSaving = false;
-    entries.forEach((entry: MetadataValuesEntry) => {
+    entries.forEach((entry: MetadataValue) => {
       const storedValue = this.mapMetaDataEntriesValueToFormlyModelValue(entry.value, entry.id);
       if (this.isStoredValueValidForFormlyField(entry.id, storedValue)) {
         model[entry.id] = storedValue;
@@ -433,7 +435,7 @@ export class ProfileFormComponent implements OnInit, OnDestroy {
   }
 
   private mapMetaDataEntriesValueToFormlyModelValue(
-    value: TextsWithLanguageAndId[] | TextWithLanguage[] | string | null,
+    value: StoredVocabularyEntry[] | LanguageCodedText[] | SimpleValue,
     entryId?: string
   ): ModelValue {
     if (Array.isArray(value)) {
@@ -448,51 +450,52 @@ export class ProfileFormComponent implements OnInit, OnDestroy {
 
           if (!hasTextLanguages) {
             const currentLang = this.getLanguage();
-            const match = (value as TextWithLanguage[]).find(v => v.lang === currentLang);
-            const result = match?.value || (value as TextWithLanguage[])[0]?.value || '';
-            return result;
+            const match = (value as LanguageCodedText[]).find(v => v.lang === currentLang);
+            return match?.value || (value as LanguageCodedText[])[0]?.value || '';
           }
 
-          const result = (value as TextWithLanguage[]).reduce((obj, currentValue) => ({
+          return (value as LanguageCodedText[]).reduce((obj, currentValue) => ({
             ...obj,
             [currentValue.lang]: currentValue.value
           }), {});
-          return result;
         }
 
         if (hasId) {
           const vocabDict = this.metadataService.vocabulariesIdDictionary();
           const params = entryId ? this.profileItemKeys[entryId]?.parameters as any : null;
           const hideNumbering = params?.hideNumbering || false;
-          return (value as TextsWithLanguageAndId[]).map(v => {
-            const entry = vocabDict[v.id];
+          return (value as StoredVocabularyEntry[]).map(v => {
+            const rawLabels = v.label ?? (v as any).text ?? [];
+            const textLabels = rawLabels.map((l: any) => ({ lang: l.lang, value: l.value }));
+            const dictEntry = vocabDict[v.id];
 
-            if (!entry) {
-              const savedText = v.text?.find(t => t.lang === 'de')?.value || v.id.split('/').pop() || v.id;
+            if (!dictEntry) {
+              const savedText = textLabels.find(t => t.lang === 'de')?.value || v.id.split('/').pop() || v.id;
               return {
+                id: v.id,
                 name: savedText,
-                notation: [],
-                text: v.text,
-                id: v.id
+                notation: [] as string[],
+                text: textLabels
               };
             }
 
-            const label = entry.name || '';
-            const notation = entry.notation?.[0] || '';
+            const label = dictEntry.name || '';
+            const notation = dictEntry.notation?.[0] || '';
             return {
+              id: v.id,
               name: `${hideNumbering ? '' : notation} ${label}`.trim(),
-              notation: notation ? [notation] : [],
-              text: v.text,
-              id: v.id
+              notation: notation ? [notation] : [] as string[],
+              text: textLabels
             };
           });
         }
       }
       return [];
     }
-    if (value === 'true') return true;
-    if (value === 'false') return false;
-    return parseInt((value as string), 10);
+    const raw = typeof value === 'string' ? value : (value as SimpleValue).raw;
+    if (raw === 'true') return true;
+    if (raw === 'false') return false;
+    return parseInt(raw, 10);
   }
 
   // ///////////////////////////
@@ -595,7 +598,7 @@ export class ProfileFormComponent implements OnInit, OnDestroy {
 
     if (currentMetadata && currentMetadata.profiles) {
       const index = currentMetadata.profiles!
-        .findIndex((data: MetadataValues) => data.profileId === currentProfile.id);
+        .findIndex((data: MetadataProfileValues) => data.profileId === currentProfile.id);
       if (index < 0) {
         currentMetadata.profiles!.push(metadata);
       } else {
@@ -605,19 +608,18 @@ export class ProfileFormComponent implements OnInit, OnDestroy {
       currentMetadata.profiles = [metadata];
     }
 
-    currentMetadata.profiles = this.defineCurrentProfile(currentMetadata.profiles);
+    currentMetadata.profiles = this.assignProfileOrder(currentMetadata.profiles);
     this.metadataSignal.set(currentMetadata);
     this.metadataChange.emit(currentMetadata);
   }
 
-  private defineCurrentProfile(profiles: MetadataValues[]): MetadataValues[] {
+  private assignProfileOrder(profiles: MetadataProfileValues[]): MetadataProfileValues[] {
     const currentProfile = this.getProfile();
-    return profiles.map((metadata: MetadataValues) => ({
+    return profiles.map((metadata: MetadataProfileValues, index: number) => ({
       ...metadata,
-      isCurrent: metadata.profileId === currentProfile?.id
+      order: metadata.profileId === currentProfile?.id ? 0 : index + 1
     }));
   }
-
   ngOnDestroy(): void {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();

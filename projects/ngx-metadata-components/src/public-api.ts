@@ -16,3 +16,4 @@ export * from './lib/models/duration.interface';
 export * from './lib/providers/metadata.providers';
 export * from './lib/web-component';
 export * from './lib/models/vocabulary-provider.interface';
+export * from './lib/formly-inline/formly-inline.component';

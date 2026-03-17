@@ -1,19 +1,20 @@
-import { TextsWithLanguageAndId } from '@iqb/metadata/md-values';
-import { TextWithLanguage } from '@iqb/metadata/md-main';
+import { LanguageCodedText } from '@iqbspecs/metadata-profile';
+import {
+  MetadataProfileValues,
+  MetadataValue,
+  SimpleValue,
+  VocabularyEntry as StoredVocabularyEntry
+} from '@iqbspecs/metadata-values';
 
-export interface MetadataValuesEntry {
-  id: string;
-  label: TextWithLanguage[];
-  value: TextsWithLanguageAndId[] | TextWithLanguage[] | string;
-  valueAsText: TextWithLanguage | TextWithLanguage[];
-}
+export type {
+  MetadataProfileValues,
+  MetadataValue,
+  SimpleValue,
+  StoredVocabularyEntry
+};
 
-export interface MetadataValues {
-  entries?: MetadataValuesEntry[];
-  profileId?: string;
-  isCurrent?: boolean;
-}
+export type { LanguageCodedText };
 
 export interface UnitMetadataValues {
-  profiles?: MetadataValues[];
+  profiles?: MetadataProfileValues[];
 }

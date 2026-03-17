@@ -1,6 +1,5 @@
 // eslint-disable-next-line max-classes-per-file
 import { ProfileEntryParametersVocabulary } from '@iqbspecs/metadata-profile';
-import { TextWithLanguage } from '@iqb/metadata/md-main';
 
 export class TopConcept {
   notation!: string[];
@@ -71,7 +70,7 @@ export interface VocabularyEntry {
   name: string;
   notation: string[],
   description?: string,
-  text: TextWithLanguage[],
+  text: { lang: string, value: string } [],
 }
 
 export class VocabData {
@@ -97,5 +96,5 @@ export class VocabIdDictionaryValue implements ProfileEntryParametersVocabulary 
   addTextLanguages!: string[];
   name!: string;
   notation!: string[];
-  text!: TextWithLanguage[];
+  text!: { lang: string, value: string } [];
 }
