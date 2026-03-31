@@ -8,8 +8,17 @@ import { Vocab, VocabularyEntry } from '../models/vocabulary.class';
 })
 export class MetadataService {
   private provider = signal<VocabularyProvider | undefined>(undefined);
+  private languageSignal = signal<string>('de');
   unitProfileColumns = signal<MDProfileGroup[]>([]);
   itemProfileColumns = signal<MDProfileGroup>({} as MDProfileGroup);
+
+  setLanguage(lang: string): void {
+    this.languageSignal.set(lang);
+  }
+
+  getLanguage(): string {
+    return this.languageSignal();
+  }
 
   setVocabularyProvider(provider: VocabularyProvider): void {
     this.provider.set(provider);

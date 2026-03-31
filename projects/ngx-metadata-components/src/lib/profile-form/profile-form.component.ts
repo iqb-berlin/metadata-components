@@ -158,6 +158,7 @@ export class ProfileFormComponent implements OnInit, OnDestroy {
   };
 
   private profileItemKeys: Record<string, ProfileItemKeyValue> = {};
+  private metadataEntryLabels: Record<string, { lang: string, value: string }[]> = {};
   private ngUnsubscribe = new Subject<void>();
 
   constructor(
@@ -322,7 +323,7 @@ export class ProfileFormComponent implements OnInit, OnDestroy {
     return {
       entries: allEntries.map(entry => ({
         id: entry[0],
-        label: [{
+        label: this.metadataEntryLabels[entry[0]] ?? [{
           lang: currentLanguage,
           value: this.profileItemKeys[entry[0]]?.label ?? ''
         }],
@@ -340,6 +341,9 @@ export class ProfileFormComponent implements OnInit, OnDestroy {
     const currentLanguage = this.getLanguage();
 
     if (type === 'TEXT') {
+      if (typeof modelValueEntry[1] === 'string') {
+        return [{ lang: currentLanguage, value: modelValueEntry[1] }];
+      }
       const textWithLanguages = Object.entries(modelValueEntry[1]);
       return textWithLanguages
         .map(twl => ({ lang: twl[0], value: twl[1] as string }));
@@ -407,6 +411,9 @@ export class ProfileFormComponent implements OnInit, OnDestroy {
     const model: Record<string, ModelValue> = {};
     let triggerSaving = false;
     entries.forEach((entry: MetadataValue) => {
+      if (entry.label?.length) {
+        this.metadataEntryLabels[entry.id] = entry.label.map(l => ({ lang: l.lang, value: l.value }));
+      }
       const storedValue = this.mapMetaDataEntriesValueToFormlyModelValue(entry.value, entry.id);
       if (this.isStoredValueValidForFormlyField(entry.id, storedValue)) {
         model[entry.id] = storedValue;
