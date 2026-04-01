@@ -9,7 +9,7 @@
         matInput
         [disabled]="props.readonly ?? false"
         [min]="minMinutes"
-        [max]="maxMinutes"
+        [attr.max]="maxMinutes > 0 ? maxMinutes : null"
         [(ngModel)]="duration.minutes"
         (ngModelChange)="durationChange()"/>
     </mat-form-field>
@@ -23,7 +23,7 @@
         matInput
         [disabled]="props.readonly ?? false"
         [min]="minSeconds"
-        [max]="maxSeconds"
+        [attr.max]="maxSeconds > 0 ? maxSeconds : null"
         [(ngModel)]="duration.seconds"
         (ngModelChange)="durationChange()"/>
     </mat-form-field>
