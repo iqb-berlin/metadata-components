@@ -1,7 +1,6 @@
 /* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable import/no-extraneous-dependencies */
-import { VocabularyProvider } from '../models/vocabulary-provider.interface';
 import {
   Component, Input, OnDestroy, OnInit,
   ViewEncapsulation, signal, effect,
@@ -16,12 +15,13 @@ import {
   ProfileEntryParametersBoolean,
   ProfileEntryParametersText,
   ProfileEntryParametersVocabulary,
-  ProfileEntryParametersNumber
+  ProfileEntryParametersNumber,
+  LanguageCodedText
 } from '@iqbspecs/metadata-profile';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyModule } from '@ngx-formly/core';
 import { Subject } from 'rxjs';
-import { LanguageCodedText } from '@iqbspecs/metadata-profile';
 import { MetadataValue, SimpleValue } from '@iqbspecs/metadata-values';
+import { VocabularyProvider } from '../models/vocabulary-provider.interface';
 import {
   MetadataProfileValues,
   StoredVocabularyEntry,
@@ -29,7 +29,7 @@ import {
 } from '../models/metadata-values.interface';
 import { MetadataService } from '../services/metadata.service';
 import { DurationService } from '../services/duration.service';
-import { VocabularyEntry, Vocab, VocabIdDictionaryValue } from '../models/vocabulary.class';
+import { VocabularyEntry } from '../models/vocabulary.class';
 
 interface FormlyConfigProps {
   label: string;
@@ -46,7 +46,7 @@ interface ProfileItemKeyValue {
   label: string;
   type: string;
   parameters: ProfileEntryParametersNumber | ProfileEntryParametersBoolean | ProfileEntryParametersText |
-    ProfileEntryParametersVocabulary | null;
+  ProfileEntryParametersVocabulary | null;
 }
 
 type ModelValueEntry = [string, ModelValue];
@@ -276,8 +276,8 @@ export class ProfileFormComponent implements OnInit, OnDestroy {
       type = 'TEXTAREA';
     } else if (type === 'NUMBER' && (entry.parameters as any)?.isPeriodSeconds) {
       type = 'DURATION';
-    } else if (type === 'VOCABULARY'
-      && (entry.parameters as any)?.selectionMode?.toUpperCase().replace('-', '_') === 'IN_FORM') {
+    } else if (type === 'VOCABULARY' &&
+      (entry.parameters as any)?.selectionMode?.toUpperCase().replace('-', '_') === 'IN_FORM') {
       type = 'VOCABULARY_INLINE';
     }
     const typesMapping: Record<string, string> = {
@@ -627,6 +627,7 @@ export class ProfileFormComponent implements OnInit, OnDestroy {
       order: metadata.profileId === currentProfile?.id ? 0 : index + 1
     }));
   }
+
   ngOnDestroy(): void {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();

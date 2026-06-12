@@ -33,7 +33,6 @@ interface FormlyVocabInlineProps extends FormlyFieldProps {
 })
 export class FormlyInlineComponent
   extends FieldType<FieldTypeConfig<FormlyVocabInlineProps>> implements OnInit, OnDestroy {
-
   options_: VocabOption[] = [];
   private ngUnsubscribe = new Subject<void>();
 
@@ -71,9 +70,9 @@ export class FormlyInlineComponent
 
   onCheckboxChange(option: VocabOption, checked: boolean): void {
     if (this.props.allowMultipleValues) {
-      const current: VocabularyEntry[] = Array.isArray(this.formControl.value)
-        ? [...this.formControl.value]
-        : [];
+      const current: VocabularyEntry[] = Array.isArray(this.formControl.value) ?
+        [...this.formControl.value] :
+        [];
 
       if (checked) {
         if (!current.find(v => v.id === option.id)) {
@@ -85,12 +84,10 @@ export class FormlyInlineComponent
       }
 
       this.formControl.setValue(current);
+    } else if (checked) {
+      this.formControl.setValue([this.toVocabularyEntry(option)]);
     } else {
-      if (checked) {
-        this.formControl.setValue([this.toVocabularyEntry(option)]);
-      } else {
-        this.formControl.setValue([]);
-      }
+      this.formControl.setValue([]);
     }
 
     this.formControl.markAsTouched();
@@ -114,8 +111,8 @@ export class FormlyInlineComponent
     if (!url) return [];
 
     const vocabularies = this.metadataService.getVocabularies();
-    const vocab = vocabularies.find((v: Vocab) => v.url === url)
-      || vocabularies.find((v: Vocab) => v.url.toLowerCase() === url.toLowerCase());
+    const vocab = vocabularies.find((v: Vocab) => v.url === url) ||
+      vocabularies.find((v: Vocab) => v.url.toLowerCase() === url.toLowerCase());
     if (!vocab?.data?.hasTopConcept) return [];
 
     const maxLevel = this.props.maxLevel || 0;
@@ -130,7 +127,7 @@ export class FormlyInlineComponent
     currentLevel: number,
     maxLevel: number
   ): void {
-    for (const concept of concepts) {
+    concepts.forEach(concept => {
       result.push({
         id: concept.id,
         label: concept.prefLabel?.de || '',
@@ -142,6 +139,6 @@ export class FormlyInlineComponent
       if (concept.narrower?.length && (maxLevel === 0 || currentLevel + 1 < maxLevel)) {
         this.flattenConcepts(concept.narrower, result, currentLevel + 1, maxLevel);
       }
-    }
+    });
   }
 }

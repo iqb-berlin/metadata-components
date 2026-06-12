@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 /* eslint-disable max-len */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   Component, OnInit, signal, CUSTOM_ELEMENTS_SCHEMA, effect,
   computed

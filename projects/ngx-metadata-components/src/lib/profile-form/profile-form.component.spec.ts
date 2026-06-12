@@ -14,7 +14,7 @@ describe('ProfileFormComponent', () => {
         ReactiveFormsModule,
         FormlyModule.forRoot(),
         TranslateModule.forRoot()
-      ],
+      ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(ProfileFormComponent);

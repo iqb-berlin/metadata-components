@@ -9,7 +9,7 @@ import {
   FormlyToggleComponent,
   FormlyDurationComponent,
   FormlyWrapperPanel,
-  FormlyInlineComponent,
+  FormlyInlineComponent
 } from 'ngx-metadata-components';
 import { AppComponent } from './app/app.component';
 

@@ -86,26 +86,30 @@ export class NestedTreeComponent implements OnInit {
       return;
     }
     const nodeMap = new Map(this.treeControl.dataNodes.map(node => [node.id, node]));
-    for (const dialogNode of this.dialogData.value) {
+    this.dialogData.value.forEach(dialogNode => {
       const matchingNode = nodeMap.get(dialogNode.id);
       if (matchingNode) {
         this.vocabNodeSelectionToggle(matchingNode);
       }
-    }
+    });
   }
 
+  // eslint-disable-next-line class-methods-use-this
   private getLevel(node: VocabFlatNode): number {
     return node.level;
   }
 
+  // eslint-disable-next-line class-methods-use-this
   private isExpandable(node: VocabFlatNode): boolean {
     return node.expandable;
   }
 
+  // eslint-disable-next-line class-methods-use-this
   private getChildren(node: VocabNode): VocabNode[] {
     return node.children;
   }
 
+  // eslint-disable-next-line class-methods-use-this
   hasChild(_: number, nodeData: VocabFlatNode): boolean {
     return nodeData.expandable;
   }
@@ -142,7 +146,7 @@ export class NestedTreeComponent implements OnInit {
    */
   getSelectedNodesList(): VocabFlatNode[] {
     const nodesList = new Set<VocabFlatNode>();
-    for (const selected of this.checklistSelection.selected) {
+    this.checklistSelection.selected.forEach(selected => {
       const parent = this.getParentNode(selected);
 
       if (parent && this.checklistSelection.isSelected(parent)) {
@@ -153,7 +157,7 @@ export class NestedTreeComponent implements OnInit {
       } else {
         nodesList.add(selected);
       }
-    }
+    });
     return Array.from(nodesList);
   }
 

@@ -1,7 +1,6 @@
 import { DurationService } from './duration.service';
 
 describe('DurationService', () => {
-
   it('should convert seconds to minutes and seconds - 0 seconds', () => {
     const result = DurationService.convertSecondsToMinutes(0);
     expect(result).toEqual({ minutes: '00', seconds: '00' });

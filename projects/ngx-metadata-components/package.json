@@ -1,13 +1,10 @@
 {
   "name": "@iqb/metadata-components",
   "type": "module",
-  "exports": {
-    "./lib/ngx-metadata-components.module": "./lib/ngx-coding-components.module.d.ts"
-  },
   "publishConfig": {
     "access": "public"
   },
-  "version": "0.2.2",
+  "version": "0.2.3",
   "author": "IQB - Institut zur Qualitätsentwicklung im Bildungswesen",
   "license": "MIT",
   "description": "Angular components for metadata of IQB.",
@@ -23,13 +20,15 @@
     "@angular/cdk": "^20.0.0",
     "@angular/common": "^20.0.0",
     "@angular/core": "^20.0.0",
+    "@angular/forms": "^20.0.0",
     "@angular/material": "^20.0.0",
     "@iqbspecs/metadata-values": "3.0.1",
     "@iqbspecs/metadata-profile": "^0.11.1",
     "@ngx-formly/core": "^7.0.0",
     "@ngx-formly/material": "^7.0.0",
     "@ngx-translate/core": "^15.0.0",
-    "@angular/elements": "^20.0.0"
+    "@angular/elements": "^20.0.0",
+    "rxjs": "^7.8.0"
   },
   "dependencies": {
     "@angular/cdk": "^20.0.0",

@@ -20,6 +20,7 @@ export class VocabNodeChangeService {
   ) {
     if (!this.dialogData.value) {
       this.dialogData.value = [];
+      // eslint-disable-next-line no-console
       console.warn('dialogData.value was undefined, defaulting to empty array');
     }
     this.initialize();
@@ -39,7 +40,13 @@ export class VocabNodeChangeService {
   createTreeNodes(depth: number, notationNode: NotationNode, mapNarrowerDepth: number): VocabNode {
     const matchedNode = this.dialogData.value.find(v => v.id === notationNode.id);
 
-    const createVocabNode = (id: string, label: string, notation: string[], description: string, children: VocabNode[]): VocabNode => {
+    const createVocabNode = (
+      id: string,
+      label: string,
+      notation: string[],
+      description: string,
+      children: VocabNode[]
+    ): VocabNode => {
       const node = new VocabNode();
       node.id = id;
       node.label = label;
@@ -94,18 +101,6 @@ export class VocabNodeChangeService {
       .find(vocab => vocab.url === this.dialogData.props.url);
 
     if (!vocabulary?.data) {
-      console.warn(`Vocabulary data not found for URL: ${this.dialogData.props.url}`);
-
-      console.log('🔍 Trying case-insensitive match...');
-      const vocabCaseInsensitive = this.dialogData.vocabularies
-        .find(vocab => vocab.url.toLowerCase() === this.dialogData.props.url.toLowerCase());
-
-      if (vocabCaseInsensitive) {
-        console.log('✅ Found with case-insensitive match!');
-        console.log('   Expected:', this.dialogData.props.url);
-        console.log('   Actual:', vocabCaseInsensitive.url);
-      }
-
       this.dataChange.next([]);
       return;
     }
