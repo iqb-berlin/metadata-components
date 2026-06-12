@@ -8,7 +8,8 @@ import {
   FormlyChipsComponent,
   FormlyToggleComponent,
   FormlyDurationComponent,
-  FormlyWrapperPanel
+  FormlyWrapperPanel,
+  FormlyInlineComponent,
 } from 'ngx-metadata-components';
 import { AppComponent } from './app/app.component';
 
@@ -22,7 +23,8 @@ bootstrapApplication(AppComponent, {
         types: [
           { name: 'chips', component: FormlyChipsComponent, wrappers: ['form-field'] },
           { name: 'formlyToggle', component: FormlyToggleComponent, wrappers: ['form-field'] },
-          { name: 'duration', component: FormlyDurationComponent, wrappers: ['form-field'] }
+          { name: 'duration', component: FormlyDurationComponent, wrappers: ['form-field'] },
+          { name: 'vocabInline', component: FormlyInlineComponent, wrappers: ['form-field'] }
         ],
         wrappers: [
           { name: 'panel', component: FormlyWrapperPanel }

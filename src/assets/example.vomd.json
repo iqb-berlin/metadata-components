@@ -3,20 +3,24 @@
     {
       "entries": [
         {
-          "id": "f0",
+          "id": "w8",
           "label": [
             {
               "lang": "de",
-              "value": "Klassenstufe"
+              "value": "Kompetenzbereich"
+            },
+            {
+              "lang": "en",
+              "value": "English Text"
             }
           ],
           "value": [
             {
-              "id": "http://w3id.org/openeduhub/vocabs/educationalLevel/7",
+              "id": "https://w3id.org/iqb/v12/s1/r2f",
               "text": [
                 {
                   "lang": "de",
-                  "value": "7"
+                  "value": "1 Sprechen und Zuhören"
                 }
               ]
             }
@@ -24,9 +28,130 @@
           "valueAsText": [
             {
               "lang": "de",
-              "value": "7"
+              "value": "1 Sprechen und Zuhören"
             }
           ]
+        },
+        {
+          "id": "k8",
+          "label": [
+            {
+              "lang": "de",
+              "value": "Textsorte"
+            }
+          ],
+          "value": [
+            {
+              "id": "https://w3id.org/iqb/v28/ts/e4v",
+              "text": [
+                {
+                  "lang": "de",
+                  "value": "Sachtext kontinuierlich"
+                }
+              ]
+            }
+          ],
+          "valueAsText": [
+            {
+              "lang": "de",
+              "value": "Sachtext kontinuierlich"
+            }
+          ]
+        },
+        {
+          "id": "iqb_author",
+          "label": [
+            {
+              "lang": "de",
+              "value": "Entwickler:in"
+            },
+            {
+              "lang": "en",
+              "value": "Developer"
+            }
+          ],
+          "value": [
+            {
+              "lang": "de",
+              "value": "Miriam Jacobs (Gruppe 1)"
+            }
+          ],
+          "valueAsText": [
+            {
+              "lang": "de",
+              "value": "Miriam Jacobs (Gruppe 1)"
+            }
+          ]
+        },
+        {
+          "id": "iqb_word_count",
+          "label": [
+            {
+              "lang": "de",
+              "value": "Wortanzahl"
+            }
+          ],
+          "value": "299",
+          "valueAsText": {
+            "lang": "de",
+            "value": "299"
+          }
+        },
+        {
+          "id": "iqb_transcript",
+          "label": [
+            {
+              "lang": "de",
+              "value": "Hörsequenz Transkript"
+            }
+          ],
+          "value": [
+            {
+              "lang": "de",
+              "value": "Eisen im Blut\nAn meinem Kühlschrank hängen ein paar lustige Magnete. Mein Lieblingsmagnet ist der hier, mit dem Krümelmonster aus der Sesamstraße drauf. Der Magnet hält am Kühlschrank, weil die Tür vom Kühlschrank aus Metall ist. \n\nWenn man einen Magneten an Metall hält, dann passiert das: \n(Geräusch von Magnet an Kühlschrank)\nEr bleibt hängen, ganz ohne Kleber.\n\nEisen ist auch ein Metall und auch in unserem Blut gibt es Eisen, aber nur ganz ganz wenig. Nur ein paar Gramm, ungefähr so viel wie eine Büroklammer wiegt.\nDas Eisen im Blut ist wichtig, um den Sauerstoff durch den Körper zu transportieren.\nSauerstoff nehmen wir auf, wenn wir Luft einatmen, und unser Körper braucht den Sauerstoff ganz dringend. Wenn wir zu wenig Eisen im Blut haben, dann werden wir müde und haben weniger Kraft als normalerweise.\n\nJetzt aber die Frage: Wenn ich in meinem Blut Eisen habe, müsste der Kühlschrankmagnet doch eigentlich auch an meiner Haut festhalten, oder?\nIch probiere es mal aus. (Geräusch von Magnet, der auf dem Boden fällt)\nNö.\nEr fällt runter.\n\nHeißt das, dass mein Blut nicht magnetisch ist, obwohl Eisen darin ist?\nGanz so einfach ist es nicht. Unser Blut ist nämlich schon magnetisch, aber anders als die Kühlschranktür. Das Eisen in unserem Blut ist nur ganz ganz schwach magnetisch, so schwach, dass der Krümelmonstermagnet nicht an meiner Haut kleben bleibt.\nEisen ist nämlich nur dann magnetisch, wenn mehrere winzig kleine Teilchen Eisen\nzusammenhängen.\nAtome nennt man diese winzigen Teilchen. In unserem Blut haben wir aber keine Klumpen aus Eisen. In unserem Blut kommt das Eisen nur in einzelnen winzig kleinen Teilchen, also verteilt, vor. Deswegen reagiert unser Blut nur ganz ganz schwach auf Magnete. Wir selbst merken davon gar nichts. Also, ja, unser Blut ist magnetisch, aber nicht so, dass wir am Kühlschrankmagneten kleben bleiben.\n"
+            }
+          ],
+          "valueAsText": [
+            {
+              "lang": "de",
+              "value": "Eisen im Blut\nAn meinem Kühlschrank hängen ein paar lustige Magnete. Mein Lieblingsmagnet ist der hier, mit dem Krümelmonster aus der Sesamstraße drauf. Der Magnet hält am Kühlschrank, weil die Tür vom Kühlschrank aus Metall ist. \n\nWenn man einen Magneten an Metall hält, dann passiert das: \n(Geräusch von Magnet an Kühlschrank)\nEr bleibt hängen, ganz ohne Kleber.\n\nEisen ist auch ein Metall und auch in unserem Blut gibt es Eisen, aber nur ganz ganz wenig. Nur ein paar Gramm, ungefähr so viel wie eine Büroklammer wiegt.\nDas Eisen im Blut ist wichtig, um den Sauerstoff durch den Körper zu transportieren.\nSauerstoff nehmen wir auf, wenn wir Luft einatmen, und unser Körper braucht den Sauerstoff ganz dringend. Wenn wir zu wenig Eisen im Blut haben, dann werden wir müde und haben weniger Kraft als normalerweise.\n\nJetzt aber die Frage: Wenn ich in meinem Blut Eisen habe, müsste der Kühlschrankmagnet doch eigentlich auch an meiner Haut festhalten, oder?\nIch probiere es mal aus. (Geräusch von Magnet, der auf dem Boden fällt)\nNö.\nEr fällt runter.\n\nHeißt das, dass mein Blut nicht magnetisch ist, obwohl Eisen darin ist?\nGanz so einfach ist es nicht. Unser Blut ist nämlich schon magnetisch, aber anders als die Kühlschranktür. Das Eisen in unserem Blut ist nur ganz ganz schwach magnetisch, so schwach, dass der Krümelmonstermagnet nicht an meiner Haut kleben bleibt.\nEisen ist nämlich nur dann magnetisch, wenn mehrere winzig kleine Teilchen Eisen\nzusammenhängen.\nAtome nennt man diese winzigen Teilchen. In unserem Blut haben wir aber keine Klumpen aus Eisen. In unserem Blut kommt das Eisen nur in einzelnen winzig kleinen Teilchen, also verteilt, vor. Deswegen reagiert unser Blut nur ganz ganz schwach auf Magnete. Wir selbst merken davon gar nichts. Also, ja, unser Blut ist magnetisch, aber nicht so, dass wir am Kühlschrankmagneten kleben bleiben.\n"
+            }
+          ]
+        },
+        {
+          "id": "iqb_copyright",
+          "label": [
+            {
+              "lang": "de",
+              "value": "Quellenangaben"
+            }
+          ],
+          "value": [
+            {
+              "lang": "de",
+              "value": "https://kinder.wdr.de/radio/diemaus/audio/die-frage-des-tages/audio-warum-ist-der-mensch-nicht-magnetisch-obwohl-im-blut-eisen-ist-100.html\n\nST Foto Melike  B: https://www.pexels.com/de-de/foto/kuche-erinnerungen-sammlung-kuhlschrank-10252336/"
+            }
+          ],
+          "valueAsText": [
+            {
+              "lang": "de",
+              "value": "https://kinder.wdr.de/radio/diemaus/audio/die-frage-des-tages/audio-warum-ist-der-mensch-nicht-magnetisch-obwohl-im-blut-eisen-ist-100.html\n\nST Foto Melike  B: https://www.pexels.com/de-de/foto/kuche-erinnerungen-sammlung-kuhlschrank-10252336/"
+            }
+          ]
+        },
+        {
+          "id": "iqb_time_stimulus",
+          "label": [
+            {
+              "lang": "de",
+              "value": "Stimuluszeit"
+            }
+          ],
+          "value": "182",
+          "valueAsText": {
+            "lang": "de",
+            "value": "03:02"
+          }
         },
         {
           "id": "a1",
@@ -36,10 +161,10 @@
               "value": "Für SPF geeignet"
             }
           ],
-          "value": "true",
+          "value": "false",
           "valueAsText": {
             "lang": "de",
-            "value": "ja"
+            "value": "nein"
           }
         },
         {
@@ -54,75 +179,53 @@
           "valueAsText": []
         },
         {
-          "id": "w8",
+          "id": "iqb_time_unit",
           "label": [
             {
               "lang": "de",
-              "value": "Leitidee"
+              "value": "Aufgabenzeit"
             }
           ],
-          "value": [
-            {
-              "id": "https://w3id.org/iqb/v10/i1/f5b",
-              "text": [
-                {
-                  "lang": "de",
-                  "value": "4 Leitidee Raum und Form"
-                }
-              ]
-            }
-          ],
-          "valueAsText": [
-            {
-              "lang": "de",
-              "value": "4 Leitidee Raum und Form"
-            }
-          ]
+          "value": "660",
+          "valueAsText": {
+            "lang": "de",
+            "value": "11:00"
+          }
         },
         {
-          "id": "iqb_author",
+          "id": "f0",
           "label": [
             {
               "lang": "de",
-              "value": "Entwickler:in"
+              "value": "Klassenstufe"
             }
           ],
-          "value": [
-            {
-              "lang": "de",
-              "value": "Huaning Yang"
-            }
-          ],
-          "valueAsText": [
-            {
-              "lang": "de",
-              "value": "Huaning Yang"
-            }
-          ]
+          "value": [],
+          "valueAsText": []
         }
       ],
-      "id": 182952,
-      "profileId": "https://raw.githubusercontent.com/iqb-vocabs/p11/master/unit.json",
+      "id": 174017,
+      "profileId": "https://raw.githubusercontent.com/iqb-vocabs/p12/master/unit.json",
       "isCurrent": true,
-      "createdAt": "2025-11-20T11:25:19.120Z",
-      "changedAt": "2025-11-20T11:25:19.120Z",
-      "unitId": 132511
+      "createdAt": "2025-10-17T14:51:20.419Z",
+      "changedAt": "2025-10-17T14:51:20.419Z",
+      "unitId": 105360
     }
   ],
   "items": [
     {
-      "uuid": "dbf493b1-91df-4a9f-b6a7-9eeda8343cf8",
-      "id": "test",
+      "uuid": "2a6a7f4e-6b8c-4ae7-be05-c49c6f8048f8",
+      "id": "01",
       "order": 0,
       "locked": false,
       "position": null,
-      "unitId": 132511,
-      "variableId": "likert-row_1",
-      "variableReadOnlyId": "likert-row_1762429477919_1",
+      "unitId": 105360,
+      "variableId": "01",
+      "variableReadOnlyId": "radio_1",
       "weighting": null,
       "description": null,
-      "createdAt": "2025-11-20T11:25:19.123Z",
-      "changedAt": "2025-11-20T11:25:19.123Z",
+      "createdAt": "2025-04-02T16:09:41.622Z",
+      "changedAt": "2025-04-02T16:09:41.622Z",
       "profiles": [
         {
           "entries": [
@@ -136,11 +239,11 @@
               ],
               "value": [
                 {
-                  "id": "https://w3id.org/iqb/v27/mp/r9x",
+                  "id": "https://w3id.org/iqb/v27/dp/y9s",
                   "text": [
                     {
                       "lang": "de",
-                      "value": "Zuordnen"
+                      "value": "Multiple Choice (MC)"
                     }
                   ]
                 }
@@ -148,7 +251,7 @@
               "valueAsText": [
                 {
                   "lang": "de",
-                  "value": "Zuordnen"
+                  "value": "Multiple Choice (MC)"
                 }
               ]
             },
@@ -160,24 +263,13 @@
                   "value": "Anforderungsbereich"
                 }
               ],
-              "value": [],
-              "valueAsText": []
-            },
-            {
-              "id": "s7",
-              "label": [
-                {
-                  "lang": "de",
-                  "value": "Inhaltsbezogener Bildungsstandard primär"
-                }
-              ],
               "value": [
                 {
-                  "id": "https://w3id.org/iqb/v10/i1/f5b",
+                  "id": "https://w3id.org/iqb/v12/a1/g5g",
                   "text": [
                     {
                       "lang": "de",
-                      "value": "4 Leitidee Raum und Form"
+                      "value": "2"
                     }
                   ]
                 }
@@ -185,33 +277,7 @@
               "valueAsText": [
                 {
                   "lang": "de",
-                  "value": "4 Leitidee Raum und Form"
-                }
-              ]
-            },
-            {
-              "id": "s8",
-              "label": [
-                {
-                  "lang": "de",
-                  "value": "Inhaltsbezogener Bildungsstandard sekundär"
-                }
-              ],
-              "value": [
-                {
-                  "id": "https://w3id.org/iqb/v10/i1/s3g",
-                  "text": [
-                    {
-                      "lang": "de",
-                      "value": "3 Leitidee Muster, Strukturen und funktionaler Zusammenhang"
-                    }
-                  ]
-                }
-              ],
-              "valueAsText": [
-                {
-                  "lang": "de",
-                  "value": "3 Leitidee Muster, Strukturen und funktionaler Zusammenhang"
+                  "value": "2"
                 }
               ]
             },
@@ -220,16 +286,16 @@
               "label": [
                 {
                   "lang": "de",
-                  "value": "Prozessbezogener Bildungsstandard primär"
+                  "value": "Bildungsstandard primär"
                 }
               ],
               "value": [
                 {
-                  "id": "https://w3id.org/iqb/v10/p1/q7p",
+                  "id": "https://w3id.org/iqb/v12/s1/e6b",
                   "text": [
                     {
                       "lang": "de",
-                      "value": "4 Mathematisch modellieren"
+                      "value": "1.2.2.2 erfassen dem Lernstand entsprechende Hörtexte, Gesprächsphasen oder Gespräche (z. B. zentrale Aussagen sowie Sprech- und Gesprächsabsichten),"
                     }
                   ]
                 }
@@ -237,7 +303,7 @@
               "valueAsText": [
                 {
                   "lang": "de",
-                  "value": "4 Mathematisch modellieren"
+                  "value": "1.2.2.2 erfassen dem Lernstand entsprechende Hörtexte, Gesprächsphasen oder Gespräche (z. B. zentrale Aussagen sowie Sprech- und Gesprächsabsichten),"
                 }
               ]
             },
@@ -246,16 +312,16 @@
               "label": [
                 {
                   "lang": "de",
-                  "value": "Prozessbezogener Bildungsstandard sekundär"
+                  "value": "Bildungsstandards sekundär"
                 }
               ],
               "value": [
                 {
-                  "id": "https://w3id.org/iqb/v10/p1/v5v",
+                  "id": "https://w3id.org/iqb/v12/s1/h3e",
                   "text": [
                     {
                       "lang": "de",
-                      "value": "5 Mathematisch darstellen"
+                      "value": "4.1.3 kennen verschiedene Textsorten aus dem Bereich pragmatischer Texte: informierende (z. B. Lexikonartikel), instruierende (z. B. Spielanleitungen), regulierende (z. B. Klassenregeln),"
                     }
                   ]
                 }
@@ -263,7 +329,7 @@
               "valueAsText": [
                 {
                   "lang": "de",
-                  "value": "5 Mathematisch darstellen"
+                  "value": "4.1.3 kennen verschiedene Textsorten aus dem Bereich pragmatischer Texte: informierende (z. B. Lexikonartikel), instruierende (z. B. Spielanleitungen), regulierende (z. B. Klassenregeln),"
                 }
               ]
             },
@@ -275,8 +341,37 @@
                   "value": "Geschätzte Schwierigkeit"
                 }
               ],
-              "value": [],
-              "valueAsText": []
+              "value": [
+                {
+                  "id": "https://w3id.org/iqb/v26/ea/g9z",
+                  "text": [
+                    {
+                      "lang": "de",
+                      "value": "gering"
+                    }
+                  ]
+                }
+              ],
+              "valueAsText": [
+                {
+                  "lang": "de",
+                  "value": "gering"
+                }
+              ]
+            },
+            {
+              "id": "iqb_time_item",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Itemzeit"
+                }
+              ],
+              "value": "30",
+              "valueAsText": {
+                "lang": "de",
+                "value": "00:30"
+              }
             },
             {
               "id": "iqb_itemtech",
@@ -286,22 +381,50 @@
                   "value": "Technische Besonderheiten der Antwortoptionen"
                 }
               ],
+              "value": [],
+              "valueAsText": []
+            }
+          ],
+          "id": 118452,
+          "profileId": "https://raw.githubusercontent.com/iqb-vocabs/p12/master/item.json",
+          "isCurrent": true,
+          "createdAt": "2025-06-27T10:58:07.183Z",
+          "changedAt": "2025-06-27T10:58:07.183Z",
+          "unitItemUuid": "2a6a7f4e-6b8c-4ae7-be05-c49c6f8048f8"
+        }
+      ]
+    },
+    {
+      "uuid": "efd1f124-4fc1-4370-9fc0-f537ecc2a6f6",
+      "id": "02",
+      "order": 0,
+      "locked": false,
+      "position": null,
+      "unitId": 105360,
+      "variableId": null,
+      "variableReadOnlyId": null,
+      "weighting": null,
+      "description": null,
+      "createdAt": "2025-04-02T16:09:41.623Z",
+      "changedAt": "2025-04-02T16:09:41.623Z",
+      "profiles": [
+        {
+          "entries": [
+            {
+              "id": "s3",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Itemformat"
+                }
+              ],
               "value": [
                 {
-                  "id": "https://w3id.org/iqb/v27/ti/a2u",
+                  "id": "https://w3id.org/iqb/v27/dp/q3r",
                   "text": [
                     {
                       "lang": "de",
-                      "value": "GeoGebra"
-                    }
-                  ]
-                },
-                {
-                  "id": "https://w3id.org/iqb/v27/ti/q6p",
-                  "text": [
-                    {
-                      "lang": "de",
-                      "value": "Rechenkästchen"
+                      "value": "Langantwort"
                     }
                   ]
                 }
@@ -309,21 +432,1685 @@
               "valueAsText": [
                 {
                   "lang": "de",
-                  "value": "GeoGebra"
-                },
-                {
-                  "lang": "de",
-                  "value": "Rechenkästchen"
+                  "value": "Langantwort"
                 }
               ]
+            },
+            {
+              "id": "s4",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Anforderungsbereich"
+                }
+              ],
+              "value": [
+                {
+                  "id": "https://w3id.org/iqb/v12/a1/z7p",
+                  "text": [
+                    {
+                      "lang": "de",
+                      "value": "1"
+                    }
+                  ]
+                }
+              ],
+              "valueAsText": [
+                {
+                  "lang": "de",
+                  "value": "1"
+                }
+              ]
+            },
+            {
+              "id": "s5",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Bildungsstandard primär"
+                }
+              ],
+              "value": [
+                {
+                  "id": "https://w3id.org/iqb/v12/s1/t5e",
+                  "text": [
+                    {
+                      "lang": "de",
+                      "value": "1.2.2.1 geben Informationen wieder und ziehen einfache Schlussfolgerungen,"
+                    }
+                  ]
+                }
+              ],
+              "valueAsText": [
+                {
+                  "lang": "de",
+                  "value": "1.2.2.1 geben Informationen wieder und ziehen einfache Schlussfolgerungen,"
+                }
+              ]
+            },
+            {
+              "id": "s6",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Bildungsstandards sekundär"
+                }
+              ],
+              "value": [
+                {
+                  "id": "https://w3id.org/iqb/v12/s1/v4u",
+                  "text": [
+                    {
+                      "lang": "de",
+                      "value": "1.2.2.4 zeigen Aufmerksamkeit für paraverbale (z. B. Stimmführung, Körpersprache) und nonverbale Äußerungen (z. B. Gestik, Körperhaltung),"
+                    }
+                  ]
+                }
+              ],
+              "valueAsText": [
+                {
+                  "lang": "de",
+                  "value": "1.2.2.4 zeigen Aufmerksamkeit für paraverbale (z. B. Stimmführung, Körpersprache) und nonverbale Äußerungen (z. B. Gestik, Körperhaltung),"
+                }
+              ]
+            },
+            {
+              "id": "e4",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Geschätzte Schwierigkeit"
+                }
+              ],
+              "value": [
+                {
+                  "id": "https://w3id.org/iqb/v26/ea/e6g",
+                  "text": [
+                    {
+                      "lang": "de",
+                      "value": "sehr gering"
+                    }
+                  ]
+                }
+              ],
+              "valueAsText": [
+                {
+                  "lang": "de",
+                  "value": "sehr gering"
+                }
+              ]
+            },
+            {
+              "id": "iqb_time_item",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Itemzeit"
+                }
+              ],
+              "value": "60",
+              "valueAsText": {
+                "lang": "de",
+                "value": "01:00"
+              }
+            },
+            {
+              "id": "iqb_itemtech",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Technische Besonderheiten der Antwortoptionen"
+                }
+              ],
+              "value": [],
+              "valueAsText": []
             }
           ],
-          "id": 182953,
-          "profileId": "https://raw.githubusercontent.com/iqb-vocabs/p11/master/item.json",
+          "id": 118448,
+          "profileId": "https://raw.githubusercontent.com/iqb-vocabs/p12/master/item.json",
           "isCurrent": true,
-          "createdAt": "2025-11-20T11:25:19.127Z",
-          "changedAt": "2025-11-20T11:25:19.127Z",
-          "unitItemUuid": "dbf493b1-91df-4a9f-b6a7-9eeda8343cf8"
+          "createdAt": "2025-06-27T10:58:07.166Z",
+          "changedAt": "2025-06-27T10:58:07.166Z",
+          "unitItemUuid": "efd1f124-4fc1-4370-9fc0-f537ecc2a6f6"
+        }
+      ]
+    },
+    {
+      "uuid": "cb59255a-9204-47cf-a513-7677a3f06b98",
+      "id": "03",
+      "order": 0,
+      "locked": false,
+      "position": null,
+      "unitId": 105360,
+      "variableId": "03",
+      "variableReadOnlyId": "radio_1748420171742_1",
+      "weighting": null,
+      "description": null,
+      "createdAt": "2025-04-02T16:09:41.623Z",
+      "changedAt": "2025-04-02T16:09:41.623Z",
+      "profiles": [
+        {
+          "entries": [
+            {
+              "id": "s3",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Itemformat"
+                }
+              ],
+              "value": [
+                {
+                  "id": "https://w3id.org/iqb/v27/dp/y9s",
+                  "text": [
+                    {
+                      "lang": "de",
+                      "value": "Multiple Choice (MC)"
+                    }
+                  ]
+                }
+              ],
+              "valueAsText": [
+                {
+                  "lang": "de",
+                  "value": "Multiple Choice (MC)"
+                }
+              ]
+            },
+            {
+              "id": "s4",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Anforderungsbereich"
+                }
+              ],
+              "value": [
+                {
+                  "id": "https://w3id.org/iqb/v12/a1/z7p",
+                  "text": [
+                    {
+                      "lang": "de",
+                      "value": "1"
+                    }
+                  ]
+                }
+              ],
+              "valueAsText": [
+                {
+                  "lang": "de",
+                  "value": "1"
+                }
+              ]
+            },
+            {
+              "id": "s5",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Bildungsstandard primär"
+                }
+              ],
+              "value": [
+                {
+                  "id": "https://w3id.org/iqb/v12/s1/t5e",
+                  "text": [
+                    {
+                      "lang": "de",
+                      "value": "1.2.2.1 geben Informationen wieder und ziehen einfache Schlussfolgerungen,"
+                    }
+                  ]
+                }
+              ],
+              "valueAsText": [
+                {
+                  "lang": "de",
+                  "value": "1.2.2.1 geben Informationen wieder und ziehen einfache Schlussfolgerungen,"
+                }
+              ]
+            },
+            {
+              "id": "s6",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Bildungsstandards sekundär"
+                }
+              ],
+              "value": [],
+              "valueAsText": []
+            },
+            {
+              "id": "e4",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Geschätzte Schwierigkeit"
+                }
+              ],
+              "value": [
+                {
+                  "id": "https://w3id.org/iqb/v26/ea/g9z",
+                  "text": [
+                    {
+                      "lang": "de",
+                      "value": "gering"
+                    }
+                  ]
+                }
+              ],
+              "valueAsText": [
+                {
+                  "lang": "de",
+                  "value": "gering"
+                }
+              ]
+            },
+            {
+              "id": "iqb_time_item",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Itemzeit"
+                }
+              ],
+              "value": "30",
+              "valueAsText": {
+                "lang": "de",
+                "value": "00:30"
+              }
+            },
+            {
+              "id": "iqb_itemtech",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Technische Besonderheiten der Antwortoptionen"
+                }
+              ],
+              "value": [],
+              "valueAsText": []
+            }
+          ],
+          "id": 118446,
+          "profileId": "https://raw.githubusercontent.com/iqb-vocabs/p12/master/item.json",
+          "isCurrent": true,
+          "createdAt": "2025-06-27T10:58:07.161Z",
+          "changedAt": "2025-06-27T10:58:07.161Z",
+          "unitItemUuid": "cb59255a-9204-47cf-a513-7677a3f06b98"
+        }
+      ]
+    },
+    {
+      "uuid": "69f91731-36fd-4f3d-be0a-f5413a6368c3",
+      "id": "04",
+      "order": 0,
+      "locked": false,
+      "position": null,
+      "unitId": 105360,
+      "variableId": "04",
+      "variableReadOnlyId": "radio_1751020583868_1",
+      "weighting": null,
+      "description": "Variablen sind nicht benannt",
+      "createdAt": "2025-04-02T16:09:41.623Z",
+      "changedAt": "2025-04-02T16:09:41.623Z",
+      "profiles": [
+        {
+          "entries": [
+            {
+              "id": "s3",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Itemformat"
+                }
+              ],
+              "value": [
+                {
+                  "id": "https://w3id.org/iqb/v27/dp/y9s",
+                  "text": [
+                    {
+                      "lang": "de",
+                      "value": "Multiple Choice (MC)"
+                    }
+                  ]
+                }
+              ],
+              "valueAsText": [
+                {
+                  "lang": "de",
+                  "value": "Multiple Choice (MC)"
+                }
+              ]
+            },
+            {
+              "id": "s4",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Anforderungsbereich"
+                }
+              ],
+              "value": [
+                {
+                  "id": "https://w3id.org/iqb/v12/a1/g5g",
+                  "text": [
+                    {
+                      "lang": "de",
+                      "value": "2"
+                    }
+                  ]
+                }
+              ],
+              "valueAsText": [
+                {
+                  "lang": "de",
+                  "value": "2"
+                }
+              ]
+            },
+            {
+              "id": "s5",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Bildungsstandard primär"
+                }
+              ],
+              "value": [
+                {
+                  "id": "https://w3id.org/iqb/v12/s1/t5e",
+                  "text": [
+                    {
+                      "lang": "de",
+                      "value": "1.2.2.1 geben Informationen wieder und ziehen einfache Schlussfolgerungen,"
+                    }
+                  ]
+                }
+              ],
+              "valueAsText": [
+                {
+                  "lang": "de",
+                  "value": "1.2.2.1 geben Informationen wieder und ziehen einfache Schlussfolgerungen,"
+                }
+              ]
+            },
+            {
+              "id": "s6",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Bildungsstandards sekundär"
+                }
+              ],
+              "value": [
+                {
+                  "id": "https://w3id.org/iqb/v12/s1/b4q",
+                  "text": [
+                    {
+                      "lang": "de",
+                      "value": "5.1.1.2 untersuchen an ausgewählten Beispielen, wie sich Adressatenorientierung im sprachlichen Handeln zeigt,"
+                    }
+                  ]
+                }
+              ],
+              "valueAsText": [
+                {
+                  "lang": "de",
+                  "value": "5.1.1.2 untersuchen an ausgewählten Beispielen, wie sich Adressatenorientierung im sprachlichen Handeln zeigt,"
+                }
+              ]
+            },
+            {
+              "id": "e4",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Geschätzte Schwierigkeit"
+                }
+              ],
+              "value": [
+                {
+                  "id": "https://w3id.org/iqb/v26/ea/b9r",
+                  "text": [
+                    {
+                      "lang": "de",
+                      "value": "mittel"
+                    }
+                  ]
+                }
+              ],
+              "valueAsText": [
+                {
+                  "lang": "de",
+                  "value": "mittel"
+                }
+              ]
+            },
+            {
+              "id": "iqb_time_item",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Itemzeit"
+                }
+              ],
+              "value": "60",
+              "valueAsText": {
+                "lang": "de",
+                "value": "01:00"
+              }
+            },
+            {
+              "id": "iqb_itemtech",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Technische Besonderheiten der Antwortoptionen"
+                }
+              ],
+              "value": [],
+              "valueAsText": []
+            }
+          ],
+          "id": 118451,
+          "profileId": "https://raw.githubusercontent.com/iqb-vocabs/p12/master/item.json",
+          "isCurrent": true,
+          "createdAt": "2025-06-27T10:58:07.172Z",
+          "changedAt": "2025-06-27T10:58:07.172Z",
+          "unitItemUuid": "69f91731-36fd-4f3d-be0a-f5413a6368c3"
+        }
+      ]
+    },
+    {
+      "uuid": "8d1f168a-d809-474b-80fb-b0257bc7b282",
+      "id": "05",
+      "order": 0,
+      "locked": false,
+      "position": null,
+      "unitId": 105360,
+      "variableId": "06",
+      "variableReadOnlyId": "radio_1744640256055_1",
+      "weighting": null,
+      "description": null,
+      "createdAt": "2025-04-02T16:09:41.624Z",
+      "changedAt": "2025-04-02T16:09:41.624Z",
+      "profiles": [
+        {
+          "entries": [
+            {
+              "id": "s3",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Itemformat"
+                }
+              ],
+              "value": [
+                {
+                  "id": "https://w3id.org/iqb/v27/dp/y9s",
+                  "text": [
+                    {
+                      "lang": "de",
+                      "value": "Multiple Choice (MC)"
+                    }
+                  ]
+                }
+              ],
+              "valueAsText": [
+                {
+                  "lang": "de",
+                  "value": "Multiple Choice (MC)"
+                }
+              ]
+            },
+            {
+              "id": "s4",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Anforderungsbereich"
+                }
+              ],
+              "value": [
+                {
+                  "id": "https://w3id.org/iqb/v12/a1/z7p",
+                  "text": [
+                    {
+                      "lang": "de",
+                      "value": "1"
+                    }
+                  ]
+                }
+              ],
+              "valueAsText": [
+                {
+                  "lang": "de",
+                  "value": "1"
+                }
+              ]
+            },
+            {
+              "id": "s5",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Bildungsstandard primär"
+                }
+              ],
+              "value": [
+                {
+                  "id": "https://w3id.org/iqb/v12/s1/t5e",
+                  "text": [
+                    {
+                      "lang": "de",
+                      "value": "1.2.2.1 geben Informationen wieder und ziehen einfache Schlussfolgerungen,"
+                    }
+                  ]
+                }
+              ],
+              "valueAsText": [
+                {
+                  "lang": "de",
+                  "value": "1.2.2.1 geben Informationen wieder und ziehen einfache Schlussfolgerungen,"
+                }
+              ]
+            },
+            {
+              "id": "s6",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Bildungsstandards sekundär"
+                }
+              ],
+              "value": [],
+              "valueAsText": []
+            },
+            {
+              "id": "e4",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Geschätzte Schwierigkeit"
+                }
+              ],
+              "value": [
+                {
+                  "id": "https://w3id.org/iqb/v26/ea/b9r",
+                  "text": [
+                    {
+                      "lang": "de",
+                      "value": "mittel"
+                    }
+                  ]
+                }
+              ],
+              "valueAsText": [
+                {
+                  "lang": "de",
+                  "value": "mittel"
+                }
+              ]
+            },
+            {
+              "id": "iqb_time_item",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Itemzeit"
+                }
+              ],
+              "value": "30",
+              "valueAsText": {
+                "lang": "de",
+                "value": "00:30"
+              }
+            },
+            {
+              "id": "iqb_itemtech",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Technische Besonderheiten der Antwortoptionen"
+                }
+              ],
+              "value": [],
+              "valueAsText": []
+            }
+          ],
+          "id": 118449,
+          "profileId": "https://raw.githubusercontent.com/iqb-vocabs/p12/master/item.json",
+          "isCurrent": true,
+          "createdAt": "2025-06-27T10:58:07.169Z",
+          "changedAt": "2025-06-27T10:58:07.169Z",
+          "unitItemUuid": "8d1f168a-d809-474b-80fb-b0257bc7b282"
+        }
+      ]
+    },
+    {
+      "uuid": "6e07d840-533f-49e5-a76e-48eed0a2d824",
+      "id": "06",
+      "order": 0,
+      "locked": false,
+      "position": null,
+      "unitId": 105360,
+      "variableId": "05",
+      "variableReadOnlyId": "radio_1743607425376_1",
+      "weighting": null,
+      "description": "",
+      "createdAt": "2025-04-02T16:09:41.625Z",
+      "changedAt": "2025-04-02T16:09:41.625Z",
+      "profiles": [
+        {
+          "entries": [
+            {
+              "id": "s3",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Itemformat"
+                }
+              ],
+              "value": [
+                {
+                  "id": "https://w3id.org/iqb/v27/dp/y9s",
+                  "text": [
+                    {
+                      "lang": "de",
+                      "value": "Multiple Choice (MC)"
+                    }
+                  ]
+                }
+              ],
+              "valueAsText": [
+                {
+                  "lang": "de",
+                  "value": "Multiple Choice (MC)"
+                }
+              ]
+            },
+            {
+              "id": "s4",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Anforderungsbereich"
+                }
+              ],
+              "value": [
+                {
+                  "id": "https://w3id.org/iqb/v12/a1/g5g",
+                  "text": [
+                    {
+                      "lang": "de",
+                      "value": "2"
+                    }
+                  ]
+                }
+              ],
+              "valueAsText": [
+                {
+                  "lang": "de",
+                  "value": "2"
+                }
+              ]
+            },
+            {
+              "id": "s5",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Bildungsstandard primär"
+                }
+              ],
+              "value": [
+                {
+                  "id": "https://w3id.org/iqb/v12/s1/t5e",
+                  "text": [
+                    {
+                      "lang": "de",
+                      "value": "1.2.2.1 geben Informationen wieder und ziehen einfache Schlussfolgerungen,"
+                    }
+                  ]
+                }
+              ],
+              "valueAsText": [
+                {
+                  "lang": "de",
+                  "value": "1.2.2.1 geben Informationen wieder und ziehen einfache Schlussfolgerungen,"
+                }
+              ]
+            },
+            {
+              "id": "s6",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Bildungsstandards sekundär"
+                }
+              ],
+              "value": [],
+              "valueAsText": []
+            },
+            {
+              "id": "e4",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Geschätzte Schwierigkeit"
+                }
+              ],
+              "value": [
+                {
+                  "id": "https://w3id.org/iqb/v26/ea/b9r",
+                  "text": [
+                    {
+                      "lang": "de",
+                      "value": "mittel"
+                    }
+                  ]
+                }
+              ],
+              "valueAsText": [
+                {
+                  "lang": "de",
+                  "value": "mittel"
+                }
+              ]
+            },
+            {
+              "id": "iqb_time_item",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Itemzeit"
+                }
+              ],
+              "value": "60",
+              "valueAsText": {
+                "lang": "de",
+                "value": "01:00"
+              }
+            },
+            {
+              "id": "iqb_itemtech",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Technische Besonderheiten der Antwortoptionen"
+                }
+              ],
+              "value": [],
+              "valueAsText": []
+            }
+          ],
+          "id": 118450,
+          "profileId": "https://raw.githubusercontent.com/iqb-vocabs/p12/master/item.json",
+          "isCurrent": true,
+          "createdAt": "2025-06-27T10:58:07.174Z",
+          "changedAt": "2025-06-27T10:58:07.174Z",
+          "unitItemUuid": "6e07d840-533f-49e5-a76e-48eed0a2d824"
+        }
+      ]
+    },
+    {
+      "uuid": "658692f0-d4e9-4c15-9935-44fa07c0a8fc",
+      "id": "07",
+      "order": 0,
+      "locked": false,
+      "position": null,
+      "unitId": 105360,
+      "variableId": "07",
+      "variableReadOnlyId": "radio_4",
+      "weighting": null,
+      "description": null,
+      "createdAt": "2025-04-02T16:09:41.625Z",
+      "changedAt": "2025-04-02T16:09:41.625Z",
+      "profiles": [
+        {
+          "entries": [
+            {
+              "id": "s3",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Itemformat"
+                }
+              ],
+              "value": [
+                {
+                  "id": "https://w3id.org/iqb/v27/dp/y9s",
+                  "text": [
+                    {
+                      "lang": "de",
+                      "value": "Multiple Choice (MC)"
+                    }
+                  ]
+                }
+              ],
+              "valueAsText": [
+                {
+                  "lang": "de",
+                  "value": "Multiple Choice (MC)"
+                }
+              ]
+            },
+            {
+              "id": "s4",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Anforderungsbereich"
+                }
+              ],
+              "value": [
+                {
+                  "id": "https://w3id.org/iqb/v12/a1/g5g",
+                  "text": [
+                    {
+                      "lang": "de",
+                      "value": "2"
+                    }
+                  ]
+                }
+              ],
+              "valueAsText": [
+                {
+                  "lang": "de",
+                  "value": "2"
+                }
+              ]
+            },
+            {
+              "id": "s5",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Bildungsstandard primär"
+                }
+              ],
+              "value": [
+                {
+                  "id": "https://w3id.org/iqb/v12/s1/t5e",
+                  "text": [
+                    {
+                      "lang": "de",
+                      "value": "1.2.2.1 geben Informationen wieder und ziehen einfache Schlussfolgerungen,"
+                    }
+                  ]
+                }
+              ],
+              "valueAsText": [
+                {
+                  "lang": "de",
+                  "value": "1.2.2.1 geben Informationen wieder und ziehen einfache Schlussfolgerungen,"
+                }
+              ]
+            },
+            {
+              "id": "s6",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Bildungsstandards sekundär"
+                }
+              ],
+              "value": [
+                {
+                  "id": "https://w3id.org/iqb/v12/s1/q9d",
+                  "text": [
+                    {
+                      "lang": "de",
+                      "value": "4.3.2 erfassen zentrale Aussagen eines Textes und geben sie wieder,"
+                    }
+                  ]
+                }
+              ],
+              "valueAsText": [
+                {
+                  "lang": "de",
+                  "value": "4.3.2 erfassen zentrale Aussagen eines Textes und geben sie wieder,"
+                }
+              ]
+            },
+            {
+              "id": "e4",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Geschätzte Schwierigkeit"
+                }
+              ],
+              "value": [
+                {
+                  "id": "https://w3id.org/iqb/v26/ea/g9z",
+                  "text": [
+                    {
+                      "lang": "de",
+                      "value": "gering"
+                    }
+                  ]
+                }
+              ],
+              "valueAsText": [
+                {
+                  "lang": "de",
+                  "value": "gering"
+                }
+              ]
+            },
+            {
+              "id": "iqb_time_item",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Itemzeit"
+                }
+              ],
+              "value": "30",
+              "valueAsText": {
+                "lang": "de",
+                "value": "00:30"
+              }
+            },
+            {
+              "id": "iqb_itemtech",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Technische Besonderheiten der Antwortoptionen"
+                }
+              ],
+              "value": [],
+              "valueAsText": []
+            }
+          ],
+          "id": 118447,
+          "profileId": "https://raw.githubusercontent.com/iqb-vocabs/p12/master/item.json",
+          "isCurrent": true,
+          "createdAt": "2025-06-27T10:58:07.162Z",
+          "changedAt": "2025-06-27T10:58:07.162Z",
+          "unitItemUuid": "658692f0-d4e9-4c15-9935-44fa07c0a8fc"
+        }
+      ]
+    },
+    {
+      "uuid": "0df0036a-253f-4ff8-851b-752feccf0d8a",
+      "id": "08",
+      "order": 0,
+      "locked": false,
+      "position": null,
+      "unitId": 105360,
+      "variableId": null,
+      "variableReadOnlyId": null,
+      "weighting": 0,
+      "description": null,
+      "createdAt": "2025-10-17T09:44:05.941Z",
+      "changedAt": "2025-10-17T09:44:05.941Z",
+      "profiles": [
+        {
+          "entries": [
+            {
+              "id": "s3",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Itemformat"
+                }
+              ],
+              "value": [
+                {
+                  "id": "https://w3id.org/iqb/v27/dp/q3r",
+                  "text": [
+                    {
+                      "lang": "de",
+                      "value": "Langantwort"
+                    }
+                  ]
+                }
+              ],
+              "valueAsText": [
+                {
+                  "lang": "de",
+                  "value": "Langantwort"
+                }
+              ]
+            },
+            {
+              "id": "s4",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Anforderungsbereich"
+                }
+              ],
+              "value": [
+                {
+                  "id": "https://w3id.org/iqb/v12/a1/g5g",
+                  "text": [
+                    {
+                      "lang": "de",
+                      "value": "2"
+                    }
+                  ]
+                }
+              ],
+              "valueAsText": [
+                {
+                  "lang": "de",
+                  "value": "2"
+                }
+              ]
+            },
+            {
+              "id": "s5",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Bildungsstandard primär"
+                }
+              ],
+              "value": [
+                {
+                  "id": "https://w3id.org/iqb/v12/s1/h3e",
+                  "text": [
+                    {
+                      "lang": "de",
+                      "value": "4.1.3 kennen verschiedene Textsorten aus dem Bereich pragmatischer Texte: informierende (z. B. Lexikonartikel), instruierende (z. B. Spielanleitungen), regulierende (z. B. Klassenregeln),"
+                    }
+                  ]
+                }
+              ],
+              "valueAsText": [
+                {
+                  "lang": "de",
+                  "value": "4.1.3 kennen verschiedene Textsorten aus dem Bereich pragmatischer Texte: informierende (z. B. Lexikonartikel), instruierende (z. B. Spielanleitungen), regulierende (z. B. Klassenregeln),"
+                }
+              ]
+            },
+            {
+              "id": "s6",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Bildungsstandards sekundär"
+                }
+              ],
+              "value": [],
+              "valueAsText": []
+            },
+            {
+              "id": "e4",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Geschätzte Schwierigkeit"
+                }
+              ],
+              "value": [
+                {
+                  "id": "https://w3id.org/iqb/v26/ea/b9r",
+                  "text": [
+                    {
+                      "lang": "de",
+                      "value": "mittel"
+                    }
+                  ]
+                }
+              ],
+              "valueAsText": [
+                {
+                  "lang": "de",
+                  "value": "mittel"
+                }
+              ]
+            },
+            {
+              "id": "iqb_time_item",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Itemzeit"
+                }
+              ],
+              "value": "60",
+              "valueAsText": {
+                "lang": "de",
+                "value": "01:00"
+              }
+            },
+            {
+              "id": "iqb_itemtech",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Technische Besonderheiten der Antwortoptionen"
+                }
+              ],
+              "value": [],
+              "valueAsText": []
+            }
+          ],
+          "id": 189919,
+          "profileId": "https://raw.githubusercontent.com/iqb-vocabs/p12/master/item.json",
+          "isCurrent": true,
+          "createdAt": "2025-12-16T13:35:42.022Z",
+          "changedAt": "2025-12-16T13:35:42.022Z",
+          "unitItemUuid": "0df0036a-253f-4ff8-851b-752feccf0d8a"
+        }
+      ]
+    },
+    {
+      "uuid": "c7f83ada-2f4d-4737-aa6e-7e145f1b7122",
+      "id": "09",
+      "order": 0,
+      "locked": false,
+      "position": null,
+      "unitId": 105360,
+      "variableId": "09",
+      "variableReadOnlyId": "d_1765541957471",
+      "weighting": null,
+      "description": null,
+      "createdAt": "2025-10-17T09:44:05.959Z",
+      "changedAt": "2025-10-17T09:44:05.959Z",
+      "profiles": [
+        {
+          "entries": [
+            {
+              "id": "s3",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Itemformat"
+                }
+              ],
+              "value": [
+                {
+                  "id": "https://w3id.org/iqb/v27/dp/d4d",
+                  "text": [
+                    {
+                      "lang": "de",
+                      "value": "Complex Multiple Choice (CMC)"
+                    }
+                  ]
+                }
+              ],
+              "valueAsText": [
+                {
+                  "lang": "de",
+                  "value": "Complex Multiple Choice (CMC)"
+                }
+              ]
+            },
+            {
+              "id": "s4",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Anforderungsbereich"
+                }
+              ],
+              "value": [
+                {
+                  "id": "https://w3id.org/iqb/v12/a1/z7p",
+                  "text": [
+                    {
+                      "lang": "de",
+                      "value": "1"
+                    }
+                  ]
+                }
+              ],
+              "valueAsText": [
+                {
+                  "lang": "de",
+                  "value": "1"
+                }
+              ]
+            },
+            {
+              "id": "s5",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Bildungsstandard primär"
+                }
+              ],
+              "value": [
+                {
+                  "id": "https://w3id.org/iqb/v12/s1/t5e",
+                  "text": [
+                    {
+                      "lang": "de",
+                      "value": "1.2.2.1 geben Informationen wieder und ziehen einfache Schlussfolgerungen,"
+                    }
+                  ]
+                }
+              ],
+              "valueAsText": [
+                {
+                  "lang": "de",
+                  "value": "1.2.2.1 geben Informationen wieder und ziehen einfache Schlussfolgerungen,"
+                }
+              ]
+            },
+            {
+              "id": "s6",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Bildungsstandards sekundär"
+                }
+              ],
+              "value": [],
+              "valueAsText": []
+            },
+            {
+              "id": "e4",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Geschätzte Schwierigkeit"
+                }
+              ],
+              "value": [
+                {
+                  "id": "https://w3id.org/iqb/v26/ea/g9z",
+                  "text": [
+                    {
+                      "lang": "de",
+                      "value": "gering"
+                    }
+                  ]
+                }
+              ],
+              "valueAsText": [
+                {
+                  "lang": "de",
+                  "value": "gering"
+                }
+              ]
+            },
+            {
+              "id": "iqb_time_item",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Itemzeit"
+                }
+              ],
+              "value": "30",
+              "valueAsText": {
+                "lang": "de",
+                "value": "00:30"
+              }
+            },
+            {
+              "id": "iqb_itemtech",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Technische Besonderheiten der Antwortoptionen"
+                }
+              ],
+              "value": [],
+              "valueAsText": []
+            }
+          ],
+          "id": 173898,
+          "profileId": "https://raw.githubusercontent.com/iqb-vocabs/p12/master/item.json",
+          "isCurrent": true,
+          "createdAt": "2025-10-17T09:44:05.970Z",
+          "changedAt": "2025-10-17T09:44:05.970Z",
+          "unitItemUuid": "c7f83ada-2f4d-4737-aa6e-7e145f1b7122"
+        }
+      ]
+    },
+    {
+      "uuid": "0cd295b8-7b1a-4745-9a7c-f8cb7a420563",
+      "id": "10",
+      "order": 0,
+      "locked": false,
+      "position": null,
+      "unitId": 105360,
+      "variableId": null,
+      "variableReadOnlyId": null,
+      "weighting": null,
+      "description": null,
+      "createdAt": "2025-10-17T09:44:05.943Z",
+      "changedAt": "2025-10-17T09:44:05.943Z",
+      "profiles": [
+        {
+          "entries": [
+            {
+              "id": "s3",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Itemformat"
+                }
+              ],
+              "value": [
+                {
+                  "id": "https://w3id.org/iqb/v27/dp/q3r",
+                  "text": [
+                    {
+                      "lang": "de",
+                      "value": "Langantwort"
+                    }
+                  ]
+                }
+              ],
+              "valueAsText": [
+                {
+                  "lang": "de",
+                  "value": "Langantwort"
+                }
+              ]
+            },
+            {
+              "id": "s4",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Anforderungsbereich"
+                }
+              ],
+              "value": [
+                {
+                  "id": "https://w3id.org/iqb/v12/a1/z6h",
+                  "text": [
+                    {
+                      "lang": "de",
+                      "value": "3"
+                    }
+                  ]
+                }
+              ],
+              "valueAsText": [
+                {
+                  "lang": "de",
+                  "value": "3"
+                }
+              ]
+            },
+            {
+              "id": "s5",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Bildungsstandard primär"
+                }
+              ],
+              "value": [
+                {
+                  "id": "https://w3id.org/iqb/v12/s1/t5e",
+                  "text": [
+                    {
+                      "lang": "de",
+                      "value": "1.2.2.1 geben Informationen wieder und ziehen einfache Schlussfolgerungen,"
+                    }
+                  ]
+                }
+              ],
+              "valueAsText": [
+                {
+                  "lang": "de",
+                  "value": "1.2.2.1 geben Informationen wieder und ziehen einfache Schlussfolgerungen,"
+                }
+              ]
+            },
+            {
+              "id": "s6",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Bildungsstandards sekundär"
+                }
+              ],
+              "value": [
+                {
+                  "id": "https://w3id.org/iqb/v12/s1/q9d",
+                  "text": [
+                    {
+                      "lang": "de",
+                      "value": "4.3.2 erfassen zentrale Aussagen eines Textes und geben sie wieder,"
+                    }
+                  ]
+                }
+              ],
+              "valueAsText": [
+                {
+                  "lang": "de",
+                  "value": "4.3.2 erfassen zentrale Aussagen eines Textes und geben sie wieder,"
+                }
+              ]
+            },
+            {
+              "id": "e4",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Geschätzte Schwierigkeit"
+                }
+              ],
+              "value": [
+                {
+                  "id": "https://w3id.org/iqb/v26/ea/b9r",
+                  "text": [
+                    {
+                      "lang": "de",
+                      "value": "mittel"
+                    }
+                  ]
+                }
+              ],
+              "valueAsText": [
+                {
+                  "lang": "de",
+                  "value": "mittel"
+                }
+              ]
+            },
+            {
+              "id": "iqb_time_item",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Itemzeit"
+                }
+              ],
+              "value": "90",
+              "valueAsText": {
+                "lang": "de",
+                "value": "01:30"
+              }
+            },
+            {
+              "id": "iqb_itemtech",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Technische Besonderheiten der Antwortoptionen"
+                }
+              ],
+              "value": [],
+              "valueAsText": []
+            }
+          ],
+          "id": 173897,
+          "profileId": "https://raw.githubusercontent.com/iqb-vocabs/p12/master/item.json",
+          "isCurrent": true,
+          "createdAt": "2025-10-17T09:44:05.953Z",
+          "changedAt": "2025-10-17T09:44:05.953Z",
+          "unitItemUuid": "0cd295b8-7b1a-4745-9a7c-f8cb7a420563"
+        }
+      ]
+    },
+    {
+      "uuid": "c0d62ee3-ff01-4d2e-bb27-689bff787401",
+      "id": "11",
+      "order": 0,
+      "locked": false,
+      "position": null,
+      "unitId": 105360,
+      "variableId": "11",
+      "variableReadOnlyId": "d_1765542120541",
+      "weighting": null,
+      "description": null,
+      "createdAt": "2025-12-03T12:39:02.824Z",
+      "changedAt": "2025-12-03T12:39:02.824Z",
+      "profiles": [
+        {
+          "entries": [
+            {
+              "id": "s3",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Itemformat"
+                }
+              ],
+              "value": [
+                {
+                  "id": "https://w3id.org/iqb/v27/dp/d4d",
+                  "text": [
+                    {
+                      "lang": "de",
+                      "value": "Complex Multiple Choice (CMC)"
+                    }
+                  ]
+                }
+              ],
+              "valueAsText": [
+                {
+                  "lang": "de",
+                  "value": "Complex Multiple Choice (CMC)"
+                }
+              ]
+            },
+            {
+              "id": "s4",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Anforderungsbereich"
+                }
+              ],
+              "value": [
+                {
+                  "id": "https://w3id.org/iqb/v12/a1/g5g",
+                  "text": [
+                    {
+                      "lang": "de",
+                      "value": "2"
+                    }
+                  ]
+                }
+              ],
+              "valueAsText": [
+                {
+                  "lang": "de",
+                  "value": "2"
+                }
+              ]
+            },
+            {
+              "id": "s5",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Bildungsstandard primär"
+                }
+              ],
+              "value": [
+                {
+                  "id": "https://w3id.org/iqb/v12/s1/t5e",
+                  "text": [
+                    {
+                      "lang": "de",
+                      "value": "1.2.2.1 geben Informationen wieder und ziehen einfache Schlussfolgerungen,"
+                    }
+                  ]
+                }
+              ],
+              "valueAsText": [
+                {
+                  "lang": "de",
+                  "value": "1.2.2.1 geben Informationen wieder und ziehen einfache Schlussfolgerungen,"
+                }
+              ]
+            },
+            {
+              "id": "s6",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Bildungsstandards sekundär"
+                }
+              ],
+              "value": [],
+              "valueAsText": []
+            },
+            {
+              "id": "e4",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Geschätzte Schwierigkeit"
+                }
+              ],
+              "value": [
+                {
+                  "id": "https://w3id.org/iqb/v26/ea/g9z",
+                  "text": [
+                    {
+                      "lang": "de",
+                      "value": "gering"
+                    }
+                  ]
+                }
+              ],
+              "valueAsText": [
+                {
+                  "lang": "de",
+                  "value": "gering"
+                }
+              ]
+            },
+            {
+              "id": "iqb_itemtech",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Technische Besonderheiten der Antwortoptionen"
+                }
+              ],
+              "value": [],
+              "valueAsText": []
+            },
+            {
+              "id": "iqb_time_item",
+              "label": [
+                {
+                  "lang": "de",
+                  "value": "Itemzeit"
+                }
+              ],
+              "value": "30",
+              "valueAsText": {
+                "lang": "de",
+                "value": "00:30"
+              }
+            }
+          ],
+          "id": 188073,
+          "profileId": "https://raw.githubusercontent.com/iqb-vocabs/p12/master/item.json",
+          "isCurrent": true,
+          "createdAt": "2025-12-11T13:28:42.053Z",
+          "changedAt": "2025-12-11T13:28:42.053Z",
+          "unitItemUuid": "c0d62ee3-ff01-4d2e-bb27-689bff787401"
         }
       ]
     }
