@@ -1,6 +1,7 @@
-<div class="fx-row-start-center fx-gap-10">
-  <span>{{props.falseLabel}}</span>
+<div class="iqb-toggle-field">
+  <span class="iqb-toggle-label">{{props.falseLabel}}</span>
   <mat-slide-toggle
+    class="iqb-toggle-control"
     [id]="id"
     [formControl]="formControl"
     [formlyAttributes]="field"
@@ -8,5 +9,5 @@
     [required]="required"
     [disabled]="props.readonly ?? false">
   </mat-slide-toggle>
-  <span>{{props.trueLabel}}</span>
+  <span class="iqb-toggle-label">{{props.trueLabel}}</span>
 </div>

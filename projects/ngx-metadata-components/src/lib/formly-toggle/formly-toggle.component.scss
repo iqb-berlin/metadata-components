@@ -1,0 +1,21 @@
+:host {
+  display: block;
+}
+
+.iqb-toggle-field {
+  align-items: center;
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  min-height: 48px;
+  padding-top: 10px;
+}
+
+.iqb-toggle-label {
+  line-height: 20px;
+  overflow-wrap: anywhere;
+}
+
+.iqb-toggle-control {
+  flex: 0 0 auto;
+}

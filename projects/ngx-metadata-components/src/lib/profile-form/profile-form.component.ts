@@ -585,12 +585,23 @@ export class ProfileFormComponent implements OnInit, OnDestroy {
         return {
           key: entry.id,
           fieldGroup: params.textLanguages
-            .map((language: string) => ProfileFormComponent.createFormlyField(language, entry, props))
+            .map((language: string) => ProfileFormComponent.createFormlyField(
+              language,
+              entry,
+              ProfileFormComponent.withLanguageLabel(props, language)
+            ))
         };
       }
     }
 
     return ProfileFormComponent.createFormlyField(entry.id, entry, props);
+  }
+
+  private static withLanguageLabel(props: FormlyConfigProps, language: string): FormlyConfigProps {
+    return {
+      ...props,
+      label: `(${language}) ${props.label}`
+    };
   }
 
   private static createFormlyField(key: string, entry: MDProfileEntry, props: FormlyConfigProps): FormlyFieldConfig {
