@@ -1,0 +1,249 @@
+{
+  "id": "https://w3id.org/iqb/p100/unit/",
+  "label": [{
+    "lang": "de",
+    "value": "IQB Mathematik Sek I - Aufgabe"
+  }],
+  "target": ["UNIT"],
+  "groups": [
+    {
+      "label": [
+        {
+          "lang": "de",
+          "value": "Stimulus"
+        }
+      ],
+      "entries": [
+        {
+          "id": "iqb_author",
+          "label": [
+            {
+              "lang": "de",
+              "value": "Entwickler:in"
+            }
+          ],
+          "type": "TEXT",
+          "parameters": {
+            "format": "SINGLE"
+          }
+        },
+        {
+          "id": "iqb_educational_level",
+          "label": [
+            {
+              "lang": "de",
+              "value": "Klassenstufe"
+            }
+          ],
+          "type": "VOCABULARY",
+          "parameters": {
+            "url": "http://w3id.org/openeduhub/vocabs/educationalLevel/",
+            "allowMultipleValues": true,
+            "hideNumbering": true
+          }
+        },
+        {
+          "id": "iqb_school_type",
+          "label": [
+            {
+              "lang": "de",
+              "value": "Schulform"
+            }
+          ],
+          "type": "VOCABULARY",
+          "parameters": {
+            "url": "https://w3id.org/kim/schularten/",
+            "allowMultipleValues": true,
+            "hideNumbering": true
+          }
+        },
+        {
+          "id": "iqb_spf",
+          "label": [
+            {
+              "lang": "de",
+              "value": "Für SPF geeignet"
+            }
+          ],
+          "type": "BOOLEAN",
+          "parameters": {
+            "trueLabel": [
+              {
+                "lang": "de",
+                "value": "ja"
+              }
+            ],
+            "falseLabel": [
+              {
+                "lang": "de",
+                "value": "nein"
+              }
+            ]
+          }
+        },
+        {
+          "id": "iqb_unassisted",
+          "label": [
+            {
+              "lang": "de",
+              "value": "hilfsmittelfrei"
+            }
+          ],
+          "type": "BOOLEAN",
+          "parameters": {
+            "trueLabel": [
+              {
+                "lang": "de",
+                "value": "ja"
+              }
+            ],
+            "falseLabel": [
+              {
+                "lang": "de",
+                "value": "nein"
+              }
+            ]
+          }
+        },
+        {
+          "id": "iqb_phones",
+          "label": [
+            {
+              "lang": "de",
+              "value": "Kopfhörereinsatz"
+            }
+          ],
+          "type": "VOCABULARY",
+          "parameters": {
+            "url": "https://w3id.org/iqb/v24/kh/",
+            "allowMultipleValues": true,
+            "hideNumbering": true,
+            "selectionMode": "IN_FORM"
+          }
+        },
+        {
+          "id": "iqb_competence",
+          "label": [
+            {
+              "lang": "de",
+              "value": "Leitidee"
+            }
+          ],
+          "type": "VOCABULARY",
+          "parameters": {
+            "url": "https://w3id.org/iqb/v51/im/",
+            "allowMultipleValues": false,
+            "hideNumbering": true,
+            "maxLevel": 1
+          }
+        },
+        {
+          "id": "iqb_time_stimulus",
+          "label": [
+            {
+              "lang": "de",
+              "value": "Stimuluszeit"
+            }
+          ],
+          "type": "NUMBER",
+          "parameters": {
+            "minValue": 0,
+            "digits": 0,
+            "isPeriodSeconds": true
+          }
+        },
+        {
+          "id": "iqb_time_unit",
+          "label": [
+            {
+              "lang": "de",
+              "value": "Aufgabenzeit"
+            }
+          ],
+          "type": "NUMBER",
+          "parameters": {
+            "minValue": 0,
+            "digits": 0,
+            "isPeriodSeconds": true
+          }
+        },
+        {
+          "id": "iqb_copyright",
+          "label": [
+            {
+              "lang": "de",
+              "value": "Quellenangaben"
+            }
+          ],
+          "type": "TEXT",
+          "parameters": {
+            "format": "MULTILINE"
+          }
+        },
+        {
+          "id": "iqb_note_field",
+          "label": [
+            {
+              "lang": "de",
+              "value": "Notizfeld"
+            }
+          ],
+          "type": "TEXT",
+          "parameters": {
+            "format": "MULTILINE"
+          }
+        },
+        {
+          "id": "iqb_compatibility",
+          "label": [
+            {
+              "lang": "de",
+              "value": "Unverträgliche Aufgaben"
+            }
+          ],
+          "type": "TEXT",
+          "parameters": {
+            "format": "SINGLE"
+          }
+        }
+      ]
+    },
+    {
+      "label": [
+        {
+          "lang": "de",
+          "value": "Hörsequenz/Video"
+        }
+      ],
+      "entries": [
+        {
+          "id": "iqb_time_play",
+          "label": [
+            {
+              "lang": "de",
+              "value": "Anzahl Vorspielen"
+            }
+          ],
+          "type": "NUMBER",
+          "parameters": {
+            "minValue": 0,
+            "digits": 0
+          }
+        },
+        {
+          "id": "iqb_transcript",
+          "label": [
+            {
+              "lang": "de",
+              "value": "Transkript"
+            }
+          ],
+          "type": "TEXT",
+          "parameters": {
+            "format": "MULTILINE"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -9,9 +9,9 @@ import { MatIcon } from '@angular/material/icon';
 import {
   MatChipGrid, MatChipRow, MatChipRemove, MatChipInput
 } from '@angular/material/chips';
-import { NotationNode } from '../models/vocabulary.class';
+import { NotationNode, VocabularyEntry } from '../models/vocabulary.class';
 import { NestedTreeComponent } from '../nested-tree/nested-tree.component';
-import {MetadataService} from "../services/metadata.service";
+import { MetadataService } from '../services/metadata.service';
 
 @Component({
   selector: 'iqb-formly-chips',
@@ -26,7 +26,7 @@ export class FormlyChipsComponent extends FieldType<FieldTypeConfig> implements 
 
   constructor(
     private vocabsDialog: MatDialog,
-    public metadataService: MetadataService,
+    public metadataService: MetadataService
   ) {
     super();
   }
@@ -76,19 +76,26 @@ export class FormlyChipsComponent extends FieldType<FieldTypeConfig> implements 
       });
   }
 
-  private processVocabularyEntries(results: { nodes: NotationNode[], hideNumbering: boolean }): any[] {
+  private processVocabularyEntries(
+    results: { nodes: NotationNode[], hideNumbering: boolean }
+  ): VocabularyEntry[] {
     const vocabulariesIdDictionary = this.metadataService.getVocabulariesIdDictionary();
-
     return results.nodes
-      .map((node: NotationNode) => this.createVocabularyEntry(node, results.hideNumbering, vocabulariesIdDictionary))
-      .sort(this.sortVocabularyEntries);
+      .map((node: NotationNode) => FormlyChipsComponent.createVocabularyEntry(
+        node, results.hideNumbering, vocabulariesIdDictionary
+      ))
+      .sort(FormlyChipsComponent.sortVocabularyEntries);
   }
 
-  private createVocabularyEntry(node: NotationNode, hideNumbering: boolean, vocabulariesIdDictionary: any): any {
-    const label = vocabulariesIdDictionary[node.id]?.labels?.de || '';
+  private static createVocabularyEntry(
+    node: NotationNode,
+    hideNumbering: boolean,
+    vocabulariesIdDictionary: Record<string, VocabularyEntry & { label?: string }>
+  ): VocabularyEntry {
+    const entry = vocabulariesIdDictionary[node.id];
+    const label = entry?.label || node.label || '';
     const notation = node.notation;
     const name = `${hideNumbering ? '' : notation} ${label}`.trim();
-
     return {
       name,
       id: node.id,
@@ -97,7 +104,7 @@ export class FormlyChipsComponent extends FieldType<FieldTypeConfig> implements 
     };
   }
 
-  private sortVocabularyEntries(a: { name: string }, b: { name: string }): number {
+  private static sortVocabularyEntries(a: { name: string }, b: { name: string }): number {
     const nameA = a.name.toUpperCase();
     const nameB = b.name.toUpperCase();
     return nameA.localeCompare(nameB);

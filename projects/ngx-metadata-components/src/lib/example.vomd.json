@@ -1,0 +1,195 @@
+{
+    "items": [
+        {
+            "id": "01",
+            "profiles": [
+                {
+                    "entries": [
+                        {
+                            "id": "s3",
+                            "label": [{ "lang": "de", "value": "Itemformat" }],
+                            "value": [
+                                {
+                                    "id": "https://w3id.org/iqb/v27/mp/p5h",
+                                    "text": [
+                                        {
+                                            "lang": "de",
+                                            "value": " Zeichnen / Konstruieren"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "valueAsText": [
+                                {
+                                    "lang": "de",
+                                    "value": " Zeichnen / Konstruieren"
+                                }
+                            ]
+                        },
+                        {
+                            "id": "s4",
+                            "label": [
+                                { "lang": "de", "value": "Anforderungsbereich" }
+                            ],
+                            "value": [
+                                {
+                                    "id": "https://w3id.org/iqb/v10/a1/v9q",
+                                    "text": [{ "lang": "de", "value": " 2" }]
+                                }
+                            ],
+                            "valueAsText": [{ "lang": "de", "value": " 2" }]
+                        },
+                        {
+                            "id": "s7",
+                            "label": [
+                                {
+                                    "lang": "de",
+                                    "value": "Inhaltsbezogener Bildungsstandard primär"
+                                }
+                            ],
+                            "value": [
+                                {
+                                    "id": "https://w3id.org/iqb/v10/i1/d9e",
+                                    "text": [
+                                        {
+                                            "lang": "de",
+                                            "value": "4.3.1 bilden ebene Figuren geometrisch ab (verkleinern, vergrößern und spiegeln),"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "valueAsText": [
+                                {
+                                    "lang": "de",
+                                    "value": "4.3.1 bilden ebene Figuren geometrisch ab (verkleinern, vergrößern und spiegeln),"
+                                }
+                            ]
+                        },
+                        {
+                            "id": "s8",
+                            "label": [
+                                {
+                                    "lang": "de",
+                                    "value": "Inhaltsbezogener Bildungsstandard sekundär"
+                                }
+                            ],
+                            "value": [],
+                            "valueAsText": []
+                        },
+                        {
+                            "id": "s5",
+                            "label": [
+                                {
+                                    "lang": "de",
+                                    "value": "Prozessbezogener Bildungsstandard primär"
+                                }
+                            ],
+                            "value": [
+                                {
+                                    "id": "https://w3id.org/iqb/v10/p1/f5a",
+                                    "text": [
+                                        {
+                                            "lang": "de",
+                                            "value": "6.4 setzen mathematische Werkzeuge (z. B. Zeichenwerkzeuge, digitale Werkzeuge) sachgerecht ein."
+                                        }
+                                    ]
+                                }
+                            ],
+                            "valueAsText": [
+                                {
+                                    "lang": "de",
+                                    "value": "6.4 setzen mathematische Werkzeuge (z. B. Zeichenwerkzeuge, digitale Werkzeuge) sachgerecht ein."
+                                }
+                            ]
+                        },
+                        {
+                            "id": "s6",
+                            "label": [
+                                {
+                                    "lang": "de",
+                                    "value": "Prozessbezogener Bildungsstandard sekundär"
+                                }
+                            ],
+                            "value": [],
+                            "valueAsText": []
+                        },
+                        {
+                            "id": "e4",
+                            "label": [
+                                {
+                                    "lang": "de",
+                                    "value": "Geschätzte Schwierigkeit"
+                                }
+                            ],
+                            "value": [
+                                {
+                                    "id": "https://w3id.org/iqb/v26/ea/e6g",
+                                    "text": [
+                                        { "lang": "de", "value": "sehr gering" }
+                                    ]
+                                }
+                            ],
+                            "valueAsText": [
+                                { "lang": "de", "value": "sehr gering" }
+                            ]
+                        },
+                        {
+                            "id": "iqb_time_item",
+                            "label": [{ "lang": "de", "value": "Itemzeit" }],
+                            "value": "90",
+                            "valueAsText": { "lang": "de", "value": "01:30" }
+                        }
+                    ],
+                    "isCurrent": true,
+                    "profileId": "https://raw.githubusercontent.com/iqb-vocabs/p11/master/item.json"
+                }
+            ],
+            "variableId": "01",
+            "description": "GeoGebra"
+        }
+    ],
+    "profiles": [
+        {
+            "entries": [
+                {
+                    "id": "w8",
+                    "label": [{ "lang": "de", "value": "Leitidee" }],
+                    "value": [
+                        {
+                            "id": "https://w3id.org/iqb/v10/i1/f5b",
+                            "text": [
+                                {
+                                    "lang": "de",
+                                    "value": "4 Leitidee Raum und Form"
+                                }
+                            ]
+                        }
+                    ],
+                    "valueAsText": [
+                        { "lang": "de", "value": "4 Leitidee Raum und Form" }
+                    ]
+                },
+                {
+                    "id": "iqb_author",
+                    "label": [{ "lang": "de", "value": "Entwickler:in" }],
+                    "value": [{ "lang": "de", "value": "Anne Klücken" }],
+                    "valueAsText": [{ "lang": "de", "value": "Anne Klücken" }]
+                },
+                {
+                    "id": "iqb_time_unit",
+                    "label": [{ "lang": "de", "value": "Aufgabenzeit" }],
+                    "value": "120",
+                    "valueAsText": { "lang": "de", "value": "02:00" }
+                },
+                {
+                    "id": "iqb_time_stimulus",
+                    "label": [{ "lang": "de", "value": "Stimuluszeit" }],
+                    "value": "30",
+                    "valueAsText": { "lang": "de", "value": "00:30" }
+                }
+            ],
+            "isCurrent": true,
+            "profileId": "https://raw.githubusercontent.com/iqb-vocabs/p11/master/unit.json"
+        }
+    ]
+}

@@ -1,0 +1,17 @@
+<div class="vocab-inline-container">
+  @for (option of options_; track option.id) {
+    <div class="vocab-inline-option" [style.padding-left.px]="option.level * 20">
+      <mat-checkbox
+        [checked]="isSelected(option.id)"
+        [disabled]="props.readonly ?? false"
+        (change)="onCheckboxChange(option, $event.checked)">
+        @if (!props.hideNumbering && option.notation.length) {
+          <span class="notation">{{ option.notation[0] }}</span>
+        }
+        @if (!props.hideTitle) {
+          <span>{{ option.label }}</span>
+        }
+      </mat-checkbox>
+    </div>
+  }
+</div>

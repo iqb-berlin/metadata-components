@@ -6,6 +6,7 @@
     [formlyAttributes]="field"
     [tabIndex]="props.tabindex"
     [required]="required"
-  ></mat-slide-toggle>
-<span>{{props.trueLabel}}</span>
+    [disabled]="props.readonly ?? false">
+  </mat-slide-toggle>
+  <span>{{props.trueLabel}}</span>
 </div>

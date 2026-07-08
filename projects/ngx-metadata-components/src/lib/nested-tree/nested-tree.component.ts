@@ -14,7 +14,7 @@ import { Subject, takeUntil } from 'rxjs';
 import {
   MAT_DIALOG_DATA, MatDialogActions, MatDialogClose, MatDialogContent
 } from '@angular/material/dialog';
-import { TranslateModule } from '@ngx-translate/core';
+// import { TranslateModule } from '@ngx-translate/core';
 import { MatIcon } from '@angular/material/icon';
 
 import { MatCheckbox } from '@angular/material/checkbox';
@@ -33,9 +33,9 @@ import { VocabNodeChangeService } from '../services/vocab-node-change.service';
   templateUrl: './nested-tree.component.html',
   styleUrls: ['./nested-tree.component.scss'],
   providers: [VocabNodeChangeService],
-  standalone:true,
+  standalone: true,
   // eslint-disable-next-line max-len
-  imports: [MatDialogContent, MatTree, MatTreeNodeDef, MatTreeNode, MatTreeNodeToggle, MatTreeNodePadding, MatIconButton, MatCheckbox, MatIcon, MatDialogActions, MatButton, MatDialogClose, TranslateModule, AreAllDescendantsSelectedPipe, AreSomeDescendantsSelectedPipe, IsTreeControlExpandedPipe, IsNodeSelectedPipe]
+  imports: [MatDialogContent, MatTree, MatTreeNodeDef, MatTreeNode, MatTreeNodeToggle, MatTreeNodePadding, MatIconButton, MatCheckbox, MatIcon, MatDialogActions, MatButton, MatDialogClose, AreAllDescendantsSelectedPipe, AreSomeDescendantsSelectedPipe, IsTreeControlExpandedPipe, IsNodeSelectedPipe]
 })
 
 export class NestedTreeComponent implements OnInit {
@@ -67,7 +67,6 @@ export class NestedTreeComponent implements OnInit {
       .subscribe(data => {
         this.dataSource.data = data;
       });
-
   }
 
   ngOnInit(): void {
@@ -77,7 +76,7 @@ export class NestedTreeComponent implements OnInit {
 
   private setVocabularyTitle(): void {
     const vocabulary = this.dialogData.vocabularies.find(
-      (vocab) => vocab.url === this.dialogData.props?.url
+      vocab => vocab.url === this.dialogData.props?.url
     );
     this.vocabularyTitle = vocabulary?.data?.title?.['de'] ?? '';
   }
@@ -87,26 +86,30 @@ export class NestedTreeComponent implements OnInit {
       return;
     }
     const nodeMap = new Map(this.treeControl.dataNodes.map(node => [node.id, node]));
-    for (const dialogNode of this.dialogData.value) {
+    this.dialogData.value.forEach(dialogNode => {
       const matchingNode = nodeMap.get(dialogNode.id);
       if (matchingNode) {
         this.vocabNodeSelectionToggle(matchingNode);
       }
-    }
+    });
   }
 
+  // eslint-disable-next-line class-methods-use-this
   private getLevel(node: VocabFlatNode): number {
     return node.level;
   }
 
+  // eslint-disable-next-line class-methods-use-this
   private isExpandable(node: VocabFlatNode): boolean {
     return node.expandable;
   }
 
+  // eslint-disable-next-line class-methods-use-this
   private getChildren(node: VocabNode): VocabNode[] {
     return node.children;
   }
 
+  // eslint-disable-next-line class-methods-use-this
   hasChild(_: number, nodeData: VocabFlatNode): boolean {
     return nodeData.expandable;
   }
@@ -115,23 +118,23 @@ export class NestedTreeComponent implements OnInit {
    * Transformer to convert nested node to flat node. Record the nodes in maps for later use.
    */
   private transformer = (node: VocabNode, level: number): VocabFlatNode => {
-      let flatNode = this.nestedNodeMap.get(node);
-      if (!flatNode || flatNode.label !== node.label) {
-        flatNode = new VocabFlatNode();
-      }
-      Object.assign(flatNode, {
-        label: node.label || '',
-        notation: node.notation,
-        level,
-        id: node.id,
-        description: node.description,
-        expandable: !!node.children?.length,
-      });
-      this.flatNodeMap.set(flatNode, node);
-      this.nestedNodeMap.set(node, flatNode);
+    let flatNode = this.nestedNodeMap.get(node);
+    if (!flatNode || flatNode.label !== node.label) {
+      flatNode = new VocabFlatNode();
+    }
+    Object.assign(flatNode, {
+      label: node.label || '',
+      notation: node.notation,
+      level,
+      id: node.id,
+      description: node.description,
+      expandable: !!node.children?.length
+    });
+    this.flatNodeMap.set(flatNode, node);
+    this.nestedNodeMap.set(node, flatNode);
 
-      return flatNode;
-    };
+    return flatNode;
+  };
 
   /**
    * Generates a list of selected nodes, ensuring that the most relevant parent nodes
@@ -143,7 +146,7 @@ export class NestedTreeComponent implements OnInit {
    */
   getSelectedNodesList(): VocabFlatNode[] {
     const nodesList = new Set<VocabFlatNode>();
-    for (const selected of this.checklistSelection.selected) {
+    this.checklistSelection.selected.forEach(selected => {
       const parent = this.getParentNode(selected);
 
       if (parent && this.checklistSelection.isSelected(parent)) {
@@ -154,7 +157,7 @@ export class NestedTreeComponent implements OnInit {
       } else {
         nodesList.add(selected);
       }
-    }
+    });
     return Array.from(nodesList);
   }
 

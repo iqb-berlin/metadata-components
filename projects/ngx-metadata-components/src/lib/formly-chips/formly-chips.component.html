@@ -1,18 +1,21 @@
+
 <mat-chip-grid #chipGrid
-  (click)="showNodeTree()">
+  [disabled]="props.readonly ?? false"
+  (click)="!(props.readonly ?? false) && showNodeTree()">
   @for (item of formControl.value; track item; let i = $index) {
-    <mat-chip-row
-      [editable]="false">
+    <mat-chip-row [editable]="false">
       <div class="clip-text">
         {{item.name}}
       </div>
-      <button matChipRemove
-        (click)="remove(i)">
-        <mat-icon>cancel</mat-icon>
-      </button>
+      @if (!(props.readonly ?? false)) {
+        <button matChipRemove (click)="remove(i)">
+          <mat-icon>cancel</mat-icon>
+        </button>
+      }
     </mat-chip-row>
   }
   <input [formControl]="itemControl"
+    [disabled]="props.readonly ?? false"
     (keydown)="$event.preventDefault()"
     [matChipInputFor]="chipGrid"
     [matChipInputAddOnBlur]="false"

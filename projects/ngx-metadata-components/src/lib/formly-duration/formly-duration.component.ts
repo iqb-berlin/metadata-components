@@ -1,7 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-
-
-import { FieldTypeConfig, FormlyFieldProps } from '@ngx-formly/core/';
+import { FieldTypeConfig, FormlyFieldProps } from '@ngx-formly/core';
 import { FieldType } from '@ngx-formly/material';
 import { Subject, takeUntil } from 'rxjs';
 import { MatInput } from '@angular/material/input';
@@ -43,9 +41,8 @@ export class FormlyDurationComponent
     const calculateMinOrMax = (value: number): [number, number] => {
       if (value < 60) {
         return [value, 0];
-      } else {
-        return [0, Math.floor(value / 60)];
       }
+      return [0, Math.floor(value / 60)];
     };
 
     const minValue = Number(this.props.minValue) || 0;

@@ -1,27 +1,46 @@
-import { Injectable } from '@angular/core';
-import {Vocab, VocabIdDictionaryValue} from "../models/vocabulary.class";
+import { Injectable, signal } from '@angular/core';
+import { MDProfileGroup } from '@iqbspecs/metadata-profile';
+import { VocabularyProvider } from '../models/vocabulary-provider.interface';
+import { Vocab, VocabularyEntry } from '../models/vocabulary.class';
 
 @Injectable({
   providedIn: 'root'
 })
-
 export class MetadataService {
-  private vocabularies: Vocab[] = [];
-  private vocabulariesIdDictionary: Record<string, VocabIdDictionaryValue> = {};
+  private provider = signal<VocabularyProvider | undefined>(undefined);
+  private languageSignal = signal<string>('de');
+  unitProfileColumns = signal<MDProfileGroup[]>([]);
+  itemProfileColumns = signal<MDProfileGroup>({} as MDProfileGroup);
 
-  storeVocabularies(vocabularies: Vocab[]): void {
-    this.vocabularies = vocabularies;
+  setLanguage(lang: string): void {
+    this.languageSignal.set(lang);
+  }
+
+  getLanguage(): string {
+    return this.languageSignal();
+  }
+
+  setVocabularyProvider(provider: VocabularyProvider): void {
+    this.provider.set(provider);
   }
 
   getVocabularies(): Vocab[] {
-    return this.vocabularies;
+    const provider = this.provider();
+    if (!provider) {
+      return [];
+    }
+    return provider.getVocabularies() as Vocab[];
   }
 
-  storeVocabulariesIdDictionary(vocabularies: Record<string, VocabIdDictionaryValue>): void {
-    this.vocabulariesIdDictionary = vocabularies;
+  getVocabulariesIdDictionary(): Record<string, VocabularyEntry> {
+    const provider = this.provider();
+    if (!provider) {
+      return {};
+    }
+    return provider.getVocabularyDictionary() as Record<string, VocabularyEntry>;
   }
 
-  getVocabulariesIdDictionary(): Record<string, VocabIdDictionaryValue> {
-    return this.vocabulariesIdDictionary;
+  vocabulariesIdDictionary() {
+    return this.getVocabulariesIdDictionary();
   }
 }
