@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable import/no-extraneous-dependencies */
 import {
-  Component, Input, OnDestroy, OnInit,
+  AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit,
   ViewEncapsulation, signal, effect,
   ChangeDetectorRef,
   output
@@ -19,7 +19,7 @@ import {
   LanguageCodedText
 } from '@iqbspecs/metadata-profile';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyModule } from '@ngx-formly/core';
-import { Subject } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { MetadataValue, SimpleValue } from '@iqbspecs/metadata-values';
 import { VocabularyProvider } from '../models/vocabulary-provider.interface';
 import {
@@ -60,7 +60,7 @@ type ModelValue = string | number | boolean | Record<string, string> | Vocabular
   imports: [FormsModule, ReactiveFormsModule, FormlyModule],
   encapsulation: ViewEncapsulation.None
 })
-export class ProfileFormComponent implements OnInit, OnDestroy {
+export class ProfileFormComponent implements OnInit, AfterViewInit, OnDestroy {
   private profileSignal = signal<MDProfile | undefined>(undefined);
   private metadataSignal = signal<Partial<UnitMetadataValues>>({});
   private languageSignal = signal<string>('de');
@@ -161,10 +161,12 @@ export class ProfileFormComponent implements OnInit, OnDestroy {
   private metadataEntryLabels: Record<string, { lang: string, value: string }[]> = {};
   private ngUnsubscribe = new Subject<void>();
   private modelChangeSuppressionDepth = 0;
+  private readonly nativeInputHandler = (event: Event): void => this.onFormInput(event);
 
   constructor(
     public metadataService: MetadataService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private elementRef: ElementRef<HTMLElement>
   ) {
     this.formlyOptions = {
       formState: this.formState,
@@ -214,6 +216,10 @@ export class ProfileFormComponent implements OnInit, OnDestroy {
         this.cdr.detectChanges();
       });
     });
+
+    this.form().valueChanges
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(value => this.onModelChange(value as Record<string, ModelValue>));
   }
 
   ngOnInit() {
@@ -221,6 +227,11 @@ export class ProfileFormComponent implements OnInit, OnDestroy {
     if (currentProfile) {
       this.loadProfile();
     }
+  }
+
+  ngAfterViewInit(): void {
+    this.elementRef.nativeElement.addEventListener('input', this.nativeInputHandler, true);
+    this.elementRef.nativeElement.addEventListener('change', this.nativeInputHandler, true);
   }
 
   private getProfile(): MDProfile | undefined {
@@ -337,14 +348,16 @@ export class ProfileFormComponent implements OnInit, OnDestroy {
   ): MetadataProfileValues {
     const currentLanguage = this.getLanguage();
     return {
-      entries: allEntries.map(entry => ({
-        id: entry[0],
-        label: this.metadataEntryLabels[entry[0]] ?? [{
-          lang: currentLanguage,
-          value: this.profileItemKeys[entry[0]]?.label ?? ''
-        }],
-        value: this.mapFormlyModelValueToMetadataValue(entry)
-      })),
+      entries: allEntries
+        .filter(entry => entry[1] !== undefined && entry[1] !== null)
+        .map(entry => ({
+          id: entry[0],
+          label: this.metadataEntryLabels[entry[0]] ?? [{
+            lang: currentLanguage,
+            value: this.profileItemKeys[entry[0]]?.label ?? ''
+          }],
+          value: this.mapFormlyModelValueToMetadataValue(entry)
+        })),
       profileId,
       order: 0
     };
@@ -624,14 +637,18 @@ export class ProfileFormComponent implements OnInit, OnDestroy {
     };
   }
 
-  onModelChange(): void {
+  onModelChange(modelValue?: Record<string, ModelValue>): void {
     if (this.modelChangeSuppressionDepth > 0 || this.readonlySignal()) {
       return;
     }
 
-    const currentModel = this.model();
+    const currentModel = modelValue ?? this.form().getRawValue() as Record<string, ModelValue>;
     const currentProfile = this.getProfile();
-    const currentMetadata = this.getMetadata();
+    const existingMetadata = this.getMetadata();
+    const currentMetadata: Partial<UnitMetadataValues> = {
+      ...existingMetadata,
+      profiles: existingMetadata.profiles ? [...existingMetadata.profiles] : undefined
+    };
 
     if (!currentProfile) return;
 
@@ -654,6 +671,54 @@ export class ProfileFormComponent implements OnInit, OnDestroy {
     this.metadataChange.emit(currentMetadata);
   }
 
+  onFormInput(event: Event): void {
+    queueMicrotask(() => this.onModelChange(this.getModelWithDomInputValue(event)));
+  }
+
+  private getModelWithDomInputValue(event: Event): Record<string, ModelValue> {
+    const currentModel = {
+      ...this.model(),
+      ...this.form().getRawValue() as Record<string, ModelValue>
+    };
+    const target = event.target;
+
+    if (!(target instanceof HTMLInputElement) || target.type !== 'number') {
+      return currentModel;
+    }
+
+    const key = this.getKeyFromInput(target);
+    if (!key) return currentModel;
+
+    const type = this.profileItemKeys[key]?.type;
+    if (type !== 'NUMBER') return currentModel;
+
+    const params = this.profileItemKeys[key]?.parameters as ProfileEntryParametersNumber | null;
+    if (params?.isPeriodSeconds) {
+      const durationRoot = target.closest('iqb-formly-duration');
+      const durationInputs = Array.from(durationRoot?.querySelectorAll('input[type="number"]') || []);
+      const minutes = Number((durationInputs[0] as HTMLInputElement | undefined)?.value || 0);
+      const seconds = Number((durationInputs[1] as HTMLInputElement | undefined)?.value || 0);
+      return {
+        ...currentModel,
+        [key]: minutes * 60 + seconds
+      };
+    }
+
+    return {
+      ...currentModel,
+      [key]: target.value === '' ? '' : Number(target.value)
+    };
+  }
+
+  private getKeyFromInput(input: HTMLInputElement): string | undefined {
+    const formlyKey = input.id.match(/^formly_\d+_[^_]+_(.+)_\d+$/)?.[1];
+    if (formlyKey && this.profileItemKeys[formlyKey]) return formlyKey;
+
+    const fieldText = input.closest('formly-field')?.textContent?.trim().replace(/\s+/g, ' ') || '';
+    return Object.entries(this.profileItemKeys)
+      .find(([, item]) => item.type === 'NUMBER' && fieldText.startsWith(item.label))?.[0];
+  }
+
   private assignProfileOrder(profiles: MetadataProfileValues[]): MetadataProfileValues[] {
     const currentProfile = this.getProfile();
     return profiles.map((metadata: MetadataProfileValues, index: number) => ({
@@ -663,6 +728,8 @@ export class ProfileFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.elementRef.nativeElement.removeEventListener('input', this.nativeInputHandler, true);
+    this.elementRef.nativeElement.removeEventListener('change', this.nativeInputHandler, true);
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
   }
