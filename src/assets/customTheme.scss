@@ -16,6 +16,7 @@ $aspect-theme: mat.m2-define-light-theme((
 
 @include mat.checkbox-color($aspect-theme);
 @include mat.radio-color($aspect-theme);
+@include mat.slide-toggle-color($aspect-theme);
 @include mat.slider-color($aspect-theme);
 
 
