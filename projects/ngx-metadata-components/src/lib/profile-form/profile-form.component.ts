@@ -266,10 +266,13 @@ export class ProfileFormComponent implements OnInit, OnDestroy {
 
   private runWithoutModelChange(action: () => void): void {
     this.modelChangeSuppressionDepth += 1;
-    action();
-    queueMicrotask(() => {
-      this.modelChangeSuppressionDepth -= 1;
-    });
+    try {
+      action();
+    } finally {
+      queueMicrotask(() => {
+        this.modelChangeSuppressionDepth -= 1;
+      });
+    }
   }
 
   private findCurrentProfileMetadata(metadata: MetadataProfileValues[] | undefined): MetadataProfileValues | undefined {

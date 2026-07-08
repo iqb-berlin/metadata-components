@@ -14,7 +14,6 @@ import { Subject, takeUntil } from 'rxjs';
 import {
   MAT_DIALOG_DATA, MatDialogActions, MatDialogClose, MatDialogContent
 } from '@angular/material/dialog';
-import { TranslateModule } from '@ngx-translate/core';
 import { MatIcon } from '@angular/material/icon';
 
 import { MatCheckbox } from '@angular/material/checkbox';
@@ -35,7 +34,7 @@ import { VocabNodeChangeService } from '../services/vocab-node-change.service';
   providers: [VocabNodeChangeService],
   standalone: true,
   // eslint-disable-next-line max-len
-  imports: [MatDialogContent, MatTree, MatTreeNodeDef, MatTreeNode, MatTreeNodeToggle, MatTreeNodePadding, MatIconButton, MatCheckbox, MatIcon, MatDialogActions, MatButton, MatDialogClose, AreAllDescendantsSelectedPipe, AreSomeDescendantsSelectedPipe, IsTreeControlExpandedPipe, IsNodeSelectedPipe, TranslateModule]
+  imports: [MatDialogContent, MatTree, MatTreeNodeDef, MatTreeNode, MatTreeNodeToggle, MatTreeNodePadding, MatIconButton, MatCheckbox, MatIcon, MatDialogActions, MatButton, MatDialogClose, AreAllDescendantsSelectedPipe, AreSomeDescendantsSelectedPipe, IsTreeControlExpandedPipe, IsNodeSelectedPipe]
 })
 
 export class NestedTreeComponent implements OnInit {
