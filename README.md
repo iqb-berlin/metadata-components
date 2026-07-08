@@ -2,9 +2,9 @@
 
 This repo provides components for metadata [https://iqb-vocabs.github.io](https://iqb-vocabs.github.io/).
 
-# ngx-metadata-components
+# metadata-components
 
-[![npm](https://img.shields.io/npm/v/%40iqb%2Fngx-metadata-components)](https://www.npmjs.com/package/@iqb/ngx-coding-components)
+[![npm](https://img.shields.io/npm/v/%40iqb%2Fmetadata-components)](https://www.npmjs.com/package/@iqb/metadata-components)
 
 Library with angular components for metadata.
 

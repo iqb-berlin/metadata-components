@@ -1,5 +1,22 @@
 # Release notes
 
+## 0.2.5 - Release stabilization
+
+### Summary
+
+This release stabilizes the Angular 20 metadata-components package line after
+the resolver decoupling work.
+
+### Changes
+
+- Relaxed the `@iqbspecs/metadata-values` peer dependency to `^3.0.1`, so
+  consumers can install compatible patch releases such as `3.0.2`.
+- Restored a reproducible Angular 20 dependency tree for local development and
+  CI.
+- Added translated labels for the vocabulary dialog action buttons.
+- Matched vocabulary URLs case-insensitively when opening vocabulary dialogs.
+- Cleaned up README package references and release notes formatting.
+
 ## 0.2.3 — Resolver decoupling
 
 ### Summary
@@ -96,4 +113,3 @@ can import the exact types it must return.
   with `selectionMode: "IN_FORM"`.
 - `@angular/forms` and `rxjs` are now declared as peer dependencies.
 - Removed a broken `exports` entry from the package manifest.
-```

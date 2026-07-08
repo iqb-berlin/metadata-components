@@ -97,8 +97,9 @@ export class VocabNodeChangeService {
   }
 
   private initialize(): void {
-    const vocabulary = this.dialogData.vocabularies
-      .find(vocab => vocab.url === this.dialogData.props.url);
+    const url = this.dialogData.props.url;
+    const vocabulary = this.dialogData.vocabularies.find(vocab => vocab.url === url) ||
+      this.dialogData.vocabularies.find(vocab => vocab.url.toLowerCase() === url?.toLowerCase());
 
     if (!vocabulary?.data) {
       this.dataChange.next([]);
