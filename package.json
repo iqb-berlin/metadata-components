@@ -7,6 +7,7 @@
     "build_mc": "rm -rf dist/ngx-metadata-components && ng build ngx-metadata-components",
     "build": "npm run build_mc && npm run start",
     "npm_publish": "cd dist/ngx-metadata-components && npm publish --access public",
+    "test:ci": "ng test ngx-metadata-components --watch=false --browsers=ChromeHeadless",
     "lint": "eslint \"src/**/*.ts\" \"projects/**/*.ts\"",
     "lint:fix": "eslint \"src/**/*.ts\" \"projects/**/*.ts\" --fix",
     "lint:js": "eslint \"**/*.js\"",
