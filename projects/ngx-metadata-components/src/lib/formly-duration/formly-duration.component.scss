@@ -1,9 +1,16 @@
 .time-input {
-  width: 100px;
+  min-width: 0;
+  width: 88px;
 }
 
 .duration-container {
   position: relative;
+}
+
+.duration-input-group {
+  align-items: end;
+  display: inline-grid;
+  grid-template-columns: minmax(72px, 88px) auto minmax(72px, 88px);
 }
 
 .label {
@@ -16,9 +23,12 @@
 }
 
 .duration-separator {
-  border-bottom: solid 1px rgba(0, 0, 0, 0.5);
-  margin-left: -2px;
-  margin-right: -2px;
-  padding: 24px 10px 7px 10px;
-  background-color: rgb(245, 245, 245);
+  align-items: center;
+  align-self: stretch;
+  color: rgba(0, 0, 0, 0.72);
+  display: flex;
+  font-size: 16px;
+  justify-content: center;
+  line-height: 1;
+  padding: 22px 8px 10px;
 }
