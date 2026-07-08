@@ -29,10 +29,10 @@ interface MetadataData {
   imports: [CommonModule],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   template: `
-    <div style="max-width: 1200px; margin: 50px auto; padding: 20px;">
+    <div class="demo-shell">
       <h1>Metadata Components Test</h1>
 
-      <div style="background: #f0f0f0; padding: 20px; margin-bottom: 20px; border-radius: 8px;">
+      <div class="demo-load-panel">
         <h3>Load Profile and Metadata</h3>
 
         <div style="margin-bottom: 15px;">
@@ -59,27 +59,29 @@ interface MetadataData {
             style="width: 100%; padding: 8px; font-size: 14px;">
         </div>
 
-        <button
-          (click)="loadData()"
-          [disabled]="loading()"
-          style="background: #1976d2; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px;">
-          {{ loading() ? 'Loading...' : 'Load Data' }}
-        </button>
+        <div class="demo-button-row">
+          <button
+            class="demo-button demo-button-primary"
+            (click)="loadData()"
+            [disabled]="loading()">
+            {{ loading() ? 'Loading...' : 'Load Data' }}
+          </button>
 
-        <button
-          (click)="loadDefaultData()"
-          [disabled]="loading()"
-          style="background: #666; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; margin-left: 10px;">
-          Load Local Examples
-        </button>
+          <button
+            class="demo-button demo-button-secondary"
+            (click)="loadDefaultData()"
+            [disabled]="loading()">
+            Load Local Examples
+          </button>
 
-        <button
-          (click)="toggleReadonly()"
-          [disabled]="!profileData() || !metadataData()"
-          [style.background]="readonly() ? '#ff9800' : '#4caf50'"
-          style="color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; margin-left: 10px;">
-          {{ readonly() ? '🔒 Readonly Mode - Click to Edit' : '✏️ Edit Mode - Click to Lock' }}
-        </button>
+          <button
+            class="demo-button"
+            (click)="toggleReadonly()"
+            [disabled]="!profileData() || !metadataData()"
+            [style.background]="readonly() ? '#ff9800' : '#4caf50'">
+            {{ readonly() ? '🔒 Readonly Mode - Click to Edit' : '✏️ Edit Mode - Click to Lock' }}
+          </button>
+        </div>
       </div>
 
       @if (loading()) {
@@ -99,7 +101,7 @@ interface MetadataData {
       }
 
       @if (profileData() && metadataData()) {
-        <div style="background: #e8f5e9; padding: 10px; margin: 10px 0; border-radius: 4px;">
+        <div class="demo-status">
           <strong>✅ Profile Loaded:</strong> {{ profileData()?.id }}
           @if (vocabularyCount() > 0) {
             <br><strong>📚 Vocabularies:</strong> {{ vocabularyCount() }} loaded
@@ -107,6 +109,12 @@ interface MetadataData {
           }
           <br><strong>🔒 Readonly Mode:</strong> {{ readonly() ? 'ENABLED' : 'DISABLED' }}
         </div>
+
+        @if (!hasMetadataEntries()) {
+          <div class="demo-empty-state">
+            No metadata values found for this data set. The form is ready for new entries.
+          </div>
+        }
 
         <metadata-profile-form
           id="metadata-form"
@@ -124,12 +132,65 @@ interface MetadataData {
     :host {
       display: block;
     }
+    .demo-shell {
+      margin: 50px auto;
+      max-width: 1200px;
+      padding: 20px;
+    }
+    .demo-load-panel {
+      background: #f0f0f0;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      padding: 20px;
+    }
+    .demo-button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .demo-button {
+      border: none;
+      border-radius: 4px;
+      color: white;
+      cursor: pointer;
+      font-size: 16px;
+      padding: 10px 20px;
+    }
+    .demo-button-primary {
+      background: #1976d2;
+    }
+    .demo-button-secondary {
+      background: #666;
+    }
+    .demo-status {
+      background: #e8f5e9;
+      border-radius: 4px;
+      margin: 10px 0;
+      padding: 10px;
+    }
+    .demo-empty-state {
+      background: #eef5ff;
+      border: 1px solid #90caf9;
+      border-radius: 4px;
+      color: #0d47a1;
+      margin: 10px 0;
+      padding: 10px;
+    }
     button:hover:not(:disabled) {
       opacity: 0.9;
     }
     button:disabled {
       opacity: 0.5;
       cursor: not-allowed;
+    }
+    @media (max-width: 600px) {
+      .demo-shell {
+        margin: 24px auto;
+        padding: 16px;
+      }
+      .demo-button {
+        width: 100%;
+      }
     }
   `]
 })
@@ -148,6 +209,14 @@ export class AppComponent implements OnInit {
   protected readonly Object = Object;
   vocabularyCount = computed(() => this.resolver.getVocabularies().length);
   dictionarySize = computed(() => Object.keys(this.resolver.getVocabularyDictionary()).length);
+  hasMetadataEntries = computed(() => {
+    const metadata = this.metadataData();
+    if (!metadata) return false;
+
+    const currentProfileMetadata = this.findCurrentProfileMetadata(metadata.profiles);
+
+    return Boolean(currentProfileMetadata?.entries?.length);
+  });
 
   resolver = new MetadataResolver({
     cache: true
@@ -198,6 +267,9 @@ export class AppComponent implements OnInit {
     this.loading.set(true);
     this.loadingVocabularies.set(false);
     this.error.set(null);
+    this.profileData.set(null);
+    this.metadataData.set(null);
+    this.currentMetadata.set(null);
     this.webComponentInitialized = false;
 
     try {
@@ -237,6 +309,17 @@ export class AppComponent implements OnInit {
     } catch (err) {
       throw new Error(`Failed to load from ${url}: ${(err as Error).message}`);
     }
+  }
+
+  private findCurrentProfileMetadata(metadata: any[] | undefined): any | undefined {
+    if (!metadata?.length) return undefined;
+
+    const currentProfile = this.profileData();
+    const byId = metadata.find(profile => profile.profileId === currentProfile?.id);
+
+    if (byId) return byId;
+
+    return metadata.find(profile => profile.isCurrent === true);
   }
 
   initializeWebComponent(): void {
