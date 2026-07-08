@@ -126,12 +126,12 @@ export class ProfileFormComponent implements OnInit, OnDestroy {
   }
 
   @Input()
-  set readonly(value: boolean) {
-    this.readonlySignal.set(value);
+  set readonly(value: boolean | string | null | undefined) {
+    this.readonlySignal.set(ProfileFormComponent.coerceBooleanInput(value));
   }
 
-  private getReadonly(): boolean {
-    return this.readonlySignal();
+  private static coerceBooleanInput(value: boolean | string | null | undefined): boolean {
+    return value === true || value === '' || value === 'true';
   }
 
   // @Input() set vocabularies(value: Vocab[]) {
@@ -160,6 +160,7 @@ export class ProfileFormComponent implements OnInit, OnDestroy {
   private profileItemKeys: Record<string, ProfileItemKeyValue> = {};
   private metadataEntryLabels: Record<string, { lang: string, value: string }[]> = {};
   private ngUnsubscribe = new Subject<void>();
+  private modelChangeSuppressionDepth = 0;
 
   constructor(
     public metadataService: MetadataService,
@@ -201,22 +202,18 @@ export class ProfileFormComponent implements OnInit, OnDestroy {
         const newModel = this.mapMetadataValuesToFormlyModel(
           this.findCurrentProfileMetadata(metadata.profiles)
         );
-        this.model.set(newModel);
+        this.setModelFromMetadata(newModel);
       }
     });
 
     effect(() => {
       const readonly = this.readonlySignal();
 
-      console.log('Readonly effect triggered:', readonly);
-
-      // Just update the property on the existing object
-      this.formState.readonly = readonly;
-
-      console.log('FormState after update:', this.formState);
-
-      this.cdr.detectChanges();
-    }, { allowSignalWrites: true });
+      this.runWithoutModelChange(() => {
+        this.formState.readonly = readonly;
+        this.cdr.detectChanges();
+      });
+    });
   }
 
   ngOnInit() {
@@ -257,9 +254,22 @@ export class ProfileFormComponent implements OnInit, OnDestroy {
     const newModel = this.mapMetadataValuesToFormlyModel(
       this.findCurrentProfileMetadata(currentMetadata.profiles)
     );
-    this.model.set(newModel);
+    this.setModelFromMetadata(newModel);
+  }
 
-    queueMicrotask(() => this.cdr.detectChanges());
+  private setModelFromMetadata(model: Record<string, ModelValue>): void {
+    this.runWithoutModelChange(() => {
+      this.model.set(model);
+      queueMicrotask(() => this.cdr.detectChanges());
+    });
+  }
+
+  private runWithoutModelChange(action: () => void): void {
+    this.modelChangeSuppressionDepth += 1;
+    action();
+    queueMicrotask(() => {
+      this.modelChangeSuppressionDepth -= 1;
+    });
   }
 
   private findCurrentProfileMetadata(metadata: MetadataProfileValues[] | undefined): MetadataProfileValues | undefined {
@@ -318,7 +328,10 @@ export class ProfileFormComponent implements OnInit, OnDestroy {
     return this.mapFormlyModelToMetadataValueEntries(Object.entries(model), profileId);
   }
 
-  private mapFormlyModelToMetadataValueEntries(allEntries: ModelValueEntry[], profileId: string): MetadataProfileValues {
+  private mapFormlyModelToMetadataValueEntries(
+    allEntries: ModelValueEntry[],
+    profileId: string
+  ): MetadataProfileValues {
     const currentLanguage = this.getLanguage();
     return {
       entries: allEntries.map(entry => ({
@@ -473,11 +486,14 @@ export class ProfileFormComponent implements OnInit, OnDestroy {
           const hideNumbering = params?.hideNumbering || false;
           return (value as StoredVocabularyEntry[]).map(v => {
             const rawLabels = v.label ?? (v as any).text ?? [];
-            const textLabels = rawLabels.map((l: any) => ({ lang: l.lang, value: l.value }));
+            const textLabels: { lang: string, value: string }[] = rawLabels
+              .map((l: any) => ({ lang: l.lang, value: l.value }));
             const dictEntry = vocabDict[v.id];
 
             if (!dictEntry) {
-              const savedText = textLabels.find(t => t.lang === 'de')?.value || v.id.split('/').pop() || v.id;
+              const savedText = textLabels.find(label => label.lang === 'de')?.value ||
+                v.id.split('/').pop() ||
+                v.id;
               return {
                 id: v.id,
                 name: savedText,
@@ -595,6 +611,10 @@ export class ProfileFormComponent implements OnInit, OnDestroy {
   }
 
   onModelChange(): void {
+    if (this.modelChangeSuppressionDepth > 0 || this.readonlySignal()) {
+      return;
+    }
+
     const currentModel = this.model();
     const currentProfile = this.getProfile();
     const currentMetadata = this.getMetadata();

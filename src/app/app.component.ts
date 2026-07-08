@@ -153,6 +153,10 @@ export class AppComponent implements OnInit {
     cache: true
   });
 
+  private readonly metadataChangeHandler = (event: Event): void => {
+    this.currentMetadata.set((event as CustomEvent).detail);
+  };
+
   constructor(private http: HttpClient) {
     effect(() => {
       const profile = this.profileData();
@@ -163,13 +167,11 @@ export class AppComponent implements OnInit {
       }
     });
 
-    // React to readonly changes
     effect(() => {
       const isReadonly = this.readonly();
       const form = document.getElementById('metadata-form') as any;
 
       if (form && this.webComponentInitialized) {
-        console.log('Readonly changed to:', isReadonly);
         form.readonly = isReadonly;
       }
     });
@@ -177,9 +179,7 @@ export class AppComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     try {
-      console.log('Starting initialization...');
       await bootstrapMetadataWebComponents();
-      console.log('✅ Web components registered');
 
       await this.loadDefaultData();
     } catch (err) {
@@ -196,53 +196,39 @@ export class AppComponent implements OnInit {
 
   async loadData(): Promise<void> {
     this.loading.set(true);
+    this.loadingVocabularies.set(false);
     this.error.set(null);
     this.webComponentInitialized = false;
 
     try {
-      console.log(`Loading profile from: ${this.profileUrl()}`);
-      console.log(`Loading metadata from: ${this.metadataUrl()}`);
-
       const profileData = await this.loadFromUrl<ProfileData>(this.profileUrl());
       const profile = profileData as MDProfile;
-      this.profileData.set(profile);
-      console.log('Profile loaded:', profile.id);
 
       const metadata = await this.loadFromUrl<MetadataData>(this.metadataUrl());
+
+      this.loadingVocabularies.set(true);
+      await this.resolver.loadVocabularies(profile as any);
+      this.loadingVocabularies.set(false);
+
+      this.profileData.set(profile);
       this.metadataData.set(metadata);
       this.currentMetadata.set(metadata);
-      console.log('Metadata loaded');
-
-      console.log('Loading vocabularies...');
-      await this.resolver.loadVocabularies(profile as any);
-
-      console.log(`Loaded ${this.resolver.getVocabularies().length} vocabularies`);
-      console.log(`Dictionary: ${Object.keys(this.resolver.getVocabularyDictionary()).length} entries`);
 
       this.loading.set(false);
     } catch (err) {
       this.error.set(`Failed to load data: ${(err as Error).message}`);
       this.loading.set(false);
+      this.loadingVocabularies.set(false);
       console.error('Error loading data:', err);
     }
   }
 
   toggleReadonly(): void {
-    const newValue = !this.readonly();
-    console.log('Toggle readonly:', newValue);
-    this.readonly.set(newValue);
+    this.readonly.set(!this.readonly());
   }
 
   private async loadFromUrl<T>(url: string): Promise<T> {
     try {
-      const isRelativePath = !url.startsWith('http://') && !url.startsWith('https://');
-
-      if (isRelativePath) {
-        console.log(`Loading local file: ${url}`);
-      } else {
-        console.log(`Loading remote URL: ${url}`);
-      }
-
       const data = await firstValueFrom(
         this.http.get<T>(url)
       );
@@ -263,31 +249,16 @@ export class AppComponent implements OnInit {
     }
 
     try {
-      console.log('Initializing web component...');
-      console.log('   Profile:', this.profileData()?.id);
-      console.log('   Vocabularies:', this.resolver.getVocabularies().length);
-      console.log('   Dictionary entries:', Object.keys(this.resolver.getVocabularyDictionary()).length);
-      console.log('   Readonly:', this.readonly());
-
       form.profileData = JSON.stringify(this.profileData());
       form.metadataValues = JSON.stringify(this.metadataData());
       form.language = 'de';
       form.vocabularyProvider = this.resolver;
       form.readonly = this.readonly();
 
-      form.addEventListener('metadataChange', (event: CustomEvent) => {
-        console.log('Metadata changed:', event.detail);
-        this.currentMetadata.set(event.detail);
-      });
+      form.removeEventListener('metadataChange', this.metadataChangeHandler);
+      form.addEventListener('metadataChange', this.metadataChangeHandler);
 
       this.webComponentInitialized = true;
-      console.log('Web component initialized successfully');
-
-      // Debug: Check if readonly attribute is set
-      setTimeout(() => {
-        console.log('Web component readonly attribute:', form.getAttribute('readonly'));
-        console.log('Web component readonly property:', form.readonly);
-      }, 100);
     } catch (err) {
       console.error(' Error initializing web component:', err);
       this.error.set(`Failed to initialize web component: ${(err as Error).message}`);

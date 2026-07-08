@@ -33,4 +33,8 @@ bootstrapApplication(AppComponent, {
       FormlyMaterialModule
     )
   ]
-}).catch(err => console.error(err));
+}).catch(error => {
+  setTimeout(() => {
+    throw error;
+  });
+});
