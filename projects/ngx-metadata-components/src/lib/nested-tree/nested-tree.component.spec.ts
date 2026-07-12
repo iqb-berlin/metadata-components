@@ -38,4 +38,15 @@ describe('NestedTreeNodeComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('renders translatable action buttons with data-cy hooks', () => {
+    const confirm = fixture.nativeElement
+      .querySelector('[data-cy="metadata-nested-tree-confirm-button"]');
+    const cancel = fixture.nativeElement
+      .querySelector('[data-cy="metadata-nested-tree-cancel-button"]');
+    // With the default (no-op) TranslateLoader the pipe echoes the key,
+    // proving the buttons run through translate instead of a hardcoded label.
+    expect(confirm?.textContent?.trim()).toBe('confirm');
+    expect(cancel?.textContent?.trim()).toBe('cancel');
+  });
 });
