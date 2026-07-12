@@ -269,10 +269,19 @@ export class ProfileFormComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private setModelFromMetadata(model: Record<string, ModelValue>): void {
+    // Formly syncs a new model reference into the form at check time,
+    // which fires form.valueChanges outside the suppression window below.
+    // Only publish models that actually changed, otherwise the sync loops
+    // model -> form -> valueChanges -> onModelChange -> model forever.
+    if (ProfileFormComponent.isContentEqual(model, this.model())) return;
     this.runWithoutModelChange(() => {
       this.model.set(model);
       queueMicrotask(() => this.cdr.detectChanges());
     });
+  }
+
+  private static isContentEqual(a: unknown, b: unknown): boolean {
+    return JSON.stringify(a) === JSON.stringify(b);
   }
 
   private runWithoutModelChange(action: () => void): void {
@@ -667,6 +676,10 @@ export class ProfileFormComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     currentMetadata.profiles = this.assignProfileOrder(currentMetadata.profiles);
+    // Re-emitting unchanged metadata would re-trigger the metadata effect
+    // (fresh object identity every round) and with it the endless
+    // model/form/valueChanges cycle that freezes the tab.
+    if (ProfileFormComponent.isContentEqual(currentMetadata, existingMetadata)) return;
     this.metadataSignal.set(currentMetadata);
     this.metadataChange.emit(currentMetadata);
   }
