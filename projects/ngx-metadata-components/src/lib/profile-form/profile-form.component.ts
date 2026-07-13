@@ -3,7 +3,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import {
   AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit,
-  ViewEncapsulation, signal, effect,
+  ViewEncapsulation, signal, effect, untracked,
   ChangeDetectorRef,
   output
 } from '@angular/core';
@@ -261,11 +261,19 @@ export class ProfileFormComponent implements OnInit, AfterViewInit, OnDestroy {
     const newFields = this.mapProfileToFormlyFieldConfig(currentProfile);
     this.fields.set(newFields);
 
-    const currentMetadata = this.getMetadata();
-    const newModel = this.mapMetadataValuesToFormlyModel(
-      this.findCurrentProfileMetadata(currentMetadata.profiles)
-    );
-    this.setModelFromMetadata(newModel);
+    // Read metadata/model untracked: loadProfile runs inside the profile effect,
+    // and Angular effects subscribe to every signal read during execution. Without
+    // this guard the effect would also depend on metadataSignal (via getMetadata)
+    // and model (via setModelFromMetadata), so every keystroke — which sets
+    // metadataSignal in onModelChange — re-runs loadProfile and rebuilds the whole
+    // formly field tree, detaching the focused input and scrolling the page.
+    untracked(() => {
+      const currentMetadata = this.getMetadata();
+      const newModel = this.mapMetadataValuesToFormlyModel(
+        this.findCurrentProfileMetadata(currentMetadata.profiles)
+      );
+      this.setModelFromMetadata(newModel);
+    });
   }
 
   private setModelFromMetadata(model: Record<string, ModelValue>): void {
