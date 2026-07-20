@@ -100,7 +100,9 @@ export class FormlyChipsComponent extends FieldType<FieldTypeConfig> implements 
       name,
       id: node.id,
       notation,
-      text: [{ lang: 'de', value: `${hideNumbering ? '' : notation} ${label}`.trim() }]
+      // 'text' hält den reinen Begriff; die Nummerierung (notation) reist getrennt und
+      // wird beim Speichern in das Spec-Feld 'annotation' geschrieben (= SKOS-notation).
+      text: [{ lang: 'de', value: label }]
     };
   }
 
