@@ -102,7 +102,8 @@ export class FormlyInlineComponent
       id: option.id,
       name,
       notation: option.notation,
-      text: [{ lang: 'de', value: name }]
+      // 'text' = reiner Begriff; die Nummerierung wandert beim Speichern nach 'annotation'.
+      text: [{ lang: 'de', value: option.label }]
     };
   }
 

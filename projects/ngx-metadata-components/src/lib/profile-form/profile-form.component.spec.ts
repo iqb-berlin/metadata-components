@@ -5,10 +5,11 @@ import { FormlyModule } from '@ngx-formly/core';
 import { FormlyMaterialModule } from '@ngx-formly/material';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { MDProfile } from '@iqbspecs/metadata-profile';
+import { MDProfile, ProfileEntryParametersVocabulary } from '@iqbspecs/metadata-profile';
 import { ProfileFormComponent } from './profile-form.component';
 import { VocabularyProvider } from '../models/vocabulary-provider.interface';
-import { UnitMetadataValues } from '../models/metadata-values.interface';
+import { StoredVocabularyEntry, UnitMetadataValues } from '../models/metadata-values.interface';
+import { VocabularyEntry } from '../models/vocabulary.class';
 
 const profile = {
   id: 'p1',
@@ -62,6 +63,102 @@ describe('ProfileFormComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('vocabulary notation <-> annotation mapping', () => {
+    // Spec-Feld 'annotation' = interne SKOS-notation (Nummerierung).
+    interface ProfileFormInternals {
+      profileItemKeys: Record<string, {
+        label: string; type: string; parameters: ProfileEntryParametersVocabulary | null;
+      }>;
+      mapFormlyModelValueToMetadataValue(entry: [string, VocabularyEntry[]]): StoredVocabularyEntry[];
+      mapMetaDataEntriesValueToFormlyModelValue(
+        value: StoredVocabularyEntry[], entryId?: string
+      ): VocabularyEntry[];
+    }
+    let internals: ProfileFormInternals;
+
+    const vocabParams = (hideNumbering: boolean): ProfileEntryParametersVocabulary => (
+      { hideNumbering } as unknown as ProfileEntryParametersVocabulary
+    );
+    const setVocabField = (hideNumbering = false): void => {
+      internals.profileItemKeys = {
+        vocabField: { label: 'Vocab', type: 'VOCABULARY', parameters: vocabParams(hideNumbering) }
+      };
+    };
+    const mapToStored = (entry: VocabularyEntry): StoredVocabularyEntry[] => internals
+      .mapFormlyModelValueToMetadataValue(['vocabField', [entry]]);
+    const mapToModel = (stored: StoredVocabularyEntry[]): VocabularyEntry[] => internals
+      .mapMetaDataEntriesValueToFormlyModelValue(stored, 'vocabField');
+
+    beforeEach(() => {
+      internals = component as unknown as ProfileFormInternals;
+    });
+
+    it('writes the internal notation into the spec annotation field on save', () => {
+      setVocabField();
+      const result = mapToStored({
+        id: 'concept-1', name: '1.2 Foo', notation: ['1.2'], text: [{ lang: 'de', value: 'Foo' }]
+      });
+      expect(result).toEqual([{
+        id: 'concept-1',
+        label: [{ lang: 'de', value: 'Foo' }],
+        annotation: [{ lang: 'de', value: '1.2' }]
+      }]);
+    });
+
+    it('emits an empty annotation when the entry has no notation', () => {
+      setVocabField();
+      const result = mapToStored({
+        id: 'concept-1', name: 'Foo', notation: [], text: [{ lang: 'de', value: 'Foo' }]
+      });
+      expect(result[0].annotation).toEqual([]);
+    });
+
+    it('resolves numbering from the dictionary and keeps text as the pure label on load', () => {
+      setVocabField(false);
+      spyOn(component.metadataService, 'vocabulariesIdDictionary').and.returnValue({
+        'concept-1': {
+          id: 'concept-1', name: 'Foo', notation: ['1.2'], text: []
+        }
+      });
+      const result = mapToModel([{
+        id: 'concept-1', label: [{ lang: 'de', value: 'Foo' }], annotation: [{ lang: 'de', value: '1.2' }]
+      }]);
+      expect(result[0].name).toBe('1.2 Foo');
+      expect(result[0].notation).toEqual(['1.2']);
+      expect(result[0].text).toEqual([{ lang: 'de', value: 'Foo' }]);
+    });
+
+    it('reconstructs numbering from annotation when no dictionary entry exists', () => {
+      setVocabField(false);
+      spyOn(component.metadataService, 'vocabulariesIdDictionary').and.returnValue({});
+      const result = mapToModel([{
+        id: 'concept-1', label: [{ lang: 'de', value: 'Foo' }], annotation: [{ lang: 'de', value: '1.2' }]
+      }]);
+      expect(result[0].name).toBe('1.2 Foo');
+      expect(result[0].notation).toEqual(['1.2']);
+    });
+
+    it('omits the numbering from the display name when hideNumbering is true', () => {
+      setVocabField(true);
+      spyOn(component.metadataService, 'vocabulariesIdDictionary').and.returnValue({});
+      const result = mapToModel([{
+        id: 'concept-1', label: [{ lang: 'de', value: 'Foo' }], annotation: [{ lang: 'de', value: '1.2' }]
+      }]);
+      expect(result[0].name).toBe('Foo');
+    });
+
+    it('round-trips notation through save -> load without loss', () => {
+      setVocabField(false);
+      spyOn(component.metadataService, 'vocabulariesIdDictionary').and.returnValue({});
+      const stored = mapToStored({
+        id: 'concept-1', name: '1.2 Foo', notation: ['1.2'], text: [{ lang: 'de', value: 'Foo' }]
+      });
+      const reloaded = mapToModel(stored);
+      expect(reloaded[0].notation).toEqual(['1.2']);
+      expect(reloaded[0].name).toBe('1.2 Foo');
+    });
   });
 
   describe('load cycle stability (regression for the change-detection loop)', () => {

@@ -400,7 +400,9 @@ export class ProfileFormComponent implements OnInit, AfterViewInit, OnDestroy {
           const entry: StoredVocabularyEntry = {
             id: vocabEntry.id,
             label: vocabEntry.text?.map(t => ({ lang: t.lang, value: t.value })) ?? [],
-            annotation: []
+            // Spec-Feld 'annotation' = SKOS-notation (Nummerierung); Anzeige via hideNumbering.
+            annotation: (vocabEntry.notation ?? [])
+              .map(n => ({ lang: currentLanguage, value: n }))
           };
           return entry;
         });
@@ -524,13 +526,18 @@ export class ProfileFormComponent implements OnInit, AfterViewInit, OnDestroy {
             const dictEntry = vocabDict[v.id];
 
             if (!dictEntry) {
-              const savedText = textLabels.find(label => label.lang === 'de')?.value ||
+              const savedLabel = textLabels.find(label => label.lang === 'de')?.value ||
                 v.id.split('/').pop() ||
                 v.id;
+              // Ohne Dictionary die Nummerierung aus dem Spec-Feld 'annotation' rekonstruieren.
+              const savedNotation = (v.annotation ?? [])
+                .map(a => a.value)
+                .filter(n => !!n);
+              const savedNotationStr = savedNotation[0] || '';
               return {
                 id: v.id,
-                name: savedText,
-                notation: [] as string[],
+                name: `${hideNumbering ? '' : savedNotationStr} ${savedLabel}`.trim(),
+                notation: savedNotation,
                 text: textLabels
               };
             }
@@ -541,7 +548,8 @@ export class ProfileFormComponent implements OnInit, AfterViewInit, OnDestroy {
               id: v.id,
               name: `${hideNumbering ? '' : notation} ${label}`.trim(),
               notation: notation ? [notation] : [] as string[],
-              text: textLabels
+              // 'text' aus dem Dictionary als reiner Begriff (heilt alt gespeicherte Kombi-Labels).
+              text: [{ lang: 'de', value: label }]
             };
           });
         }
