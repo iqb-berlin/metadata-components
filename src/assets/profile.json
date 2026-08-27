@@ -1,8 +1,8 @@
 {
-  "id": "https://w3id.org/iqb/p100/unit/",
+  "id": "https://w3id.org/iqb/p199/unit/",
   "label": [{
     "lang": "de",
-    "value": "IQB Mathematik Sek I - Aufgabe"
+    "value": "Testprofil - Aufgabe"
   }],
   "target": ["UNIT"],
   "groups": [
@@ -40,6 +40,39 @@
             "url": "http://w3id.org/openeduhub/vocabs/educationalLevel/",
             "allowMultipleValues": true,
             "hideNumbering": true
+          }
+        },
+        {
+          "id": "q5",
+          "label": [
+            {
+              "lang": "de",
+              "value": "Test Vokabular In-Form One Aufgabenbereiche"
+            }
+          ],
+          "type": "VOCABULARY",
+          "parameters": {
+            "url": "https://w3id.org/iqb/v53/n1/",
+            "allowMultipleValues": false,
+            "maxLevel": 1,
+            "selectionMode": "IN_FORM",
+            "hideNumbering": true
+          }
+        },
+        {
+          "id": "q6",
+          "label": [
+            {
+              "lang": "de",
+              "value": "Test Vokabular In_form Multiple Art der Quelle"
+            }
+          ],
+          "type": "VOCABULARY",
+          "parameters": {
+            "url": "https://w3id.org/iqb/v28/aq/",
+            "allowMultipleValues": true,
+            "maxLevel": 1,
+            "selectionMode": "IN_FORM"
           }
         },
         {

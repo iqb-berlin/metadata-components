@@ -94,7 +94,9 @@ const allControlsProfile = {
           id: 'duration_seconds',
           label: [{ lang: 'de', value: 'Dauer in Sekunden' }],
           type: 'NUMBER',
-          parameters: { minValue: 0, maxValue: 7200, digits: 0, isPeriodSeconds: true }
+          parameters: {
+            minValue: 0, maxValue: 7200, digits: 0, isPeriodSeconds: true
+          }
         },
         {
           id: 'boolean_release',
@@ -493,7 +495,7 @@ async function getPageSnapshot(page) {
     const body = document.body;
     const controls = Array.from(document.querySelectorAll('button, mat-chip-row'));
     const overflowingControls = controls
-      .map((element) => {
+      .map(element => {
         const rect = element.getBoundingClientRect();
         return {
           tag: element.tagName.toLowerCase(),
@@ -506,7 +508,7 @@ async function getPageSnapshot(page) {
       .filter(element => element.clientWidth > 0 && element.scrollWidth > element.clientWidth + 10);
 
     const toggleOverlaps = Array.from(document.querySelectorAll('.iqb-toggle-field'))
-      .map((field) => {
+      .map(field => {
         const children = Array.from(field.children)
           .map(child => ({
             tag: child.tagName.toLowerCase(),
@@ -590,7 +592,7 @@ async function runCase(page, caseId, action) {
 }
 
 async function runDefaultExamples(page) {
-  await runCase(page, 'default-examples', async (caseResult) => {
+  await runCase(page, 'default-examples', async caseResult => {
     await gotoApp(page);
     await page.waitForSelector('text=Profile Loaded:', { timeout: 30000 });
 
@@ -606,7 +608,7 @@ async function runDefaultExamples(page) {
 }
 
 async function runAllControls(page) {
-  await runCase(page, 'all-controls', async (caseResult) => {
+  await runCase(page, 'all-controls', async caseResult => {
     await gotoApp(page);
     await loadData(
       page,
@@ -637,7 +639,7 @@ async function runAllControls(page) {
 }
 
 async function runReadonly(page) {
-  await runCase(page, 'readonly-all-controls', async (caseResult) => {
+  await runCase(page, 'readonly-all-controls', async caseResult => {
     await gotoApp(page);
     await loadData(
       page,
@@ -656,8 +658,12 @@ async function runReadonly(page) {
     }));
 
     reportCheck(caseResult, 'readonly status is visible', disabledState.readonlyText);
-    reportCheck(caseResult, 'readonly disables form controls', disabledState.disabledInputs > 0,
-      JSON.stringify(disabledState));
+    reportCheck(
+      caseResult,
+      'readonly disables form controls',
+      disabledState.disabledInputs > 0,
+      JSON.stringify(disabledState)
+    );
 
     for (const viewport of viewports) {
       await captureViewport(page, caseResult, 'readonly-all-controls', viewport);
@@ -666,7 +672,7 @@ async function runReadonly(page) {
 }
 
 async function runStates(page) {
-  await runCase(page, 'loading-error-empty-states', async (caseResult) => {
+  await runCase(page, 'loading-error-empty-states', async caseResult => {
     await gotoApp(page);
     await loadData(
       page,
@@ -694,14 +700,14 @@ async function runStates(page) {
     await clickLoad(page);
     await page.waitForTimeout(200);
     snapshot = await captureViewport(page, caseResult, 'state-loading', viewports[0]);
-    reportCheck(caseResult, 'loading clears previous data', !snapshot.text.includes('No metadata values found') &&
-      !snapshot.text.includes('Profile Loaded:'));
+    reportCheck(caseResult, 'loading clears previous data', !snapshot.text.includes('No metadata values found')
+      && !snapshot.text.includes('Profile Loaded:'));
     await page.waitForSelector(`text=${allControlsProfile.id}`, { timeout: 30000 });
   });
 }
 
 async function runEdgeData(page) {
-  await runCase(page, 'data-edge-cases', async (caseResult) => {
+  await runCase(page, 'data-edge-cases', async caseResult => {
     await gotoApp(page);
 
     await loadData(
@@ -711,8 +717,11 @@ async function runEdgeData(page) {
       allControlsProfile.id
     );
     let snapshot = await captureViewport(page, caseResult, 'edge-item-only', viewports[0]);
-    reportCheck(caseResult, 'item-only metadata keeps current profile empty state',
-      snapshot.text.includes('No metadata values found'));
+    reportCheck(
+      caseResult,
+      'item-only metadata keeps current profile empty state',
+      snapshot.text.includes('No metadata values found')
+    );
 
     await loadData(
       page,
@@ -731,8 +740,11 @@ async function runEdgeData(page) {
       brokenVocabularyProfile.id
     );
     snapshot = await captureViewport(page, caseResult, 'edge-broken-vocab', viewports[0]);
-    reportCheck(caseResult, 'broken vocabulary keeps saved fallback chip',
-      snapshot.text.includes('Gespeicherter Fallback-Wert'));
+    reportCheck(
+      caseResult,
+      'broken vocabulary keeps saved fallback chip',
+      snapshot.text.includes('Gespeicherter Fallback-Wert')
+    );
 
     await loadData(
       page,
@@ -746,7 +758,7 @@ async function runEdgeData(page) {
 }
 
 async function runInteractions(page) {
-  await runCase(page, 'basic-interactions', async (caseResult) => {
+  await runCase(page, 'basic-interactions', async caseResult => {
     await gotoApp(page);
     await loadData(
       page,
@@ -800,12 +812,20 @@ async function runInteractions(page) {
       })));
     const metadata = JSON.parse(metadataText);
     const entries = metadata.profiles?.[0]?.entries || [];
-    const entryDetails = (id) => JSON.stringify(entries.find(entry => entry.id === id) || null);
+    const entryDetails = id => JSON.stringify(entries.find(entry => entry.id === id) || null);
     reportCheck(caseResult, 'text edit updates current metadata', metadataText.includes('Bearbeiteter Einzeiler'));
-    reportCheck(caseResult, 'number edit updates current metadata', metadataText.includes('"raw": "55"'),
-      `${entryDetails('number_plain')} inputs=${JSON.stringify(inputDiagnostics)}`);
-    reportCheck(caseResult, 'duration edit updates current metadata', metadataText.includes('"raw": "754"'),
-      `${entryDetails('duration_seconds')} inputs=${JSON.stringify(inputDiagnostics)}`);
+    reportCheck(
+      caseResult,
+      'number edit updates current metadata',
+      metadataText.includes('"raw": "55"'),
+      `${entryDetails('number_plain')} inputs=${JSON.stringify(inputDiagnostics)}`
+    );
+    reportCheck(
+      caseResult,
+      'duration edit updates current metadata',
+      metadataText.includes('"raw": "754"'),
+      `${entryDetails('duration_seconds')} inputs=${JSON.stringify(inputDiagnostics)}`
+    );
 
     await form.locator('mat-chip-grid').first().click();
     await page.waitForSelector('mat-dialog-container', { timeout: 10000 });
@@ -813,8 +833,11 @@ async function runInteractions(page) {
     await page.locator('mat-dialog-container button').filter({ hasText: 'confirm' }).click();
     await page.waitForTimeout(500);
     const metadataAfterDialog = await page.locator('pre').innerText();
-    reportCheck(caseResult, 'dialog vocabulary confirm updates metadata',
-      metadataAfterDialog.includes('ui-vocab-alpha'));
+    reportCheck(
+      caseResult,
+      'dialog vocabulary confirm updates metadata',
+      metadataAfterDialog.includes('ui-vocab-alpha')
+    );
 
     for (const viewport of viewports) {
       await captureViewport(page, caseResult, 'basic-interactions', viewport);
@@ -900,8 +923,8 @@ function writeReports() {
   page.on('console', msg => {
     if (msg.type() === 'error') {
       const text = msg.text();
-      const isExpectedMissingMetadata = text.includes('missing-matrix-metadata.json') ||
-        text.includes('Failed to load resource: the server responded with a status of 404');
+      const isExpectedMissingMetadata = text.includes('missing-matrix-metadata.json')
+        || text.includes('Failed to load resource: the server responded with a status of 404');
       const isExpectedBrokenVocabulary = text.includes('Invalid structure: missing hasTopConcept');
       if (!isExpectedMissingMetadata && !isExpectedBrokenVocabulary) {
         results.events.consoleErrors.push(text);
@@ -929,12 +952,24 @@ function writeReports() {
   await runEdgeData(page);
   await runInteractions(page);
 
-  reportCheck(results.matrix[results.matrix.length - 1], 'no page errors', results.events.pageErrors.length === 0,
-    JSON.stringify(results.events.pageErrors));
-  reportCheck(results.matrix[results.matrix.length - 1], 'no unexpected console errors',
-    results.events.consoleErrors.length === 0, JSON.stringify(results.events.consoleErrors));
-  reportCheck(results.matrix[results.matrix.length - 1], 'no unexpected request failures',
-    results.events.requestFailures.length === 0, JSON.stringify(results.events.requestFailures));
+  reportCheck(
+    results.matrix[results.matrix.length - 1],
+    'no page errors',
+    results.events.pageErrors.length === 0,
+    JSON.stringify(results.events.pageErrors)
+  );
+  reportCheck(
+    results.matrix[results.matrix.length - 1],
+    'no unexpected console errors',
+    results.events.consoleErrors.length === 0,
+    JSON.stringify(results.events.consoleErrors)
+  );
+  reportCheck(
+    results.matrix[results.matrix.length - 1],
+    'no unexpected request failures',
+    results.events.requestFailures.length === 0,
+    JSON.stringify(results.events.requestFailures)
+  );
 
   await browser.close();
   writeReports();

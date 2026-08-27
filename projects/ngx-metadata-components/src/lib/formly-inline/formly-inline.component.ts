@@ -1,8 +1,11 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import {
+  ChangeDetectorRef, Component, OnInit, OnDestroy
+} from '@angular/core';
 import { FieldType } from '@ngx-formly/material';
 import { FieldTypeConfig, FormlyFieldProps } from '@ngx-formly/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatCheckbox } from '@angular/material/checkbox';
+import { MatRadioButton } from '@angular/material/radio';
 import { interval, Subject, takeUntil } from 'rxjs';
 import { MetadataService } from '../services/metadata.service';
 import { VocabularyEntry, Vocab, TopConcept } from '../models/vocabulary.class';
@@ -29,14 +32,14 @@ interface FormlyVocabInlineProps extends FormlyFieldProps {
   templateUrl: './formly-inline.component.html',
   styleUrls: ['./formly-inline.component.scss'],
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, MatCheckbox]
+  imports: [FormsModule, ReactiveFormsModule, MatCheckbox, MatRadioButton]
 })
 export class FormlyInlineComponent
   extends FieldType<FieldTypeConfig<FormlyVocabInlineProps>> implements OnInit, OnDestroy {
   options_: VocabOption[] = [];
   private ngUnsubscribe = new Subject<void>();
 
-  constructor(public metadataService: MetadataService) {
+  constructor(public metadataService: MetadataService, private cdr: ChangeDetectorRef) {
     super();
   }
 
@@ -58,6 +61,10 @@ export class FormlyInlineComponent
     this.ngUnsubscribe.complete();
   }
 
+  get isMultiple(): boolean {
+    return !!this.props.allowMultipleValues;
+  }
+
   get selectedIds(): string[] {
     const value = this.formControl.value;
     if (!Array.isArray(value)) return [];
@@ -69,7 +76,7 @@ export class FormlyInlineComponent
   }
 
   onCheckboxChange(option: VocabOption, checked: boolean): void {
-    if (this.props.allowMultipleValues) {
+    if (this.isMultiple) {
       const current: VocabularyEntry[] = Array.isArray(this.formControl.value) ?
         [...this.formControl.value] :
         [];
@@ -91,6 +98,23 @@ export class FormlyInlineComponent
     }
 
     this.formControl.markAsTouched();
+  }
+
+  onRadioClick(option: VocabOption): void {
+    // NOTE: no event.preventDefault() here — that was the original bug.
+    // Without it, Material's ripple/checked animation plays freely.
+    // We read isSelected() synchronously at click-time to detect deselect.
+    if (this.props.readonly) {
+      return;
+    }
+    if (this.isSelected(option.id)) {
+      // Already selected → toggle off.
+      this.formControl.setValue([]);
+    } else {
+      this.formControl.setValue([this.toVocabularyEntry(option)]);
+    }
+    this.formControl.markAsTouched();
+    this.cdr.markForCheck();
   }
 
   private toVocabularyEntry(option: VocabOption): VocabularyEntry {

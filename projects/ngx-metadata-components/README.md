@@ -1,5 +1,32 @@
 # Release notes
 
+## 0.3.3 — Inline vocabulary: checkbox / radio selection
+
+### Summary
+
+The `vocabInline` field type now renders the appropriate control based on
+`allowMultipleValues`:
+
+- **Checkboxes** when `allowMultipleValues: true`.
+- **Radio buttons** when `allowMultipleValues: false`.
+
+Radio buttons support **deselection** — clicking an already-selected option
+clears the value, since the field is optional.
+
+### Changes
+
+- Template branches between `<mat-checkbox>` and `<mat-radio-button>`.
+- Radio click handler toggles selection off when the active option is clicked again.
+- Fixed a visual state bug: the radio button's checked state now updates correctly
+  after each interaction.
+- Unit-test suite added for both rendering modes and deselect/select behaviour.
+
+### Upgrade notes
+
+**Non-breaking.** The public API and stored data format (`VocabularyEntry[]`) are unchanged.
+
+---
+
 ## 0.2.5 - Release stabilization
 
 ### Summary
