@@ -1,5 +1,22 @@
 # Release notes
 
+## 1.0.0 — Angular 21
+
+### Summary
+
+The library now targets Angular 21. Its peer dependencies require Angular 21,
+and its published package is built with Angular 21. Angular 20 consumers must
+remain on the 0.3.x release line.
+
+### Changes
+
+- Updated the library build toolchain to Angular 21.
+- Removed CDK as a bundled runtime dependency; consumers provide it through
+  the peer dependency.
+- Removed the unused `ngx-build-plus` dependency.
+
+---
+
 ## 0.3.3 — Inline vocabulary: checkbox / radio selection
 
 ### Summary
