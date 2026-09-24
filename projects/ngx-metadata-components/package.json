@@ -4,7 +4,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "version": "0.3.3",
+  "version": "0.4.0",
   "author": "IQB - Institut zur Qualitätsentwicklung im Bildungswesen",
   "license": "MIT",
   "description": "Angular components for metadata of IQB.",
@@ -17,21 +17,20 @@
   },
   "homepage": "https://github.com/iqb-berlin/metadata-components#readme",
   "peerDependencies": {
-    "@angular/cdk": "^20.0.0",
-    "@angular/common": "^20.0.0",
-    "@angular/core": "^20.0.0",
-    "@angular/forms": "^20.0.0",
-    "@angular/material": "^20.0.0",
+    "@angular/cdk": "^21.0.0",
+    "@angular/common": "^21.0.0",
+    "@angular/core": "^21.0.0",
+    "@angular/forms": "^21.0.0",
+    "@angular/material": "^21.0.0",
     "@iqbspecs/metadata-values": "^3.0.1",
     "@iqbspecs/metadata-profile": "^0.11.1",
     "@ngx-formly/core": "^7.0.0",
     "@ngx-formly/material": "^7.0.0",
     "@ngx-translate/core": "^15.0.0",
-    "@angular/elements": "^20.0.0",
+    "@angular/elements": "^21.0.0",
     "rxjs": "^7.8.0"
   },
   "dependencies": {
-    "@angular/cdk": "^20.0.0",
     "tslib": "^2.3.0"
   },
   "sideEffects": false
