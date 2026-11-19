@@ -1,3 +1,28 @@
+## Angular host setup
+
+Register the metadata field types and the panel wrapper using the exported Formly configuration.
+In the Angular host, import the Material field types and configure the translation service used by the vocabulary dialog:
+
+```ts
+import { FormlyModule } from '@ngx-formly/core';
+import { FormlyMaterialModule } from '@ngx-formly/material';
+import { TranslateModule } from '@ngx-translate/core';
+import { metadataFormlyConfig } from '@iqb/metadata-components';
+
+@NgModule({
+  imports: [
+    FormlyModule.forRoot(metadataFormlyConfig),
+    FormlyMaterialModule,
+    TranslateModule.forRoot()
+  ]
+})
+export class AppModule {}
+```
+
+If the host already configures translations, keep that setup.
+To combine registrations, spread `metadataFormlyConfig.types` and `metadataFormlyConfig.wrappers`
+into the corresponding arrays in the host's Formly configuration. Host-specific defaults can be added there.
+
 # Release notes
 
 ## 1.0.1

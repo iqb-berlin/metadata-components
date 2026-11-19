@@ -4,13 +4,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { FormlyModule } from '@ngx-formly/core';
 import { FormlyMaterialModule } from '@ngx-formly/material';
 import { ReactiveFormsModule } from '@angular/forms';
-import {
-  FormlyChipsComponent,
-  FormlyToggleComponent,
-  FormlyDurationComponent,
-  FormlyWrapperPanel,
-  FormlyInlineComponent
-} from 'ngx-metadata-components';
+import { metadataFormlyConfig } from 'ngx-metadata-components';
 import { AppComponent } from './app/app.component';
 
 bootstrapApplication(AppComponent, {
@@ -19,17 +13,7 @@ bootstrapApplication(AppComponent, {
     provideHttpClient(),
     importProvidersFrom(
       ReactiveFormsModule,
-      FormlyModule.forRoot({
-        types: [
-          { name: 'chips', component: FormlyChipsComponent, wrappers: ['form-field'] },
-          { name: 'formlyToggle', component: FormlyToggleComponent, wrappers: ['form-field'] },
-          { name: 'duration', component: FormlyDurationComponent, wrappers: ['form-field'] },
-          { name: 'vocabInline', component: FormlyInlineComponent, wrappers: ['form-field'] }
-        ],
-        wrappers: [
-          { name: 'panel', component: FormlyWrapperPanel }
-        ]
-      }),
+      FormlyModule.forRoot(metadataFormlyConfig),
       FormlyMaterialModule
     )
   ]
