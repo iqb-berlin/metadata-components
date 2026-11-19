@@ -14,16 +14,16 @@
     "lint:js:fix": "eslint \"**/*.js\" --fix"
   },
   "dependencies": {
-    "@angular/animations": "21.2.23",
+    "@angular/animations": "21.2.26",
     "@angular/cdk": "21.2.14",
-    "@angular/common": "21.2.23",
-    "@angular/compiler": "21.2.23",
-    "@angular/core": "21.2.23",
-    "@angular/forms": "21.2.23",
+    "@angular/common": "21.2.26",
+    "@angular/compiler": "21.2.26",
+    "@angular/core": "21.2.26",
+    "@angular/forms": "21.2.26",
     "@angular/material": "21.2.14",
-    "@angular/platform-browser": "21.2.23",
-    "@angular/platform-browser-dynamic": "21.2.23",
-    "@angular/router": "21.2.23",
+    "@angular/platform-browser": "21.2.26",
+    "@angular/platform-browser-dynamic": "21.2.26",
+    "@angular/router": "21.2.26",
     "@iqb/metadata-resolver": "^0.2.2",
     "@iqbspecs/metadata-profile": "^0.12.0",
     "@iqbspecs/metadata-values": "^3.0.1",
@@ -34,15 +34,15 @@
     "tslib": "^2.3.0"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "21.2.24",
-    "@angular/cli": "21.2.24",
-    "@angular/compiler-cli": "21.2.23",
-    "@angular/elements": "21.2.23",
+    "@angular-devkit/build-angular": "21.2.30",
+    "@angular/cli": "21.2.30",
+    "@angular/compiler-cli": "21.2.26",
+    "@angular/elements": "21.2.26",
     "@iqb/eslint-config": "^2.0.0",
     "@types/jasmine": "~5.1.0",
     "@typescript-eslint/eslint-plugin": "^7.2.0",
     "@typescript-eslint/parser": "^7.2.0",
-    "esbuild": "^0.27.0",
+    "esbuild": "^0.28.1",
     "eslint": "^8.57.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-airbnb-typescript": "^18.0.0",
@@ -75,5 +75,12 @@
         "extends": "@iqb/eslint-config/javascript"
       }
     ]
+  },
+  "overrides": {
+    "glob@^13.0.0": "14.0.2",
+    "minimatch@>=7 <11.0.1": "11.0.1",
+    "sockjs": {
+      "uuid": "11.1.1"
+    }
   }
 }
