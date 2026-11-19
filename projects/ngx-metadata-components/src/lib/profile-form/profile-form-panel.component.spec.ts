@@ -77,7 +77,8 @@ describe('ProfileFormComponent panel expansion', () => {
       groups: [{
         label: [],
         entries: [
-          field('text', 'TEXT'), field('notes', 'TEXT', { format: 'MULTILINE', textLanguages: [] }),
+          field('text', 'TEXT'),
+          field('notes', 'TEXT', { format: 'MULTILINE', textLanguages: [], pattern: '' }),
           field('count', 'NUMBER'),
           field('duration', 'NUMBER', {
             isPeriodSeconds: true, minValue: null, maxValue: null, digits: 0
