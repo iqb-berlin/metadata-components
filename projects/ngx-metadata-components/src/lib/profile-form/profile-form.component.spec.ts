@@ -161,6 +161,66 @@ describe('ProfileFormComponent', () => {
     });
   });
 
+  it('serializes only the active profile fields when switching between unit and item', fakeAsync(() => {
+    const makeProfile = (id: string, target: 'UNIT' | 'ITEM', field: string): MDProfile => ({
+      id,
+      label: [{ lang: 'de', value: id }],
+      target: [target],
+      groups: [{
+        label: [],
+        entries: [field, 'shared'].map(key => ({
+          id: key,
+          label: [{ lang: 'de', value: key }],
+          type: 'TEXT',
+          parameters: null
+        }))
+      }]
+    });
+    const unitProfile = makeProfile('unit', 'UNIT', 'unitField');
+    const itemProfile = makeProfile('item', 'ITEM', 'itemField');
+    const metadata = (profileId: string, values: Record<string, string>): Partial<UnitMetadataValues> => ({
+      profiles: [{
+        profileId,
+        order: 0,
+        entries: Object.entries(values).map(([id, value]) => ({
+          id,
+          label: [{ lang: 'de', value: id }],
+          value: [{ lang: 'de', value }]
+        }))
+      }]
+    });
+    const showProfile = (nextProfile: MDProfile, values: Partial<UnitMetadataValues>) => {
+      component.metadataValues = values;
+      component.profileData = nextProfile;
+      fixture.detectChanges();
+      tick();
+      fixture.detectChanges();
+      tick();
+    };
+    const lastChange = jasmine.createSpy('metadataChange');
+    component.metadataChange.subscribe(lastChange);
+    component.vocabularyProvider = vocabularyProvider;
+
+    showProfile(unitProfile, metadata('unit', { unitField: 'Unit', shared: 'Unit shared' }));
+    component.onModelChange({ unitField: 'Changed Unit', shared: 'Unit shared' });
+    const unitEdited = lastChange.calls.mostRecent().args[0] as Partial<UnitMetadataValues>;
+
+    showProfile(itemProfile, metadata('item', { itemField: 'Item', shared: 'Item shared' }));
+    expect(component.form().getRawValue()).toEqual({ itemField: 'Item', shared: 'Item shared' });
+    component.onModelChange({ itemField: 'Changed Item', shared: 'Item shared', unitField: 'Changed Unit' });
+    expect(lastChange.calls.mostRecent().args[0].profiles).toEqual(
+      metadata('item', { itemField: 'Changed Item', shared: 'Item shared' }).profiles
+    );
+
+    showProfile(unitProfile, unitEdited);
+    expect(component.form().getRawValue()).toEqual({ unitField: 'Changed Unit', shared: 'Unit shared' });
+    component.onModelChange({ unitField: 'Changed again', shared: 'Unit shared', itemField: 'Changed Item' });
+    expect(lastChange.calls.mostRecent().args[0].profiles).toEqual(
+      metadata('unit', { unitField: 'Changed again', shared: 'Unit shared' }).profiles
+    );
+    tick();
+  }));
+
   describe('load cycle stability (regression for the change-detection loop)', () => {
     const emissions: Partial<UnitMetadataValues>[] = [];
 

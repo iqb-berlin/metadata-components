@@ -19,7 +19,6 @@ import {
   LanguageCodedText
 } from '@iqbspecs/metadata-profile';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyModule } from '@ngx-formly/core';
-import { Subject, takeUntil } from 'rxjs';
 import { MetadataValue, SimpleValue } from '@iqbspecs/metadata-values';
 import { VocabularyProvider } from '../models/vocabulary-provider.interface';
 import {
@@ -159,7 +158,6 @@ export class ProfileFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private profileItemKeys: Record<string, ProfileItemKeyValue> = {};
   private metadataEntryLabels: Record<string, { lang: string, value: string }[]> = {};
-  private ngUnsubscribe = new Subject<void>();
   private modelChangeSuppressionDepth = 0;
   private readonly nativeInputHandler = (event: Event): void => this.onFormInput(event);
 
@@ -217,9 +215,11 @@ export class ProfileFormComponent implements OnInit, AfterViewInit, OnDestroy {
       });
     });
 
-    this.form().valueChanges
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(value => this.onModelChange(value as Record<string, ModelValue>));
+    effect(onCleanup => {
+      const subscription = this.form().valueChanges
+        .subscribe(value => this.onModelChange(value as Record<string, ModelValue>));
+      onCleanup(() => subscription.unsubscribe());
+    });
   }
 
   ngOnInit() {
@@ -258,21 +258,20 @@ export class ProfileFormComponent implements OnInit, AfterViewInit, OnDestroy {
     const currentProfile = this.getProfile();
     if (!currentProfile) return;
 
-    const newFields = this.mapProfileToFormlyFieldConfig(currentProfile);
-    this.fields.set(newFields);
+    this.runWithoutModelChange(() => {
+      this.profileItemKeys = {};
+      this.fields.set(this.mapProfileToFormlyFieldConfig(currentProfile));
+      // Formly retains controls in the previous group when the field configuration changes.
+      this.form.set(new FormGroup({}));
 
-    // Read metadata/model untracked: loadProfile runs inside the profile effect,
-    // and Angular effects subscribe to every signal read during execution. Without
-    // this guard the effect would also depend on metadataSignal (via getMetadata)
-    // and model (via setModelFromMetadata), so every keystroke — which sets
-    // metadataSignal in onModelChange — re-runs loadProfile and rebuilds the whole
-    // formly field tree, detaching the focused input and scrolling the page.
-    untracked(() => {
-      const currentMetadata = this.getMetadata();
-      const newModel = this.mapMetadataValuesToFormlyModel(
-        this.findCurrentProfileMetadata(currentMetadata.profiles)
-      );
-      this.setModelFromMetadata(newModel);
+      // Reading metadata or model here must not make edits rebuild the profile form.
+      untracked(() => {
+        const currentMetadata = this.getMetadata();
+        const newModel = this.mapMetadataValuesToFormlyModel(
+          this.findCurrentProfileMetadata(currentMetadata.profiles)
+        );
+        this.setModelFromMetadata(newModel);
+      });
     });
   }
 
@@ -366,7 +365,7 @@ export class ProfileFormComponent implements OnInit, AfterViewInit, OnDestroy {
     const currentLanguage = this.getLanguage();
     return {
       entries: allEntries
-        .filter(entry => entry[1] !== undefined && entry[1] !== null)
+        .filter(([id, value]) => Object.hasOwn(this.profileItemKeys, id) && value !== undefined && value !== null)
         .map(entry => ({
           id: entry[0],
           label: this.metadataEntryLabels[entry[0]] ?? [{
@@ -451,6 +450,7 @@ export class ProfileFormComponent implements OnInit, AfterViewInit, OnDestroy {
   // //////////////////////////////////
 
   private mapMetadataValuesToFormlyModel(metadata: MetadataProfileValues | undefined): Record<string, ModelValue> {
+    this.metadataEntryLabels = {};
     if (!metadata || !metadata.entries) return {};
     return this.mapMetaDataEntriesToFormlyModel(metadata.entries);
   }
@@ -459,6 +459,7 @@ export class ProfileFormComponent implements OnInit, AfterViewInit, OnDestroy {
     const model: Record<string, ModelValue> = {};
     let triggerSaving = false;
     entries.forEach((entry: MetadataValue) => {
+      if (!Object.hasOwn(this.profileItemKeys, entry.id)) return;
       if (entry.label?.length) {
         this.metadataEntryLabels[entry.id] = entry.label.map(l => ({ lang: l.lang, value: l.value }));
       }
@@ -469,7 +470,12 @@ export class ProfileFormComponent implements OnInit, AfterViewInit, OnDestroy {
         triggerSaving = true;
       }
     });
-    if (triggerSaving) setTimeout(() => this.onModelChange());
+    if (triggerSaving) {
+      const form = untracked(this.form);
+      setTimeout(() => {
+        if (this.form() === form) this.onModelChange();
+      });
+    }
     return model;
   }
 
@@ -701,7 +707,10 @@ export class ProfileFormComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   onFormInput(event: Event): void {
-    queueMicrotask(() => this.onModelChange(this.getModelWithDomInputValue(event)));
+    const form = this.form();
+    queueMicrotask(() => {
+      if (this.form() === form) this.onModelChange(this.getModelWithDomInputValue(event));
+    });
   }
 
   private getModelWithDomInputValue(event: Event): Record<string, ModelValue> {
@@ -759,7 +768,5 @@ export class ProfileFormComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnDestroy(): void {
     this.elementRef.nativeElement.removeEventListener('input', this.nativeInputHandler, true);
     this.elementRef.nativeElement.removeEventListener('change', this.nativeInputHandler, true);
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
   }
 }
