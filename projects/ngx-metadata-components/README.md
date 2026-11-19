@@ -1,5 +1,10 @@
 # Release notes
 
+## 1.0.1
+
+- Support metadata profiles 0.11 and 0.12.
+- Keep values and labels scoped to the active profile when switching between unit and item forms.
+
 ## 1.0.0 — Angular 21
 
 ### Summary
