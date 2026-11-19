@@ -7,6 +7,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { MDProfile, ProfileEntryParametersVocabulary } from '@iqbspecs/metadata-profile';
 import { ProfileFormComponent } from './profile-form.component';
+import { metadataFormlyConfig } from '../providers/metadata-formly.config';
 import { VocabularyProvider } from '../models/vocabulary-provider.interface';
 import { StoredVocabularyEntry, UnitMetadataValues } from '../models/metadata-values.interface';
 import { VocabularyEntry } from '../models/vocabulary.class';
@@ -50,7 +51,7 @@ describe('ProfileFormComponent', () => {
     await TestBed.configureTestingModule({
       imports: [
         ReactiveFormsModule,
-        FormlyModule.forRoot(),
+        FormlyModule.forRoot(metadataFormlyConfig),
         FormlyMaterialModule,
         TranslateModule.forRoot()
       ]
@@ -159,6 +160,85 @@ describe('ProfileFormComponent', () => {
       expect(reloaded[0].notation).toEqual(['1.2']);
       expect(reloaded[0].name).toBe('1.2 Foo');
     });
+  });
+
+  const labels = {
+    trueLabel: [{ lang: 'de', value: 'Freigegeben' }],
+    falseLabel: [{ lang: 'de', value: 'Gesperrt' }]
+  };
+  [
+    {
+      active: true, parameters: null, initialText: 'true', toggledText: 'false'
+    },
+    {
+      active: false, parameters: null, initialText: 'false', toggledText: 'true'
+    },
+    {
+      active: true, parameters: labels, initialText: 'Freigegeben', toggledText: 'Gesperrt'
+    }
+  ].forEach(({
+    active, parameters, initialText, toggledText
+  }) => {
+    it(`saves unit edits and a BOOLEAN switch from "${initialText}" to "${toggledText}"`, fakeAsync(() => {
+      const unitProfile: MDProfile = {
+        id: 'synthetic-unit',
+        target: ['UNIT'],
+        label: [{ lang: 'de', value: 'Aufgabe' }],
+        groups: [{
+          label: [],
+          entries: [
+            {
+              id: 'note', label: [], type: 'TEXT', parameters: null
+            },
+            {
+              id: 'active', label: [], type: 'BOOLEAN', parameters
+            }
+          ]
+        }]
+      };
+      const booleanValue = { raw: String(active), asText: [{ lang: 'de', value: initialText }] };
+      component.profileData = unitProfile;
+      component.metadataValues = {
+        profiles: [{
+          profileId: unitProfile.id,
+          order: 0,
+          entries: [
+            { id: 'note', label: [], value: [{ lang: 'de', value: 'Entwurf' }] },
+            { id: 'active', label: [], value: booleanValue }
+          ]
+        }]
+      };
+      fixture.detectChanges();
+      tick();
+
+      const changes = jasmine.createSpy('metadataChange');
+      component.metadataChange.subscribe(changes);
+      const note: HTMLInputElement = fixture.nativeElement.querySelector('input[type="text"]');
+      note.value = 'Überarbeitet';
+      note.dispatchEvent(new Event('input', { bubbles: true }));
+      tick();
+      const afterTextEdit: UnitMetadataValues = changes.calls.mostRecent().args[0];
+      expect(afterTextEdit.profiles?.[0].profileId).toBe(unitProfile.id);
+      expect(afterTextEdit.profiles?.[0].entries).toEqual(jasmine.arrayWithExactContents([
+        jasmine.objectContaining({ id: 'note', value: [{ lang: 'de', value: 'Überarbeitet' }] }),
+        jasmine.objectContaining({ id: 'active', value: booleanValue })
+      ]));
+
+      const toggle: HTMLButtonElement = fixture.nativeElement.querySelector('[role="switch"]');
+      toggle.click();
+      tick();
+      const saved: UnitMetadataValues = changes.calls.mostRecent().args[0];
+      expect(saved.profiles?.[0].entries.find(entry => entry.id === 'active')?.value).toEqual({
+        raw: String(!active), asText: [{ lang: 'de', value: toggledText }]
+      });
+
+      const reopened = TestBed.createComponent(ProfileFormComponent);
+      reopened.componentInstance.profileData = unitProfile;
+      reopened.componentInstance.metadataValues = saved;
+      reopened.detectChanges();
+      tick();
+      expect(reopened.componentInstance.form().getRawValue()).toEqual({ note: 'Überarbeitet', active: !active });
+    }));
   });
 
   it('serializes only the active profile fields when switching between unit and item', fakeAsync(() => {
