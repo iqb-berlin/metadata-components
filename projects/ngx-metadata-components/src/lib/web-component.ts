@@ -4,6 +4,7 @@ import { createApplication } from '@angular/platform-browser';
 import { importProvidersFrom, provideZonelessChangeDetection } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { provideHttpClient } from '@angular/common/http';
+import { TranslateModule } from '@ngx-translate/core';
 import { FormlyModule } from '@ngx-formly/core';
 import { FormlyMaterialModule } from '@ngx-formly/material';
 import { ProfileFormComponent } from './profile-form/profile-form.component';
@@ -17,6 +18,7 @@ export async function bootstrapMetadataWebComponents(): Promise<void> {
       provideHttpClient(),
       MetadataService,
       importProvidersFrom(
+        TranslateModule.forRoot(),
         ReactiveFormsModule,
         FormlyModule.forRoot(metadataFormlyConfig),
         FormlyMaterialModule

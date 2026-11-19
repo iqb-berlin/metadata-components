@@ -35,3 +35,16 @@ jobs:
 
       - name: Lint
         run: npm run lint
+
+      - name: Build demo
+        run: npm run build_xx
+
+      - name: Test web component in Chrome
+        env:
+          UI_MATRIX_HEADLESS: '1'
+          UI_MATRIX_BROWSER_CHANNEL: chrome
+        run: |
+          python3 -m http.server 4300 --bind 127.0.0.1 --directory dist/metadata-components-serve &
+          trap 'kill "$!"' EXIT
+          curl --fail --retry 10 --retry-connrefused --retry-delay 1 http://127.0.0.1:4300/ --output /dev/null
+          node tools/ui-matrix/metadata-ui-matrix.js

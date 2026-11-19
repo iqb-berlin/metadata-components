@@ -1,6 +1,6 @@
 # Metadata Components UI Matrix
 
-This runner exercises the demo app with deterministic profile, metadata, and vocabulary fixtures. It is intended for local visual QA and for a later CI job once Playwright is available in the runner environment.
+This runner exercises the demo app with deterministic profile, metadata, and vocabulary fixtures. CI runs the matrix against the built demo in Chrome.
 
 ## Coverage
 
@@ -18,12 +18,12 @@ Start the demo app first:
 npx ng serve metadata-components --host 127.0.0.1 --port 4300
 ```
 
-Run the matrix from an environment where Playwright is installed:
+Run the matrix using the Chrome installation on your machine:
 
 ```sh
 TARGET_URL=http://127.0.0.1:4300/ \
 UI_MATRIX_OUTPUT_DIR=/tmp/metadata-ui-matrix \
-UI_MATRIX_HEADLESS=1 \
+UI_MATRIX_BROWSER_CHANNEL=chrome UI_MATRIX_HEADLESS=1 \
 node tools/ui-matrix/metadata-ui-matrix.js
 ```
 
