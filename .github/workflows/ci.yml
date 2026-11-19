@@ -48,3 +48,9 @@ jobs:
           trap 'kill "$!"' EXIT
           curl --fail --retry 10 --retry-connrefused --retry-delay 1 http://127.0.0.1:4300/ --output /dev/null
           node tools/ui-matrix/metadata-ui-matrix.js
+
+      - name: Build and test with metadata-profile 0.11.1
+        run: |
+          npm install --no-save --no-audit @iqbspecs/metadata-profile@0.11.1
+          npm run build_mc
+          npm run test:ci
