@@ -829,14 +829,19 @@ async function runInteractions(page) {
 
     await form.locator('mat-chip-grid').first().click();
     await page.waitForSelector('mat-dialog-container', { timeout: 10000 });
-    await page.locator('mat-dialog-container').getByText('Alpha Auswahl mit langem Titel').click();
-    await page.locator('mat-dialog-container button').filter({ hasText: 'confirm' }).click();
-    await page.waitForTimeout(500);
-    const metadataAfterDialog = await page.locator('pre').innerText();
+    const dialog = page.getByRole('dialog');
+    const choice = dialog.locator('mat-tree-node').filter({ hasText: 'Beta Inline Auswahl' }).getByRole('checkbox');
+    reportCheck(caseResult, 'dialog choice starts unchecked', !await choice.isChecked());
+    await choice.check();
+    await dialog.locator('[data-cy="metadata-nested-tree-confirm-button"]').click();
+    await dialog.waitFor({ state: 'detached' });
+    const metadataAfterDialog = JSON.parse(await page.locator('pre').innerText());
+    const dialogField = metadataAfterDialog.profiles.find(profile => profile.profileId === allControlsProfile.id)
+      ?.entries.find(entry => entry.id === 'vocab_dialog_multi');
     reportCheck(
       caseResult,
-      'dialog vocabulary confirm updates metadata',
-      metadataAfterDialog.includes('ui-vocab-alpha')
+      'dialog vocabulary confirm updates the selected field',
+      dialogField?.value.some(entry => entry.id === 'ui-vocab-beta') === true
     );
 
     for (const viewport of viewports) {
@@ -916,7 +921,7 @@ function writeReports() {
 (async () => {
   ensureOutputDirs();
 
-  const browser = await chromium.launch({ headless: HEADLESS, slowMo: HEADLESS ? 0 : 40 });
+  const browser = await chromium.launch({ channel: process.env.UI_MATRIX_BROWSER_CHANNEL, headless: HEADLESS, slowMo: HEADLESS ? 0 : 40 });
   const context = await browser.newContext({ viewport: { width: 1440, height: 1000 } });
   const page = await context.newPage();
 
