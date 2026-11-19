@@ -437,8 +437,8 @@ export class ProfileFormComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private getBooleanTypeLabel(key: string, value: boolean): string {
-    const params = this.profileItemKeys[key].parameters as ProfileEntryParametersBoolean;
-    const label = value ? params.trueLabel : params.falseLabel;
+    const params = this.profileItemKeys[key].parameters as ProfileEntryParametersBoolean | null;
+    const label = value ? params?.trueLabel : params?.falseLabel;
     if (label) {
       return ProfileFormComponent.extractLabelText(label);
     }
