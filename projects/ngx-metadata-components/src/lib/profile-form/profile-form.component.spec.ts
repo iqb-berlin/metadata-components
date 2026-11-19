@@ -162,8 +162,24 @@ describe('ProfileFormComponent', () => {
     });
   });
 
-  [true, false].forEach(active => {
-    it(`saves unit edits alongside a BOOLEAN set to ${active} with null parameters`, fakeAsync(() => {
+  const labels = {
+    trueLabel: [{ lang: 'de', value: 'Freigegeben' }],
+    falseLabel: [{ lang: 'de', value: 'Gesperrt' }]
+  };
+  [
+    {
+      active: true, parameters: null, initialText: 'true', toggledText: 'false'
+    },
+    {
+      active: false, parameters: null, initialText: 'false', toggledText: 'true'
+    },
+    {
+      active: true, parameters: labels, initialText: 'Freigegeben', toggledText: 'Gesperrt'
+    }
+  ].forEach(({
+    active, parameters, initialText, toggledText
+  }) => {
+    it(`saves unit edits and a BOOLEAN switch from "${initialText}" to "${toggledText}"`, fakeAsync(() => {
       const unitProfile: MDProfile = {
         id: 'synthetic-unit',
         target: ['UNIT'],
@@ -175,12 +191,12 @@ describe('ProfileFormComponent', () => {
               id: 'note', label: [], type: 'TEXT', parameters: null
             },
             {
-              id: 'active', label: [], type: 'BOOLEAN', parameters: null
+              id: 'active', label: [], type: 'BOOLEAN', parameters
             }
           ]
         }]
       };
-      const booleanValue = { raw: String(active), asText: [{ lang: 'de', value: String(active) }] };
+      const booleanValue = { raw: String(active), asText: [{ lang: 'de', value: initialText }] };
       component.profileData = unitProfile;
       component.metadataValues = {
         profiles: [{
@@ -197,23 +213,31 @@ describe('ProfileFormComponent', () => {
 
       const changes = jasmine.createSpy('metadataChange');
       component.metadataChange.subscribe(changes);
-      const note: HTMLInputElement = fixture.nativeElement.querySelector('input');
+      const note: HTMLInputElement = fixture.nativeElement.querySelector('input[type="text"]');
       note.value = 'Überarbeitet';
       note.dispatchEvent(new Event('input', { bubbles: true }));
       tick();
-      const saved: UnitMetadataValues = changes.calls.mostRecent().args[0];
-      expect(saved.profiles?.[0].profileId).toBe(unitProfile.id);
-      expect(saved.profiles?.[0].entries).toEqual(jasmine.arrayWithExactContents([
+      const afterTextEdit: UnitMetadataValues = changes.calls.mostRecent().args[0];
+      expect(afterTextEdit.profiles?.[0].profileId).toBe(unitProfile.id);
+      expect(afterTextEdit.profiles?.[0].entries).toEqual(jasmine.arrayWithExactContents([
         jasmine.objectContaining({ id: 'note', value: [{ lang: 'de', value: 'Überarbeitet' }] }),
         jasmine.objectContaining({ id: 'active', value: booleanValue })
       ]));
+
+      const toggle: HTMLButtonElement = fixture.nativeElement.querySelector('[role="switch"]');
+      toggle.click();
+      tick();
+      const saved: UnitMetadataValues = changes.calls.mostRecent().args[0];
+      expect(saved.profiles?.[0].entries.find(entry => entry.id === 'active')?.value).toEqual({
+        raw: String(!active), asText: [{ lang: 'de', value: toggledText }]
+      });
 
       const reopened = TestBed.createComponent(ProfileFormComponent);
       reopened.componentInstance.profileData = unitProfile;
       reopened.componentInstance.metadataValues = saved;
       reopened.detectChanges();
       tick();
-      expect(reopened.componentInstance.form().getRawValue()).toEqual({ note: 'Überarbeitet', active });
+      expect(reopened.componentInstance.form().getRawValue()).toEqual({ note: 'Überarbeitet', active: !active });
     }));
   });
 
