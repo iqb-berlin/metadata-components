@@ -5,9 +5,9 @@ import { FormlyModule } from '@ngx-formly/core';
 import { FormlyMaterialModule } from '@ngx-formly/material';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { MDProfile } from '@iqbspecs/metadata-profile';
+import { MDProfile, MDProfileEntry } from '@iqbspecs/metadata-profile';
 import { ProfileFormComponent } from './profile-form.component';
-import { FormlyWrapperPanel } from '../formly-wrapper-panel/formly-wrapper-panel.component';
+import { metadataFormlyConfig } from '../providers/metadata-formly.config';
 import { VocabularyProvider } from '../models/vocabulary-provider.interface';
 
 const vocabularyProvider: VocabularyProvider = {
@@ -42,9 +42,7 @@ describe('ProfileFormComponent panel expansion', () => {
     await TestBed.configureTestingModule({
       imports: [
         ReactiveFormsModule,
-        FormlyModule.forRoot({
-          wrappers: [{ name: 'panel', component: FormlyWrapperPanel }]
-        }),
+        FormlyModule.forRoot(metadataFormlyConfig),
         FormlyMaterialModule,
         TranslateModule.forRoot()
       ]
@@ -56,6 +54,53 @@ describe('ProfileFormComponent panel expansion', () => {
 
   const isPanelExpanded = (): boolean => !!fixture.nativeElement
     .querySelector('mat-expansion-panel.mat-expanded');
+
+  it('renders each metadata field type in an Angular host using the shared registration', fakeAsync(() => {
+    const field = (
+      id: string, type: MDProfileEntry['type'], parameters: MDProfileEntry['parameters'] = null
+    ): MDProfileEntry => ({
+      id, type, parameters, label: [{ lang: 'de', value: id }]
+    });
+    const vocabulary = {
+      url: 'subjects',
+      allowMultipleValues: false,
+      maxLevel: 0,
+      hideNumbering: false,
+      hideDescription: false,
+      hideTitle: false,
+      addTextLanguages: []
+    };
+    component.profileData = {
+      target: ['UNIT'],
+      id: 'host',
+      label: [],
+      groups: [{
+        label: [],
+        entries: [
+          field('text', 'TEXT'), field('notes', 'TEXT', { format: 'MULTILINE', textLanguages: [] }),
+          field('count', 'NUMBER'),
+          field('duration', 'NUMBER', {
+            isPeriodSeconds: true, minValue: null, maxValue: null, digits: 0
+          }),
+          field('active', 'BOOLEAN'),
+          field('dialog', 'VOCABULARY', { ...vocabulary, selectionMode: 'DIALOG' }),
+          field('inline', 'VOCABULARY', { ...vocabulary, selectionMode: 'IN_FORM' })
+        ]
+      }]
+    };
+    component.formlyWrapper = 'panel';
+    component.panelExpanded = true;
+    fixture.detectChanges();
+    tick();
+    fixture.detectChanges();
+    const panel = fixture.nativeElement.querySelector('mat-expansion-panel') as HTMLElement;
+    [
+      'input[type=text]', 'textarea', 'input[type=number]', 'iqb-formly-duration',
+      'mat-slide-toggle', 'mat-chip-grid', 'iqb-formly-inline'
+    ].forEach(selector => {
+      expect(panel.querySelector(selector)).withContext(selector).toBeTruthy();
+    });
+  }));
 
   it('renders an expanded panel when panelExpanded is set before the profile', fakeAsync(() => {
     component.formlyWrapper = 'panel';

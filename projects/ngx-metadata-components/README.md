@@ -4,6 +4,7 @@ Register the metadata field types and the panel wrapper using the exported Forml
 In the Angular host, import the Material field types and configure the translation service used by the vocabulary dialog:
 
 ```ts
+import { NgModule } from '@angular/core';
 import { FormlyModule } from '@ngx-formly/core';
 import { FormlyMaterialModule } from '@ngx-formly/material';
 import { TranslateModule } from '@ngx-translate/core';
