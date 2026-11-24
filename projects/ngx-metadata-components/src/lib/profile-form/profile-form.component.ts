@@ -29,6 +29,7 @@ import {
 import { MetadataService } from '../services/metadata.service';
 import { DurationService } from '../services/duration.service';
 import { VocabularyEntry } from '../models/vocabulary.class';
+import { LanguageTexts, pickText, toLanguageTexts } from '../utils/language-text';
 
 interface FormlyConfigProps {
   label: string;
@@ -43,6 +44,8 @@ interface FormlyConfigProps {
 
 interface ProfileItemKeyValue {
   label: string;
+  /** The field's name in every language the profile brings: what is saved with the value. */
+  labels: LanguageCodedText[];
   type: string;
   parameters: ProfileEntryParametersNumber | ProfileEntryParametersBoolean | ProfileEntryParametersText |
   ProfileEntryParametersVocabulary | null;
@@ -107,10 +110,16 @@ export class ProfileFormComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
+  /**
+   * The language of the host's interface. Names, terms and texts of the profile and its vocabularies
+   * are shown in it where they bring it, else in the first language they bring; typed text is saved
+   * under it. The host translates no metadata.
+   */
   @Input()
   set language(value: string) {
     if (value) {
       this.languageSignal.set(value);
+      this.metadataService.setLanguage(value);
     }
   }
 
@@ -157,7 +166,6 @@ export class ProfileFormComponent implements OnInit, AfterViewInit, OnDestroy {
   };
 
   private profileItemKeys: Record<string, ProfileItemKeyValue> = {};
-  private metadataEntryLabels: Record<string, { lang: string, value: string }[]> = {};
   private modelChangeSuppressionDepth = 0;
   private readonly nativeInputHandler = (event: Event): void => this.onFormInput(event);
 
@@ -332,23 +340,16 @@ export class ProfileFormComponent implements OnInit, AfterViewInit, OnDestroy {
     return typesMapping[type];
   }
 
-  private static extractLabelText(label: string | any): string {
+  private static extractLabelText(label: LanguageTexts, language: string): string {
     if (typeof label === 'string') {
       return label;
     }
+    return pickText(label, language) || 'Unknown';
+  }
 
-    if (Array.isArray(label) && label.length > 0) {
-      const deLbl = label.find((l: any) => l.lang === 'de');
-      if (deLbl?.value) return deLbl.value;
-
-      if (label[0]?.value) return label[0].value;
-    }
-
-    if (label && typeof label === 'object' && 'value' in label) {
-      return label.value;
-    }
-
-    return label?.toString() || 'Unknown';
+  // Texts in every language they bring; a plain string, which has none, counts as the given language.
+  private static withLanguage(texts: LanguageTexts, language: string): LanguageCodedText[] {
+    return toLanguageTexts(texts).map(text => (text.lang ? text : { ...text, lang: language }));
   }
 
   // //////////////////////////////////
@@ -368,10 +369,9 @@ export class ProfileFormComponent implements OnInit, AfterViewInit, OnDestroy {
         .filter(([id, value]) => Object.hasOwn(this.profileItemKeys, id) && value !== undefined && value !== null)
         .map(entry => ({
           id: entry[0],
-          label: this.metadataEntryLabels[entry[0]] ?? [{
-            lang: currentLanguage,
-            value: this.profileItemKeys[entry[0]]?.label ?? ''
-          }],
+          label: this.profileItemKeys[entry[0]].labels.length ?
+            this.profileItemKeys[entry[0]].labels :
+            [{ lang: currentLanguage, value: this.profileItemKeys[entry[0]].label }],
           value: this.mapFormlyModelValueToMetadataValue(entry)
         })),
       profileId,
@@ -410,10 +410,7 @@ export class ProfileFormComponent implements OnInit, AfterViewInit, OnDestroy {
     if (type === 'BOOLEAN') {
       return {
         raw: modelValueEntry[1].toString(),
-        asText: [{
-          lang: currentLanguage,
-          value: this.getBooleanTypeLabel(modelValueEntry[0], modelValueEntry[1] as boolean)
-        }]
+        asText: this.getBooleanTypeTexts(modelValueEntry[0], modelValueEntry[1] as boolean)
       };
     }
     if (type === 'NUMBER') {
@@ -436,13 +433,11 @@ export class ProfileFormComponent implements OnInit, AfterViewInit, OnDestroy {
     };
   }
 
-  private getBooleanTypeLabel(key: string, value: boolean): string {
+  // The text for yes or no in every language the profile brings it; without one, `true` or `false`.
+  private getBooleanTypeTexts(key: string, value: boolean): LanguageCodedText[] {
     const params = this.profileItemKeys[key].parameters as ProfileEntryParametersBoolean | null;
-    const label = value ? params?.trueLabel : params?.falseLabel;
-    if (label) {
-      return ProfileFormComponent.extractLabelText(label);
-    }
-    return value.toString();
+    const texts = ProfileFormComponent.withLanguage(value ? params?.trueLabel : params?.falseLabel, this.getLanguage());
+    return texts.length ? texts : [{ lang: this.getLanguage(), value: value.toString() }];
   }
 
   // //////////////////////////////////
@@ -450,7 +445,6 @@ export class ProfileFormComponent implements OnInit, AfterViewInit, OnDestroy {
   // //////////////////////////////////
 
   private mapMetadataValuesToFormlyModel(metadata: MetadataProfileValues | undefined): Record<string, ModelValue> {
-    this.metadataEntryLabels = {};
     if (!metadata || !metadata.entries) return {};
     return this.mapMetaDataEntriesToFormlyModel(metadata.entries);
   }
@@ -460,9 +454,6 @@ export class ProfileFormComponent implements OnInit, AfterViewInit, OnDestroy {
     let triggerSaving = false;
     entries.forEach((entry: MetadataValue) => {
       if (!Object.hasOwn(this.profileItemKeys, entry.id)) return;
-      if (entry.label?.length) {
-        this.metadataEntryLabels[entry.id] = entry.label.map(l => ({ lang: l.lang, value: l.value }));
-      }
       const storedValue = this.mapMetaDataEntriesValueToFormlyModelValue(entry.value, entry.id);
       if (this.isStoredValueValidForFormlyField(entry.id, storedValue)) {
         model[entry.id] = storedValue;
@@ -532,7 +523,7 @@ export class ProfileFormComponent implements OnInit, AfterViewInit, OnDestroy {
             const dictEntry = vocabDict[v.id];
 
             if (!dictEntry) {
-              const savedLabel = textLabels.find(label => label.lang === 'de')?.value ||
+              const savedLabel = pickText(textLabels, this.getLanguage()) ||
                 v.id.split('/').pop() ||
                 v.id;
               // Ohne Dictionary die Nummerierung aus dem Spec-Feld 'annotation' rekonstruieren.
@@ -548,14 +539,15 @@ export class ProfileFormComponent implements OnInit, AfterViewInit, OnDestroy {
               };
             }
 
-            const label = dictEntry.name || '';
+            // The term as the host's dictionary has it, in every language: shown in the form's
+            // language, saved in all of them (this also heals labels once saved with the numbering).
+            const label = pickText(dictEntry.text, this.getLanguage()) || dictEntry.name || '';
             const notation = dictEntry.notation?.[0] || '';
             return {
               id: v.id,
               name: `${hideNumbering ? '' : notation} ${label}`.trim(),
               notation: notation ? [notation] : [] as string[],
-              // 'text' aus dem Dictionary als reiner Begriff (heilt alt gespeicherte Kombi-Labels).
-              text: [{ lang: 'de', value: label }]
+              text: dictEntry.text?.length ? dictEntry.text : [{ lang: this.getLanguage(), value: label }]
             };
           });
         }
@@ -577,36 +569,37 @@ export class ProfileFormComponent implements OnInit, AfterViewInit, OnDestroy {
       const groups = profile?.groups;
       const currentFormlyWrapper = this.getFormlyWrapper();
       const currentPanelExpanded = this.getPanelExpanded();
+      const language = this.getLanguage();
 
       return groups?.map((group: MDProfileGroup) => ({
         wrappers: currentFormlyWrapper ? [currentFormlyWrapper] : undefined,
         props: {
-          label: ProfileFormComponent.extractLabelText(group.label),
+          label: ProfileFormComponent.extractLabelText(group.label, language),
           expanded: currentPanelExpanded
         },
         fieldGroup: group.entries
           .map((entry: MDProfileEntry) => {
             this.registerProfileItem(entry);
-            return ProfileFormComponent.getFormlyField(entry);
+            return ProfileFormComponent.getFormlyField(entry, language);
           })
       }));
     }
     return [];
   }
 
-  private static getFormlyField(entry: MDProfileEntry): FormlyFieldConfig {
+  private static getFormlyField(entry: MDProfileEntry, language: string): FormlyFieldConfig {
     const props: FormlyConfigProps = {
       ...(entry.parameters as any),
-      label: ProfileFormComponent.extractLabelText(entry.label)
+      label: ProfileFormComponent.extractLabelText(entry.label, language)
     };
 
     if (entry.type.toUpperCase() === 'BOOLEAN' && entry.parameters) {
       const boolParams = entry.parameters as ProfileEntryParametersBoolean;
       if (boolParams.trueLabel) {
-        props.trueLabel = ProfileFormComponent.extractLabelText(boolParams.trueLabel);
+        props.trueLabel = ProfileFormComponent.extractLabelText(boolParams.trueLabel, language);
       }
       if (boolParams.falseLabel) {
-        props.falseLabel = ProfileFormComponent.extractLabelText(boolParams.falseLabel);
+        props.falseLabel = ProfileFormComponent.extractLabelText(boolParams.falseLabel, language);
       }
     }
 
@@ -629,10 +622,10 @@ export class ProfileFormComponent implements OnInit, AfterViewInit, OnDestroy {
         return {
           key: entry.id,
           fieldGroup: params.textLanguages
-            .map((language: string) => ProfileFormComponent.createFormlyField(
-              language,
+            .map((textLanguage: string) => ProfileFormComponent.createFormlyField(
+              textLanguage,
               entry,
-              ProfileFormComponent.withLanguageLabel(props, language)
+              ProfileFormComponent.withLanguageLabel(props, textLanguage)
             ))
         };
       }
@@ -662,7 +655,8 @@ export class ProfileFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private registerProfileItem(entry: MDProfileEntry): void {
     this.profileItemKeys[entry.id] = {
-      label: ProfileFormComponent.extractLabelText(entry.label),
+      label: ProfileFormComponent.extractLabelText(entry.label, this.getLanguage()),
+      labels: ProfileFormComponent.withLanguage(entry.label, this.getLanguage()),
       type: entry.type.toUpperCase(),
       parameters: entry.parameters
     };

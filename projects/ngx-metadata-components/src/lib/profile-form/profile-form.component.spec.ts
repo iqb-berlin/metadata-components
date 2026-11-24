@@ -347,4 +347,60 @@ describe('ProfileFormComponent', () => {
       expect(emissions.length).toBe(before);
     }));
   });
+
+  // The form shows the profile in the host's language and saves names and yes/no texts in every language
+  // the profile brings, so that another language reads them too (#36).
+  it('shows the profile in the language of the host and saves its texts in every language', fakeAsync(() => {
+    const de = (value: string) => ({ lang: 'de', value });
+    const en = (value: string) => ({ lang: 'en', value });
+    const unitProfile: MDProfile = {
+      id: 'p30',
+      target: ['UNIT'],
+      label: [de('Aufgabe'), en('Unit')],
+      groups: [{
+        label: [de('Aufgabe'), en('Unit')],
+        entries: [
+          {
+            id: 'note', label: [de('Notiz'), en('Note')], type: 'TEXT', parameters: null
+          },
+          {
+            id: 'keyboard',
+            label: [de('Tastatur'), en('Keyboard')],
+            type: 'BOOLEAN',
+            parameters: {
+              trueLabel: [de('Tastatur eingeblendet'), en('On-screen keyboard')],
+              falseLabel: [de('Computertastatur'), en('Computer keyboard')]
+            }
+          }
+        ]
+      }]
+    };
+    component.language = 'en';
+    component.profileData = unitProfile;
+    component.metadataValues = {
+      profiles: [{
+        profileId: 'p30',
+        order: 0,
+        entries: [{
+          id: 'keyboard', label: [de('Tastatur')], value: { raw: 'false', asText: [de('Computertastatur')] }
+        }]
+      }]
+    };
+    fixture.detectChanges();
+    tick();
+
+    const shown: string = fixture.nativeElement.textContent;
+    expect(shown).toContain('Note');
+    expect(shown).toContain('Keyboard');
+    expect(shown).not.toContain('Notiz');
+
+    const changes = jasmine.createSpy('metadataChange');
+    component.metadataChange.subscribe(changes);
+    (fixture.nativeElement.querySelector('[role="switch"]') as HTMLButtonElement).click();
+    tick();
+    const saved: UnitMetadataValues = changes.calls.mostRecent().args[0];
+    const keyboard = saved.profiles?.[0].entries.find(entry => entry.id === 'keyboard');
+    expect(keyboard?.label).toEqual([de('Tastatur'), en('Keyboard')]);
+    expect(keyboard?.value).toEqual({ raw: 'true', asText: [de('Tastatur eingeblendet'), en('On-screen keyboard')] });
+  }));
 });

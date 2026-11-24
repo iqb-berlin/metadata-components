@@ -26,6 +26,17 @@ into the corresponding arrays in the host's Formly configuration. Host-specific 
 
 # Release notes
 
+## 1.1.0 — Metadata in the language of the host
+
+- `language` is the language of the host's interface. Group and field names, yes/no texts, the terms
+  in the vocabulary dialog, the inline selection and the chips appear in it where the profile and the
+  vocabulary bring it, else in the first language they bring. The host translates no metadata; a
+  vocabulary without German no longer shows empty terms.
+- Saved metadata keep what the profile and the vocabulary bring: a chosen term with its labels in
+  every language (from the vocabulary, or from `text` in the host's dictionary), a field with its name
+  from the profile, a yes/no value with its text in every language. Typed text is saved under `language`.
+- `prefLabel` and `title` of vocabularies are typed as `Record<string, string>`.
+
 ## 1.0.2
 
 - Show the full label of a term that is already chosen when the vocabulary dialog opens again. For a term shown without numbering, the dialog cut off the first word, and confirming saved the shortened label.

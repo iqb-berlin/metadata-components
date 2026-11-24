@@ -12,6 +12,7 @@ import {
 import { NotationNode, VocabularyEntry } from '../models/vocabulary.class';
 import { NestedTreeComponent } from '../nested-tree/nested-tree.component';
 import { MetadataService } from '../services/metadata.service';
+import { pickText } from '../utils/language-text';
 
 @Component({
   selector: 'iqb-formly-chips',
@@ -61,7 +62,8 @@ export class FormlyChipsComponent extends FieldType<FieldTypeConfig> implements 
       data: {
         value: this.formControl.value,
         props: this.props,
-        vocabularies: this.metadataService.getVocabularies()
+        vocabularies: this.metadataService.getVocabularies(),
+        language: this.metadataService.getLanguage()
       },
       width: '1000px'
     });
@@ -80,9 +82,10 @@ export class FormlyChipsComponent extends FieldType<FieldTypeConfig> implements 
     results: { nodes: NotationNode[], hideNumbering: boolean }
   ): VocabularyEntry[] {
     const vocabulariesIdDictionary = this.metadataService.getVocabulariesIdDictionary();
+    const language = this.metadataService.getLanguage();
     return results.nodes
       .map((node: NotationNode) => FormlyChipsComponent.createVocabularyEntry(
-        node, results.hideNumbering, vocabulariesIdDictionary
+        node, results.hideNumbering, vocabulariesIdDictionary, language
       ))
       .sort(FormlyChipsComponent.sortVocabularyEntries);
   }
@@ -90,19 +93,20 @@ export class FormlyChipsComponent extends FieldType<FieldTypeConfig> implements 
   private static createVocabularyEntry(
     node: NotationNode,
     hideNumbering: boolean,
-    vocabulariesIdDictionary: Record<string, VocabularyEntry & { label?: string }>
+    vocabulariesIdDictionary: Record<string, VocabularyEntry & { label?: string }>,
+    language: string
   ): VocabularyEntry {
     const entry = vocabulariesIdDictionary[node.id];
-    const label = entry?.label || node.label || '';
+    const label = pickText(entry?.text, language) || entry?.label || node.label || '';
     const notation = node.notation;
     const name = `${hideNumbering ? '' : notation} ${label}`.trim();
     return {
       name,
       id: node.id,
       notation,
-      // 'text' hält den reinen Begriff; die Nummerierung (notation) reist getrennt und
-      // wird beim Speichern in das Spec-Feld 'annotation' geschrieben (= SKOS-notation).
-      text: [{ lang: 'de', value: label }]
+      // 'text' holds the pure term in every language the vocabulary has; the numbering (notation)
+      // travels apart and is saved in the spec field 'annotation' (= SKOS notation).
+      text: entry?.text?.length ? entry.text : [{ lang: language, value: label }]
     };
   }
 

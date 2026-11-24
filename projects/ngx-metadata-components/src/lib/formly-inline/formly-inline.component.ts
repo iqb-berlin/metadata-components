@@ -9,10 +9,13 @@ import { MatRadioButton } from '@angular/material/radio';
 import { interval, Subject, takeUntil } from 'rxjs';
 import { MetadataService } from '../services/metadata.service';
 import { VocabularyEntry, Vocab, TopConcept } from '../models/vocabulary.class';
+import { LanguageText, pickText, toLanguageTexts } from '../utils/language-text';
 
 interface VocabOption {
   id: string;
   label: string;
+  /** The term in every language its vocabulary has. */
+  texts: LanguageText[];
   notation: string[];
   description: string;
   level: number;
@@ -126,8 +129,8 @@ export class FormlyInlineComponent
       id: option.id,
       name,
       notation: option.notation,
-      // 'text' = reiner Begriff; die Nummerierung wandert beim Speichern nach 'annotation'.
-      text: [{ lang: 'de', value: option.label }]
+      // 'text' = the pure term in every language; the numbering goes to 'annotation' on save.
+      text: option.texts.length ? option.texts : [{ lang: this.metadataService.getLanguage(), value: option.label }]
     };
   }
 
@@ -155,7 +158,8 @@ export class FormlyInlineComponent
     concepts.forEach(concept => {
       result.push({
         id: concept.id,
-        label: concept.prefLabel?.de || '',
+        label: pickText(concept.prefLabel, this.metadataService.getLanguage()),
+        texts: toLanguageTexts(concept.prefLabel),
         notation: concept.notation || [],
         description: '',
         level: currentLevel
