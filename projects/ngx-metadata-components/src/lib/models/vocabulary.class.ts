@@ -3,7 +3,8 @@ import { ProfileEntryParametersVocabulary } from '@iqbspecs/metadata-profile';
 
 export class TopConcept {
   notation!: string[];
-  prefLabel!: { de: string };
+  /** The term by language, e.g. `{ de: 'Längsschnitt', en: 'Longitudinal' }`. */
+  prefLabel!: Record<string, string>;
   narrower!: TopConcept[];
   id!: string;
 }
@@ -18,9 +19,7 @@ export type NotationNode = {
   name?: string,
   indeterminate?: boolean,
   children?: NotationNode[] | [],
-  prefLabel?: {
-    de: string
-  },
+  prefLabel?: Record<string, string>,
   parent?: NotationNode,
   selected?: boolean,
   narrower?: NotationNode[]
@@ -37,14 +36,16 @@ export class NestedTreeParameters {
 export class Vocabulary {
   id!: string;
   type!: string;
-  title!: { de: string };
+  title!: Record<string, string>;
   hasTopConcept!: Array<NotationNode>;
 }
 
 export type DialogData = {
   value: VocabularyEntry[],
   props: NestedTreeParameters,
-  vocabularies: Vocab[]
+  vocabularies: Vocab[],
+  /** The language to show the terms in where the vocabulary brings it; else its first language. */
+  language?: string
 };
 
 export class VocabNode {

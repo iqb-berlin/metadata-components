@@ -99,3 +99,47 @@ describe('NestedTreeComponent with a term already chosen', () => {
     expect(fixture.nativeElement.textContent).toContain('Umfrage- und Aggregatedaten');
   });
 });
+
+describe('NestedTreeComponent in the language of the host', () => {
+  const url = 'https://w3id.org/iqb/v85/dt/';
+
+  // The host passes its language; a term without it shows in the first language its vocabulary brings (#36).
+  it('shows title and terms in that language, else in the first the vocabulary brings', async () => {
+    await TestBed.configureTestingModule({
+      imports: [MatCheckboxModule, MatDialogModule, MatTreeModule, TranslateModule.forRoot()],
+      providers: [{
+        provide: MAT_DIALOG_DATA,
+        useValue: {
+          value: [],
+          props: {
+            url, allowMultipleValues: true, maxLevel: 0, hideNumbering: true, hideTitle: false
+          },
+          vocabularies: [{
+            url,
+            data: {
+              title: { de: 'Datentyp', en: 'Data type' },
+              hasTopConcept: [
+                {
+                  id: `${url}3`, prefLabel: { de: 'Umfragedaten', en: 'Survey data' }, notation: [], narrower: []
+                },
+                {
+                  id: `${url}99`, prefLabel: { it: 'Altro' }, notation: [], narrower: []
+                }
+              ]
+            }
+          }],
+          language: 'en'
+        }
+      }]
+    }).compileComponents();
+
+    const fixture = TestBed.createComponent(NestedTreeComponent);
+    fixture.detectChanges();
+
+    const text: string = fixture.nativeElement.textContent;
+    expect(text).toContain('Data type');
+    expect(text).toContain('Survey data');
+    expect(text).toContain('Altro');
+    expect(text).not.toContain('Umfragedaten');
+  });
+});

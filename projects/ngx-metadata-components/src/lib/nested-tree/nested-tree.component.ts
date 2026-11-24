@@ -22,6 +22,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import {
   DialogData, VocabFlatNode, VocabNode, Vocabulary
 } from '../models/vocabulary.class';
+import { pickText } from '../utils/language-text';
 import { AreAllDescendantsSelectedPipe } from '../pipes/are-all-descendants-selected.pipe';
 import { AreSomeDescendantsSelectedPipe } from '../pipes/are-some-descendants-selected.pipe';
 import { IsTreeControlExpandedPipe } from '../pipes/is-tree-control-expanded.pipe';
@@ -78,7 +79,7 @@ export class NestedTreeComponent implements OnInit {
     const url = this.dialogData.props?.url;
     const vocabulary = this.dialogData.vocabularies.find(vocab => vocab.url === url) ||
       this.dialogData.vocabularies.find(vocab => vocab.url.toLowerCase() === url?.toLowerCase());
-    this.vocabularyTitle = vocabulary?.data?.title?.['de'] ?? '';
+    this.vocabularyTitle = pickText(vocabulary?.data?.title, this.dialogData.language ?? 'de');
   }
 
   private selectNodesBasedOnDialogData(): void {

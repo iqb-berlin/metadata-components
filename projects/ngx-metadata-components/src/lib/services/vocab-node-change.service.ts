@@ -4,6 +4,7 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import {
   DialogData, NotationNode, TopConcept, VocabData, VocabNode
 } from '../models/vocabulary.class';
+import { pickText } from '../utils/language-text';
 
 @Injectable()
 export class VocabNodeChangeService {
@@ -58,7 +59,7 @@ export class VocabNodeChangeService {
 
     return createVocabNode(
       notationNode.id,
-      notationNode.prefLabel?.de || '',
+      pickText(notationNode.prefLabel, this.dialogData.language ?? 'de'),
       notationNode.notation || [],
       notationNode.description || '',
       notationNode.narrower &&

@@ -34,8 +34,9 @@ describe('FormlyInlineComponent', () => {
   ] as unknown as Vocab[];
 
   beforeEach(async () => {
-    mockMetadataService = jasmine.createSpyObj<MetadataService>('MetadataService', ['getVocabularies']);
+    mockMetadataService = jasmine.createSpyObj<MetadataService>('MetadataService', ['getVocabularies', 'getLanguage']);
     mockMetadataService.getVocabularies.and.returnValue(mockVocabularies);
+    mockMetadataService.getLanguage.and.returnValue('de');
 
     await TestBed.configureTestingModule({
       imports: [
@@ -152,6 +153,36 @@ describe('FormlyInlineComponent', () => {
         notation: ['1'],
         text: [{ lang: 'de', value: 'Option 1' }]
       }
+    ]);
+  });
+
+  // The terms appear in the host's language where the vocabulary brings it, else in its first one,
+  // and a chosen term is saved in every language the vocabulary has (#36).
+  it('shows the terms in the host language and saves them in every language', () => {
+    mockMetadataService.getLanguage.and.returnValue('en');
+    mockMetadataService.getVocabularies.and.returnValue([{
+      url: 'v/',
+      data: {
+        hasTopConcept: [
+          {
+            id: 'v/1', prefLabel: { de: 'Längsschnitt', en: 'Longitudinal' }, notation: [], narrower: []
+          },
+          {
+            id: 'v/2', prefLabel: { it: 'Trasversale' }, notation: [], narrower: []
+          }
+        ]
+      }
+    }] as unknown as Vocab[]);
+    const control = new FormControl<VocabularyEntry[]>([]);
+    component.field = { formControl: control, props: { url: 'v/', allowMultipleValues: true } };
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.textContent).toContain('Longitudinal');
+    expect(fixture.nativeElement.textContent).toContain('Trasversale');
+    const checkbox: HTMLInputElement = fixture.nativeElement.querySelector('mat-checkbox input');
+    checkbox.click();
+    expect(control.value?.[0].text).toEqual([
+      { lang: 'de', value: 'Längsschnitt' }, { lang: 'en', value: 'Longitudinal' }
     ]);
   });
 });
