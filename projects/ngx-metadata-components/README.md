@@ -26,6 +26,10 @@ into the corresponding arrays in the host's Formly configuration. Host-specific 
 
 # Release notes
 
+## 1.0.2
+
+- Show the full label of a term that is already chosen when the vocabulary dialog opens again. For a term shown without numbering, the dialog cut off the first word, and confirming saved the shortened label.
+
 ## 1.0.1
 
 - Support metadata profiles 0.11 and 0.12.

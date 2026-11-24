@@ -37,9 +37,9 @@ export class VocabNodeChangeService {
     );
   }
 
+  // A term that is already chosen gets its label from the vocabulary like any other. Cutting the
+  // numbering off its displayed name took the first word instead when the name had no numbering.
   createTreeNodes(depth: number, notationNode: NotationNode, mapNarrowerDepth: number): VocabNode {
-    const matchedNode = this.dialogData.value.find(v => v.id === notationNode.id);
-
     const createVocabNode = (
       id: string,
       label: string,
@@ -55,19 +55,6 @@ export class VocabNodeChangeService {
       node.children = children;
       return node;
     };
-
-    if (matchedNode) {
-      return createVocabNode(
-        matchedNode.id,
-        matchedNode.name.substring(matchedNode.name.indexOf(' ') + 1) || '',
-        matchedNode.notation || [],
-        matchedNode.description || '',
-        notationNode.narrower && notationNode.narrower.length &&
-        (depth < this.dialogData.props.maxLevel || this.dialogData.props.maxLevel === 0) ?
-          this.mapNarrower(notationNode.narrower, mapNarrowerDepth) :
-          []
-      );
-    }
 
     return createVocabNode(
       notationNode.id,
